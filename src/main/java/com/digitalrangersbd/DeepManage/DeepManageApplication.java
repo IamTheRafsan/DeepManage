@@ -8,8 +8,7 @@ public class DeepManageApplication {
 
 	public static void main(String[] args) {
 
-        System.out.println("Hello World!");
+        SpringApplication.run(DeepManageApplication.class,args);
 
 	}
-
 }
