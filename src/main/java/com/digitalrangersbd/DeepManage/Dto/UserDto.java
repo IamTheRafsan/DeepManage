@@ -1,99 +1,65 @@
-package com.digitalrangersbd.DeepManage.Entity;
+package com.digitalrangersbd.DeepManage.Dto;
 
 import com.digitalrangersbd.DeepManage.Enum.Gender;
 import jakarta.persistence.*;
-import org.hibernate.annotations.EmbeddableInstantiator;
+import jakarta.validation.constraints.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.lang.model.element.NestingKind;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-@Entity
-@Table(name = "user")
-public class User {
+public class UserDto {
 
-    @Id
-    @GeneratedValue(generator = "user-id-generator")
-    @GenericGenerator(name = "user-id-generator", strategy = "com.digitalrangersbd.DeepManage.CustomFields.CustomUserID")
+    @NotNull(message = "User ID not found")
     private String user_id;
 
-    @Column(nullable = false)
+    @NotBlank(message = "First name not found")
+    @Size(min=2, max=100, message = "Fist name must be minimum 2 words and maximum 100 words")
     private String firstName;
 
-    @Column
+    @NotBlank(message = "Last name not found")
+    @Size(min=2, max=100, message = "Fist name must be minimum 2 words and maximum 100 words")
     private String lastName;
 
-    @Column
+    @NotBlank(message = "Email not found")
+    @Email
     private String email;
 
-    @Column(nullable = false)
+    @NotBlank(message = "Password not found.")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$", message = "Password must contain at least 8 characters, one uppercase, one lowercase, and one number")
     private String password;
 
-    @Column(nullable = false)
+    @NotBlank(message = "Role not found")
     private String role_name;
 
-    @Column(nullable = false)
+    @NotBlank(message = "Role not found")
     private String role_id;
 
-    @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Column
     private Integer mobile;
 
-    @Column
     private String country;
 
-    @Column
     private String city;
 
-    @Column
     private String address;
 
-    @Column(nullable = false)
+    @NotNull(message = "Created Date not found")
     private LocalDate created_date;
 
-    @Column(nullable = false)
+    @NotNull(message = "Created time not found")
     private LocalTime created_time;
 
-    @Column
+    @NotNull(message = "Updated Date not found")
     private LocalDate updated_date;
 
-    @Column
+    @NotNull(message = "Updated Time not found")
     private LocalTime updated_time;
 
-    @Column
     private String warehouse_name;
 
-    @Column
     private String warehouse_id;
-
-
-    public User(){}
-
-    public User(String user_id, String firstName, String lastName, String email,String password, String role_name, String role_id, Gender gender, Integer mobile, String country, String city, String address, String warehouse_name, String warehouse_id){
-
-        this.user_id = user_id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.role_name = role_name;
-        this.role_id = role_id;
-        this.gender = gender;
-        this.mobile = mobile;
-        this.country = country;
-        this.city = city;
-        this.address = address;
-        this.created_date = created_date;
-        this.created_time = created_time;
-        this.updated_date = updated_date;
-        this.updated_time = updated_time;
-        this.warehouse_id = warehouse_id;
-        this.warehouse_name = warehouse_name;
-
-    }
 
     //Setters and Getters
     public void setUser_id(String user_id) {
@@ -239,5 +205,6 @@ public class User {
     public String getWarehouse_name(){
         return warehouse_name;
     }
+
 
 }
