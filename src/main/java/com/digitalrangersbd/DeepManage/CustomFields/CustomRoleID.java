@@ -5,17 +5,14 @@ import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.IdentifierGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
-
-public class CustomUserID implements IdentifierGenerator{
-
+public class CustomRoleID implements IdentifierGenerator{
     @Autowired
     private GlobalVariables shopName;
 
     @Override
     public Object generate(SharedSessionContractImplementor session, Object object) {
         String prefix = shopName.getShopName();
-        String query = "SELECT user_id FROM user ORDER BY user_id DESC LIMIT 1";
+        String query = "SELECT role_id FROM role ORDER BY role_id DESC LIMIT 1";
         String lastNumber = (String) session.createNativeQuery(query).uniqueResult();
 
         int nextNumber = 1;
