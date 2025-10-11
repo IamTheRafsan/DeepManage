@@ -68,9 +68,6 @@ public class Role {
         return this.permission.contains(permission);
     }
 
-    private boolean orPermission(Permission permission){
-        return this.permission.contains(permission);
-    }
 
 
 }
