@@ -24,7 +24,7 @@ public class User {
     @Column
     private String lastName;
 
-    @Column
+    @Column(unique = true)
     private String email;
 
     @Column(nullable = false)
@@ -39,7 +39,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Column
+    @Column(unique = true)
     private Integer mobile;
 
     @Column
