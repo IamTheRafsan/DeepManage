@@ -10,7 +10,6 @@ import java.time.LocalTime;
 
 public class UserDto {
 
-    @NotNull(message = "User ID not found")
     private String user_id;
 
     @NotBlank(message = "First name not found")
@@ -35,6 +34,7 @@ public class UserDto {
     @NotBlank(message = "Role not found")
     private String role_id;
 
+    @NotBlank
     private Gender gender;
 
     private Integer mobile;
@@ -45,21 +45,37 @@ public class UserDto {
 
     private String address;
 
-    @NotNull(message = "Created Date not found")
     private LocalDate created_date;
 
-    @NotNull(message = "Created time not found")
     private LocalTime created_time;
 
-    @NotNull(message = "Updated Date not found")
     private LocalDate updated_date;
 
-    @NotNull(message = "Updated Time not found")
     private LocalTime updated_time;
 
     private String warehouse_name;
 
     private String warehouse_id;
+
+    public UserDto(){}
+
+    public UserDto(String firstName, String lastName, String email,String password,String role_id, String role_name, Gender gender, Integer mobile, String country, String city, String address, String warehouse_id, String warehouse_name){
+
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.role_id = role_id;
+        this.role_name = role_name;
+        this.gender = gender;
+        this.mobile = mobile;
+        this.country = country;
+        this.city = city;
+        this.address = address;
+        this.warehouse_id = warehouse_id;
+        this.warehouse_name = warehouse_name;
+
+    }
 
     //Setters and Getters
     public void setUser_id(String user_id) {
@@ -205,6 +221,5 @@ public class UserDto {
     public String getWarehouse_name(){
         return warehouse_name;
     }
-
 
 }

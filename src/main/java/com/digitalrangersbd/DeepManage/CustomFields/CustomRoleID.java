@@ -11,7 +11,7 @@ public class CustomRoleID implements IdentifierGenerator{
 
     @Override
     public Object generate(SharedSessionContractImplementor session, Object object) {
-        String prefix = shopName.getShopName();
+        String prefix = shopName.getShopName()+"Role";
         String query = "SELECT role_id FROM role ORDER BY role_id DESC LIMIT 1";
         String lastNumber = (String) session.createNativeQuery(query).uniqueResult();
 

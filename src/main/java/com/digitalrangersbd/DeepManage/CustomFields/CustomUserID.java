@@ -14,7 +14,7 @@ public class CustomUserID implements IdentifierGenerator{
 
     @Override
     public Object generate(SharedSessionContractImplementor session, Object object) {
-        String prefix = shopName.getShopName();
+        String prefix = shopName.getShopName()+"User";
         String query = "SELECT user_id FROM user ORDER BY user_id DESC LIMIT 1";
         String lastNumber = (String) session.createNativeQuery(query).uniqueResult();
 

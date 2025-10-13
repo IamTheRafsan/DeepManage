@@ -37,6 +37,7 @@ public class User {
     private String role_id;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Gender gender;
 
     @Column(unique = true)
@@ -72,24 +73,19 @@ public class User {
 
     public User(){}
 
-    public User(String user_id, String firstName, String lastName, String email,String password, String role_name, String role_id, Gender gender, Integer mobile, String country, String city, String address, String warehouse_name, String warehouse_id){
+    public User(String firstName, String lastName, String email,String password, String role_id, String role_name, Gender gender, Integer mobile, String country, String city, String address, String warehouse_id, String warehouse_name){
 
-        this.user_id = user_id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.role_name = role_name;
         this.role_id = role_id;
+        this.role_name = role_name;
         this.gender = gender;
         this.mobile = mobile;
         this.country = country;
         this.city = city;
         this.address = address;
-        this.created_date = created_date;
-        this.created_time = created_time;
-        this.updated_date = updated_date;
-        this.updated_time = updated_time;
         this.warehouse_id = warehouse_id;
         this.warehouse_name = warehouse_name;
 

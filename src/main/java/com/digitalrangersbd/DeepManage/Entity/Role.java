@@ -2,10 +2,7 @@ package com.digitalrangersbd.DeepManage.Entity;
 
 import com.digitalrangersbd.DeepManage.Enum.Permission;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDate;
@@ -17,14 +14,12 @@ import java.util.Set;
 @Table(name = "role")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Role {
 
     @Id
     @GeneratedValue(generator = "role_id_generator")
     @GenericGenerator(name= "role_id_generator", strategy = "com.digitalrangersbd.DeepManage.CustomFields.CustomRoleID")
-    private String id;
+    private String role_id;
 
     @Column(unique = true, nullable = false)
     private String name;
@@ -55,6 +50,17 @@ public class Role {
 
     @Column
     private LocalTime updated_time;
+
+    public Role(){}
+
+    public Role(String name, String created_by_id, String created_by_name, Set<Permission> permission){
+
+        this.name = name;
+        this.created_by_id = created_by_id;
+        this.created_by_name = created_by_name;
+        this.permission = permission;
+
+    }
 
     private void addPermission(Permission permission){
         this.permission.add(permission);
