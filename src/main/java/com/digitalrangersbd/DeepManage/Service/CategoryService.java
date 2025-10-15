@@ -78,7 +78,7 @@ public class CategoryService {
     public Category updateCategory(String roleId, Long id, CategoryUpdateDto dto){
 
         if(!roleAuthorization.hasUpdateCategoryPermission(roleId)){
-            throw new SecurityException("User does not have permission to view category");
+            throw new SecurityException("User does not have permission to update category");
         }
         else{
             return categoryRepository.findById(id)
@@ -107,8 +107,8 @@ public class CategoryService {
 
     //Delete Category
     public boolean deleteCategory(String roleId, Long id){
-        if(!roleAuthorization.hasUpdateCategoryPermission(roleId)){
-            throw new SecurityException("User does not have permission to view category");
+        if(!roleAuthorization.hasDeleteCategoryPermission(roleId)){
+            throw new SecurityException("User does not have permission to delete category");
         }
         else {
             if(categoryRepository.existsById(id)){
