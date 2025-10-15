@@ -34,7 +34,7 @@ public class UserDto {
     @NotBlank(message = "Role not found")
     private String role_id;
 
-    @NotBlank
+    @NotNull
     private Gender gender;
 
     private Integer mobile;

@@ -39,10 +39,10 @@ public class Role {
     @Column(name = "permission")
     private Set<Permission> permission = new HashSet<>();
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDate created_date;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private LocalTime created_time;
 
     @Column

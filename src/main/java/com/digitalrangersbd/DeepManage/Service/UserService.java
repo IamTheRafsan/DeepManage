@@ -4,6 +4,7 @@ import com.digitalrangersbd.DeepManage.Authorization.RoleAuthorization;
 import com.digitalrangersbd.DeepManage.Dto.UserDto;
 import com.digitalrangersbd.DeepManage.Dto.UserUpdateDto;
 import com.digitalrangersbd.DeepManage.Entity.User;
+import com.digitalrangersbd.DeepManage.Repository.RoleRepository;
 import com.digitalrangersbd.DeepManage.Repository.UserRepository;
 import jdk.dynalink.linker.LinkerServices;
 import org.springframework.expression.spel.ast.OpAnd;
@@ -22,9 +23,12 @@ public class UserService {
 
     private final RoleAuthorization roleAuthorization;
 
-    public UserService(UserRepository userRepository, RoleAuthorization roleAuthorization){
+    private final RoleRepository roleRepository;
+
+    public UserService(UserRepository userRepository, RoleAuthorization roleAuthorization, RoleRepository roleRepository){
         this.userRepository = userRepository;
         this.roleAuthorization = roleAuthorization;
+        this.roleRepository = roleRepository;
     }
 
     //Create a user in the database
@@ -32,9 +36,21 @@ public class UserService {
 
         if(!roleAuthorization.hasCreateUserPermission(String.valueOf(roleId))){
             throw new SecurityException("User does not have permission to create users");
+        } else if (userRepository.existsByEmail(dto.getEmail())) {
+            throw new RuntimeException("Email already exists: " + dto.getEmail());
+        }else if (userRepository.existsByMobile(dto.getMobile())) {
+            throw new RuntimeException("Mobile already exists: " + dto.getMobile());
+        }
+        else if (!roleRepository.existsById(dto.getRole_id())) {
+            throw new RuntimeException("Role id does not exist: " + dto.getMobile());
+        }
+        else if (!roleRepository.existsByName(dto.getRole_name())) {
+            throw new RuntimeException("Role name does not exist: " + dto.getMobile());
+        }
+        else if (!roleRepository.existsByName(dto.getRole_name())) {
+            throw new RuntimeException("Role name does not exist: " + dto.getMobile());
         }
         else{
-
             User user = new User();
 
             user.setFirstName(dto.getFirstName());
@@ -103,8 +119,6 @@ public class UserService {
                         if(dto.getWarehouse_id() != null) user.setWarehouse_id(dto.getWarehouse_id());
                         if(dto.getWarehouse_name() != null) user.setWarehouse_name(dto.getWarehouse_name());
 
-                        user.setCreated_date(LocalDate.now());
-                        user.setCreated_time(LocalTime.now());
                         user.setUpdated_date(LocalDate.now());
                         user.setUpdated_time(LocalTime.now());
 

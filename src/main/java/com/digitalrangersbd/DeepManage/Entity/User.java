@@ -52,10 +52,10 @@ public class User {
     @Column
     private String address;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDate created_date;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private LocalTime created_time;
 
     @Column
