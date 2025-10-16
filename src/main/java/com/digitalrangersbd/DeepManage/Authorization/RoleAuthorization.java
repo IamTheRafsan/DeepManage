@@ -186,4 +186,118 @@ public class RoleAuthorization {
             return false;
         }
     }
+
+    //Check for creating new product
+    public boolean hasCreateProductPermission(String roleId){
+
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.CREATE_PRODUCT)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before Viewing Product data
+    public boolean hasViewProductPermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.VIEW_PRODUCT)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before updating Product data
+    public boolean hasUpdateProductPermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.UPDATE_PRODUCT)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before deleting Product data
+    public boolean hasDeleteProductPermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.DELETE_PRODUCT)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check for creating new warehouse
+    public boolean hasCreateWarehousePermission(String roleId){
+
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.CREATE_WAREHOUSE)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before Viewing Warehouse data
+    public boolean hasViewWarehousePermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.VIEW_WAREHOUSE)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before updating Warehouse data
+    public boolean hasUpdateWarehousePermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.UPDATE_WAREHOUSE)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before deleting Warehouse data
+    public boolean hasDeleteWarehousePermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.DELETE_WAREHOUSE)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
 }

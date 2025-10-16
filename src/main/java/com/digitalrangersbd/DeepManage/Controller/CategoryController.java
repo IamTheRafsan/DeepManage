@@ -84,13 +84,20 @@ public class CategoryController {
     //Delete Category
     @DeleteMapping("/delete/{roleId}/{id}")
     public ResponseEntity<Void> deleteCategory(@PathVariable String roleId, @PathVariable Long id){
-        boolean deletedCategory = categoryService.deleteCategory(roleId,id);
 
-        if(deletedCategory){
-            return ResponseEntity.noContent().build();
+
+        try{
+            boolean deletedCategory = categoryService.deleteCategory(roleId,id);
+
+            if(deletedCategory){
+                return ResponseEntity.noContent().build();
+            }
+            else {
+                return ResponseEntity.notFound().build();
+            }
+        }catch (SecurityException e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-        else {
-            return ResponseEntity.notFound().build();
-        }
+
     }
 }

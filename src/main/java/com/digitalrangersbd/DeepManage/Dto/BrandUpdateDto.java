@@ -11,9 +11,11 @@ import lombok.Setter;
 @Setter
 @Getter
 public class BrandUpdateDto {
+    @NotBlank(message = "Brand name is required")
     @Size(min = 2, max = 100, message = "Brand name must be between 2 and 100 characters")
     private String name;
 
+    @NotBlank(message = "Brand code is required")
     @Size(min = 2, max = 50, message = "Brand code must be between 2 and 50 characters")
     private String code;
 

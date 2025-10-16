@@ -36,19 +36,18 @@ public class UserService {
 
         if(!roleAuthorization.hasCreateUserPermission(String.valueOf(roleId))){
             throw new SecurityException("User does not have permission to create users");
-        } else if (userRepository.existsByEmail(dto.getEmail())) {
+        }
+        if (userRepository.existsByEmail(dto.getEmail())) {
             throw new RuntimeException("Email already exists: " + dto.getEmail());
-        }else if (userRepository.existsByMobile(dto.getMobile())) {
+        }
+        if (userRepository.existsByMobile(dto.getMobile())) {
             throw new RuntimeException("Mobile already exists: " + dto.getMobile());
         }
-        else if (!roleRepository.existsById(dto.getRole_id())) {
-            throw new RuntimeException("Role id does not exist: " + dto.getMobile());
+        if (!roleRepository.existsById(dto.getRole_id())) {
+            throw new RuntimeException("Role id does not exist: " + dto.getRole_id());
         }
-        else if (!roleRepository.existsByName(dto.getRole_name())) {
-            throw new RuntimeException("Role name does not exist: " + dto.getMobile());
-        }
-        else if (!roleRepository.existsByName(dto.getRole_name())) {
-            throw new RuntimeException("Role name does not exist: " + dto.getMobile());
+        if (!roleRepository.existsByName(dto.getRole_name())) {
+            throw new RuntimeException("Role name does not exist: " + dto.getRole_name());
         }
         else{
             User user = new User();
@@ -101,6 +100,18 @@ public class UserService {
     public User updateUser(String roleId, String id, UserUpdateDto dto){
         if(!roleAuthorization.hasUpdateUserPermission(roleId)){
             throw new SecurityException("User does not have permission to update users");
+        }
+        if (userRepository.existsByEmail(dto.getEmail())) {
+            throw new RuntimeException("Email already exists: " + dto.getEmail());
+        }
+        if (userRepository.existsByMobile(dto.getMobile())) {
+            throw new RuntimeException("Mobile already exists: " + dto.getMobile());
+        }
+        if (!roleRepository.existsById(dto.getRole_id())) {
+            throw new RuntimeException("Role id does not exist: " + dto.getRole_id());
+        }
+        if (!roleRepository.existsByName(dto.getRole_name())) {
+            throw new RuntimeException("Role name does not exist: " + dto.getRole_name());
         }
         else{
             return userRepository.findById(id)

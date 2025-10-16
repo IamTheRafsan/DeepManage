@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -25,17 +24,22 @@ public class Product {
     @Column(nullable = false, unique = true)
     private String code;
 
-    @Column(name = "brand_id")
-    private Long brandId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
 
-    @Column(name = "category_id")
-    private Long categoryId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @Column(columnDefinition = "TEXT")
     private String description;
 
     @Enumerated(EnumType.STRING)
     private ProductStatus status;
+
+    @Column()
+    private Double price;
 
     @Column(nullable = false, updatable = false)
     private LocalDate created_date;
@@ -51,13 +55,14 @@ public class Product {
 
     public Product(){}
 
-    public Product(String name, String code, Long brandId, Long categoryId, String description, ProductStatus status){
+    public Product(String name, String code, Brand brand, Category category, String description, ProductStatus status, Double price){
         this.name = name;
         this.code = code;
-        this.brandId = brandId;
-        this.categoryId = categoryId;
+        this.brand= brand;
+        this.category = category;
         this.description = description;
         this.status = status;
+        this.price = price;
     }
 
 }

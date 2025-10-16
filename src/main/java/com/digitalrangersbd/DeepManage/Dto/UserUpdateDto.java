@@ -1,10 +1,7 @@
 package com.digitalrangersbd.DeepManage.Dto;
 
 import com.digitalrangersbd.DeepManage.Enum.Gender;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -13,22 +10,29 @@ public class UserUpdateDto {
 
     private String user_id;
 
+    @NotBlank(message = "First name not found")
     @Size(min=2, max=100, message = "Fist name must be minimum 2 words and maximum 100 words")
     private String firstName;
 
+    @NotBlank(message = "Last name not found")
     @Size(min=2, max=100, message = "Fist name must be minimum 2 words and maximum 100 words")
     private String lastName;
 
+    @NotBlank(message = "Email not found")
     @Email
     private String email;
 
+    @NotBlank(message = "Password not found.")
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$", message = "Password must contain at least 8 characters, one uppercase, one lowercase, and one number")
     private String password;
 
+    @NotBlank(message = "Role not found")
     private String role_name;
 
+    @NotBlank(message = "Role not found")
     private String role_id;
 
+    @NotNull
     private Gender gender;
 
     private Integer mobile;

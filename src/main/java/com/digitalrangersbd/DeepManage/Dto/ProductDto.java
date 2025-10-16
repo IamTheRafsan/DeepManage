@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.engine.spi.ManagedEntity;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -25,6 +26,7 @@ public class ProductDto {
 
     private Long brandId;
 
+    @NotNull
     private Long categoryId;
 
     @Size(max = 500, message = "Description can’t be longer than 500 characters")
@@ -32,6 +34,9 @@ public class ProductDto {
 
     @NotNull(message = "Status is required")
     private ProductStatus status;
+
+    @NotNull(message = "Price is required.")
+    private Double price;
 
     private LocalDate created_date;
 
@@ -44,12 +49,13 @@ public class ProductDto {
 
     public ProductDto(){}
 
-    public ProductDto(String name, String code, Long brandId, Long categoryId, String description, ProductStatus status){
+    public ProductDto(String name, String code, Long brandId, Long categoryId, String description, ProductStatus status, Double price){
         this.name = name;
         this.code = code;
         this.brandId = brandId;
         this.categoryId = categoryId;
         this.description = description;
         this.status = status;
+        this.price = price;
     }
 }

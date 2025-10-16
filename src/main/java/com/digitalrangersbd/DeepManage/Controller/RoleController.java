@@ -80,13 +80,19 @@ public class RoleController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteRole(@PathVariable String id){
 
-        boolean deletedRole =  roleService.deleteRole(id);
-        if(deletedRole){
-            return ResponseEntity.noContent().build();
+        try{
+            boolean deletedRole =  roleService.deleteRole(id);
+            if(deletedRole){
+                return ResponseEntity.noContent().build();
+            }
+            else {
+                return ResponseEntity.notFound().build();
+            }
+        }catch (SecurityException e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-        else {
-            return ResponseEntity.notFound().build();
-        }
+
+
     }
 
 }

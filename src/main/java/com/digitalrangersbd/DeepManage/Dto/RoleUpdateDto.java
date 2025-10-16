@@ -16,16 +16,17 @@ public class RoleUpdateDto {
 
     private String role_id;
 
+    //@NotBlank(message = "Role Name not found")
     @Size(min = 2, max = 100, message = "Role name must be between 2 and 100 characters")
     private String name;
 
-    @NotNull(message = "Role created by Id not found")
+    //@NotNull(message = "Role created by Id not found")
     private String created_by_id;
 
-    @NotNull(message = "Role created by name not found")
+    //@NotNull(message = "Role created by name not found")
     private String created_by_name;
 
-    @NotNull(message = "No permission assigned to role")
+    //@NotNull(message = "No permission assigned to role")
     private Set<Permission> permission = new HashSet<>();
 
     private LocalDate updated_date;

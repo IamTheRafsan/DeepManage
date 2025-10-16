@@ -46,6 +46,8 @@ public class UserController {
     public ResponseEntity<List<User>> getAllUser(@PathVariable String roleId){
         try {
             return ResponseEntity.ok(userService.getAllUser(roleId));
+        }catch (SecurityException e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         catch (Exception e){
             return ResponseEntity.ok(Collections.emptyList());
@@ -57,6 +59,8 @@ public class UserController {
     public ResponseEntity<User> getUserById(@PathVariable String roleId,@PathVariable String id){
         try {
             return ResponseEntity.of(userService.getUserById(roleId,id));
+        }catch (SecurityException e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -70,7 +74,10 @@ public class UserController {
         try{
             User updatedUser = userService.updateUser(roleId, id, dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(updatedUser);
-        }catch (Exception e){
+        }catch (SecurityException e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
@@ -80,12 +87,16 @@ public class UserController {
     @DeleteMapping("/delete/{roleId}/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable String roleId, @PathVariable String id){
 
-        boolean deletedUser = userService.deleteUser(roleId, id);
-        if(deletedUser){
-            return ResponseEntity.noContent().build();
-        }
-        else {
-            return ResponseEntity.notFound().build();
+        try{
+            boolean deletedUser = userService.deleteUser(roleId, id);
+            if(deletedUser){
+                return ResponseEntity.noContent().build();
+            }
+            else {
+                return ResponseEntity.notFound().build();
+            }
+        }catch (SecurityException e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 }
