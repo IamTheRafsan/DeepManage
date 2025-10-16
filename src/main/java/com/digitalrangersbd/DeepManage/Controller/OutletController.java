@@ -1,34 +1,38 @@
 package com.digitalrangersbd.DeepManage.Controller;
 
-import com.digitalrangersbd.DeepManage.Dto.WarehouseDto;
-import com.digitalrangersbd.DeepManage.Dto.WarehouseUpdateDto;
-import com.digitalrangersbd.DeepManage.Entity.Warehouse;
-import com.digitalrangersbd.DeepManage.Service.WarehouseService;
+
+import com.digitalrangersbd.DeepManage.Dto.OutletDto;
+import com.digitalrangersbd.DeepManage.Dto.OutletDto;
+import com.digitalrangersbd.DeepManage.Dto.OutletUpdateDto;
+import com.digitalrangersbd.DeepManage.Entity.Outlet;
+import com.digitalrangersbd.DeepManage.Entity.Outlet;
+import com.digitalrangersbd.DeepManage.Service.OutletService;
+import com.digitalrangersbd.DeepManage.Service.OutletService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/warehouse")
-public class WarehouseController {
+@RequestMapping("/outlet")
+public class OutletController {
 
-    private final WarehouseService warehouseService;
+    private final OutletService outletService;
 
-    public WarehouseController(WarehouseService warehouseService) {
-        this.warehouseService = warehouseService;
+    public OutletController(OutletService outletService) {
+        this.outletService = outletService;
     }
 
-    //Create new Warehosue
+
+    //Create new Outlet
     @PostMapping("/add/{roleId}")
-    public ResponseEntity<Warehouse> createWarehosue(@PathVariable String roleId, @Valid @RequestBody WarehouseDto dto){
+    public ResponseEntity<Outlet> createOutlet(@PathVariable String roleId, @Valid @RequestBody OutletDto dto){
 
         try {
-            Warehouse createdWarehouse = warehouseService.createWarehouse(roleId, dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdWarehouse);
+            Outlet createdOutlet = outletService.createOutlet(roleId, dto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdOutlet);
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -41,12 +45,12 @@ public class WarehouseController {
         }
     }
 
-    //View warehouse
+    //View outlet
     @GetMapping("/view/{roleId}")
-    public ResponseEntity<List<Warehouse>> getWarehouse(@PathVariable String roleId){
+    public ResponseEntity<List<Outlet>> getOutlet(@PathVariable String roleId){
 
         try{
-            return ResponseEntity.ok(warehouseService.getWarehouse(roleId));
+            return ResponseEntity.ok(outletService.getOutlet(roleId));
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -59,12 +63,12 @@ public class WarehouseController {
         }
     }
 
-    //View warehouse by id
+    //View outlet by id
     @GetMapping("/view/{roleId}/{id}")
-    public ResponseEntity<Warehouse> getWarehouseById(@PathVariable String roleId, @PathVariable Long id){
+    public ResponseEntity<Outlet> getOutletById(@PathVariable String roleId, @PathVariable Long id){
 
         try{
-            return ResponseEntity.of(warehouseService.getWarehouseById(roleId, id));
+            return ResponseEntity.of(outletService.getOutletById(roleId, id));
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -77,12 +81,12 @@ public class WarehouseController {
         }
     }
 
-    //Update warehouse date
+    //Update outlet date
     @PutMapping("/update/{roleId}/{id}")
-    public ResponseEntity<Warehouse> updateWarehouse(@PathVariable String roleId, @PathVariable Long id, @Valid @RequestBody WarehouseUpdateDto dto){
+    public ResponseEntity<Outlet> updateOutlet(@PathVariable String roleId, @PathVariable Long id, @Valid @RequestBody OutletUpdateDto dto){
         try{
-            Warehouse updatedWarehouse = warehouseService.updateWarehouse(roleId, id, dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(updatedWarehouse);
+            Outlet updatedOutlet = outletService.updateOutlet(roleId, id, dto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(updatedOutlet);
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -95,13 +99,13 @@ public class WarehouseController {
         }
     }
 
-    //Delete Warehouse
+    //Delete Outlet
     @DeleteMapping("/delete/{roleId}/{id}")
-    public ResponseEntity<Void> deleteWarehouse(@PathVariable String roleId, @PathVariable Long id){
+    public ResponseEntity<Void> deleteOutlet(@PathVariable String roleId, @PathVariable Long id){
         try{
-            boolean deletedWarehouse = warehouseService.deleteWarehouse(roleId, id);
+            boolean deletedOutlet = outletService.deleteOutlet(roleId, id);
 
-            if(deletedWarehouse){
+            if(deletedOutlet){
                 return ResponseEntity.noContent().build();
             }else{
                 return ResponseEntity.notFound().build();

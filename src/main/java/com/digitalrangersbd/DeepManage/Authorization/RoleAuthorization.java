@@ -300,4 +300,61 @@ public class RoleAuthorization {
             return false;
         }
     }
+
+    //Check for creating new outlet
+    public boolean hasCreateOutletPermission(String roleId){
+
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.CREATE_OUTLET)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before Viewing Outlet data
+    public boolean hasViewOutletPermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.VIEW_OUTLET)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before updating Outlet data
+    public boolean hasUpdateOutletPermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.UPDATE_OUTLET)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before deleting Outlet data
+    public boolean hasDeleteOutletPermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.DELETE_OUTLET)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
 }

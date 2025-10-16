@@ -1,7 +1,6 @@
 package com.digitalrangersbd.DeepManage.Dto;
 
 import com.digitalrangersbd.DeepManage.Enum.ActiveStatus;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -12,8 +11,7 @@ import java.time.LocalTime;
 
 @Setter
 @Getter
-public class OutletDto {
-
+public class OutletUpdateDto {
     private Long id;
 
     @NotNull(message = "Name cannot be blank")
@@ -21,7 +19,6 @@ public class OutletDto {
     private String name;
 
     @NotNull
-    @Email
     private String email;
 
     @NotNull
@@ -45,9 +42,9 @@ public class OutletDto {
 
     private LocalTime updated_time;
 
-    public OutletDto(){}
+    public OutletUpdateDto(){}
 
-    public OutletDto(String name, String email, Number mobile, String country, String city, String area, ActiveStatus status){
+    public OutletUpdateDto(String name, String email, Number mobile, String country, String city, String area, ActiveStatus status){
         this.name = name;
         this.email = email;
         this.mobile = mobile;

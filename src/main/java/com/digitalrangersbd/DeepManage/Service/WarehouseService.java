@@ -75,7 +75,7 @@ public class WarehouseService {
     }
 
     //Update warehouse
-    public  Warehouse updateWarehouse(String roleId, Long id, WarehouseUpdateDto dto){
+    public Warehouse updateWarehouse(String roleId, Long id, WarehouseUpdateDto dto){
 
         if(!roleAuthorization.hasUpdateWarehousePermission(roleId)){
             throw new RuntimeException("User does not have the permission to update warehouse");
