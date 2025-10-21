@@ -41,6 +41,9 @@ public class Product {
     @Column()
     private Double price;
 
+    @Column()
+    private Float stock;
+
     @Column(nullable = false, updatable = false)
     private LocalDate created_date;
 

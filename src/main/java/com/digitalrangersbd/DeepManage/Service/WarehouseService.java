@@ -78,7 +78,7 @@ public class WarehouseService {
     public Warehouse updateWarehouse(String roleId, Long id, WarehouseUpdateDto dto){
 
         if(!roleAuthorization.hasUpdateWarehousePermission(roleId)){
-            throw new RuntimeException("User does not have the permission to update warehouse");
+            throw new SecurityException("User does not have the permission to update warehouse");
         }
         else{
             return warehouseRepository.findById(id)
@@ -106,7 +106,7 @@ public class WarehouseService {
     public Boolean deleteWarehouse(String roleId, Long id){
 
         if (!roleAuthorization.hasDeleteWarehousePermission(roleId)){
-            throw new RuntimeException("User does not have the permission to delete warehouse");
+            throw new SecurityException("User does not have the permission to delete warehouse");
         }
         else{
             if (warehouseRepository.existsById(id)){

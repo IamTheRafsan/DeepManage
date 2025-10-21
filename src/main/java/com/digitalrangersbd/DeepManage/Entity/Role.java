@@ -4,6 +4,7 @@ import com.digitalrangersbd.DeepManage.Enum.Permission;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -36,7 +37,7 @@ public class Role {
             joinColumns = @JoinColumn(name = "role_id")
     )
     @Enumerated(EnumType.STRING)
-    @Column(name = "permission")
+    @Column(name = "permission", length = 255)
     private Set<Permission> permission = new HashSet<>();
 
     @Column(nullable = false, updatable = false)

@@ -1,12 +1,15 @@
 package com.digitalrangersbd.DeepManage.Entity;
 
 import com.digitalrangersbd.DeepManage.Enum.ActiveStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "warehouse")
@@ -38,6 +41,10 @@ public class Warehouse {
 
     @Enumerated(EnumType.STRING)
     private ActiveStatus status;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Purchase> purchases = new ArrayList<>();
 
     @Column(nullable = false, updatable = false)
     private LocalDate created_date;

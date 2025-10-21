@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -55,7 +56,7 @@ public class WarehouseController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         catch(Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.ok(Collections.emptyList());
         }
     }
 

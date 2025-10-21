@@ -1,13 +1,9 @@
 package com.digitalrangersbd.DeepManage.Controller;
 
-
-import com.digitalrangersbd.DeepManage.Dto.OutletDto;
-import com.digitalrangersbd.DeepManage.Dto.OutletDto;
-import com.digitalrangersbd.DeepManage.Dto.OutletUpdateDto;
-import com.digitalrangersbd.DeepManage.Entity.Outlet;
-import com.digitalrangersbd.DeepManage.Entity.Outlet;
-import com.digitalrangersbd.DeepManage.Service.OutletService;
-import com.digitalrangersbd.DeepManage.Service.OutletService;
+import com.digitalrangersbd.DeepManage.Dto.PurchaseDto;
+import com.digitalrangersbd.DeepManage.Dto.PurchaseUpdateDto;
+import com.digitalrangersbd.DeepManage.Entity.Purchase;
+import com.digitalrangersbd.DeepManage.Service.PurchaseService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,23 +13,21 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/outlet")
-public class OutletController {
+@RequestMapping("/purchase")
+public class PurchaseController {
 
-    private final OutletService outletService;
+    private final PurchaseService purchaseService;
 
-    public OutletController(OutletService outletService) {
-        this.outletService = outletService;
+    public PurchaseController(PurchaseService purchaseService) {
+        this.purchaseService = purchaseService;
     }
 
-
-    //Create new Outlet
+    //create new purchase
     @PostMapping("/add/{roleId}")
-    public ResponseEntity<Outlet> createOutlet(@PathVariable String roleId, @Valid @RequestBody OutletDto dto){
-
-        try {
-            Outlet createdOutlet = outletService.createOutlet(roleId, dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdOutlet);
+    public ResponseEntity<Purchase> createPurchase(@PathVariable String roleId,@Valid @RequestBody PurchaseDto dto){
+        try{
+            Purchase purchase = purchaseService.createPurchase(roleId, dto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(purchase);
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -46,12 +40,11 @@ public class OutletController {
         }
     }
 
-    //View outlet
+    //get all purchase
     @GetMapping("/view/{roleId}")
-    public ResponseEntity<List<Outlet>> getOutlet(@PathVariable String roleId){
-
+    public ResponseEntity<List<Purchase>> getAllPurchase(@PathVariable String roleId){
         try{
-            return ResponseEntity.ok(outletService.getOutlet(roleId));
+            return ResponseEntity.ok(purchaseService.getAllPurchase(roleId));
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -62,14 +55,14 @@ public class OutletController {
         catch(Exception e) {
             return ResponseEntity.ok(Collections.emptyList());
         }
+
     }
 
-    //View outlet by id
+    //Get Purchase by id
     @GetMapping("/view/{roleId}/{id}")
-    public ResponseEntity<Outlet> getOutletById(@PathVariable String roleId, @PathVariable Long id){
-
+    public ResponseEntity<Purchase> getPurchaseById(@PathVariable String roleId, @PathVariable Long id){
         try{
-            return ResponseEntity.of(outletService.getOutletById(roleId, id));
+            return ResponseEntity.of(purchaseService.getPurchaseById(roleId, id));
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -82,12 +75,12 @@ public class OutletController {
         }
     }
 
-    //Update outlet date
+    //Update Purchase
     @PutMapping("/update/{roleId}/{id}")
-    public ResponseEntity<Outlet> updateOutlet(@PathVariable String roleId, @PathVariable Long id, @Valid @RequestBody OutletUpdateDto dto){
+    public ResponseEntity<Purchase> updatePurchase(@PathVariable String roleId, @PathVariable Long id, @Valid @RequestBody PurchaseUpdateDto dto){
         try{
-            Outlet updatedOutlet = outletService.updateOutlet(roleId, id, dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(updatedOutlet);
+            Purchase updatedPurchase = purchaseService.updatePurchase(roleId,id,dto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(updatedPurchase);
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -100,13 +93,13 @@ public class OutletController {
         }
     }
 
-    //Delete Outlet
+    //Delete Purchase
     @DeleteMapping("/delete/{roleId}/{id}")
-    public ResponseEntity<Void> deleteOutlet(@PathVariable String roleId, @PathVariable Long id){
+    public ResponseEntity<Boolean> deletePurchase(@PathVariable String roleId, @PathVariable Long id){
         try{
-            boolean deletedOutlet = outletService.deleteOutlet(roleId, id);
+            Boolean deletedPurchase = purchaseService.deletePurchase(roleId, id);
 
-            if(deletedOutlet){
+            if(deletedPurchase){
                 return ResponseEntity.noContent().build();
             }else{
                 return ResponseEntity.notFound().build();
@@ -114,6 +107,9 @@ public class OutletController {
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        catch(RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         catch(Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

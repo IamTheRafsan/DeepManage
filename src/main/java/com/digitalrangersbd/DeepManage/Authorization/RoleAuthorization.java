@@ -357,4 +357,176 @@ public class RoleAuthorization {
             return false;
         }
     }
+
+    //Check for creating payment type
+    public boolean hasCreatePaymentTypePermission(String roleId){
+
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.CREATE_PAYMENT_TYPE)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before Viewing payment type data
+    public boolean hasViewPaymentTypePermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.VIEW_PAYMENT_TYPE)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before updating Payment Type data
+    public boolean hasUpdatePaymentTypePermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.UPDATE_PAYMENT_TYPE)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before deleting Payment data
+    public boolean hasDeletePaymentTypePermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.DELETE_PAYMENT_TYPE)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check for creating Purchase
+    public boolean hasCreatePurchasePermission(String roleId){
+
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.CREATE_PURCHASE)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before Viewing Purchase data
+    public boolean hasViewPurchasePermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.VIEW_PURCHASE)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before updating Purchase data
+    public boolean hasUpdatePurchasePermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.UPDATE_PURCHASE)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before deleting Purchase data
+    public boolean hasDeletePurchasePermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.DELETE_PURCHASE)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check for creating Sale
+    public boolean hasCreateSalePermission(String roleId){
+
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.CREATE_SALE)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before Viewing Sale data
+    public boolean hasViewSalePermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.VIEW_SALE)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before updating Sale data
+    public boolean hasUpdateSalePermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.UPDATE_SALE)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before deleting Sale data
+    public boolean hasDeleteSalePermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.DELETE_SALE)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
 }
+
