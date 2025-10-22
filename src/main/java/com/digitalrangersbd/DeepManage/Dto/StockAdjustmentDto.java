@@ -1,7 +1,12 @@
-package com.digitalrangersbd.DeepManage.Entity;
+package com.digitalrangersbd.DeepManage.Dto;
 
+import com.digitalrangersbd.DeepManage.Entity.Outlet;
+import com.digitalrangersbd.DeepManage.Entity.StockAdjustItem;
+import com.digitalrangersbd.DeepManage.Entity.User;
+import com.digitalrangersbd.DeepManage.Entity.Warehouse;
 import com.digitalrangersbd.DeepManage.Enum.StockAdjustmentStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,53 +17,39 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "stock_adjustment")
+
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class StockAdjustment {
+public class StockAdjustmentDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, updatable = false)
+    @NotNull
     private String reference;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "warehouse_id")
     private Warehouse warehouse;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "outlet_id")
     private Outlet outlet;
 
-    @OneToMany(mappedBy = "stockAdjustment", cascade = CascadeType.ALL, orphanRemoval = true)
+    @NotNull(message = "Need to add atleast one product")
     private List<StockAdjustItem> stockItems =  new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "adjusted_by")
+    @NotNull(message = "Adjusted by not found")
     private User adjustedBy;
 
-    @Column
+    @NotNull(message = "Reason of stock adjustment missing.")
     private String reason;
 
-    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Put the adjustment type.")
     private StockAdjustmentStatus adjustmentType;
 
-    @Column(updatable = false)
     private LocalDate createdDate;
 
-    @Column(updatable = false)
     private LocalTime createdTime;
 
-    @Column
     private LocalDate updatedDate;
 
-    @Column
     private LocalTime updatedTime;
-
-
 }

@@ -1,36 +1,34 @@
 package com.digitalrangersbd.DeepManage.Controller;
-import com.digitalrangersbd.DeepManage.Dto.OutletDto;
-import com.digitalrangersbd.DeepManage.Dto.OutletDto;
-import com.digitalrangersbd.DeepManage.Dto.OutletUpdateDto;
-import com.digitalrangersbd.DeepManage.Entity.Outlet;
-import com.digitalrangersbd.DeepManage.Entity.Outlet;
-import com.digitalrangersbd.DeepManage.Service.OutletService;
-import com.digitalrangersbd.DeepManage.Service.OutletService;
+
+import com.digitalrangersbd.DeepManage.Dto.WeightLessDto;
+import com.digitalrangersbd.DeepManage.Dto.WeightLessUpdateDto;
+import com.digitalrangersbd.DeepManage.Entity.WeightLess;
+import com.digitalrangersbd.DeepManage.Service.WeightLessService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/outlet")
-public class OutletController {
+@RequestMapping("/weight_less")
+public class WeightLessController {
 
-    private final OutletService outletService;
+    private final WeightLessService weightLessService;
 
-    public OutletController(OutletService outletService) {
-        this.outletService = outletService;
+    public WeightLessController(WeightLessService weightLessService) {
+        this.weightLessService = weightLessService;
     }
 
-
-    //Create new Outlet
+    //create new weight less
     @PostMapping("/add/{roleId}")
-    public ResponseEntity<Outlet> createOutlet(@PathVariable String roleId, @Valid @RequestBody OutletDto dto){
+    public ResponseEntity<WeightLess> createWeightLess(@PathVariable String roleId, @Valid @RequestBody WeightLessDto dto){
 
-        try {
-            Outlet createdOutlet = outletService.createOutlet(roleId, dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdOutlet);
+        try{
+            WeightLess weightLess = weightLessService.createWeightLess(roleId, dto) ;
+            return ResponseEntity.status(HttpStatus.CREATED).body(weightLess);
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -43,12 +41,11 @@ public class OutletController {
         }
     }
 
-    //View outlet
+    //View weight less
     @GetMapping("/view/{roleId}")
-    public ResponseEntity<List<Outlet>> getOutlet(@PathVariable String roleId){
-
+    public ResponseEntity<List<WeightLess>> getAllWeightLess(@PathVariable String roleId){
         try{
-            return ResponseEntity.ok(outletService.getOutlet(roleId));
+            return ResponseEntity.ok(weightLessService.getAllWeightLess(roleId));
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -61,12 +58,11 @@ public class OutletController {
         }
     }
 
-    //View outlet by id
+    //View weight less by id
     @GetMapping("/view/{roleId}/{id}")
-    public ResponseEntity<Outlet> getOutletById(@PathVariable String roleId, @PathVariable Long id){
-
+    public ResponseEntity<WeightLess> getWeightLessById(@PathVariable String roleId, @PathVariable Long id){
         try{
-            return ResponseEntity.of(outletService.getOutletById(roleId, id));
+            return ResponseEntity.of(weightLessService.getWeightLessById(roleId, id));
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -79,12 +75,12 @@ public class OutletController {
         }
     }
 
-    //Update outlet date
+    //Upate weight less
     @PutMapping("/update/{roleId}/{id}")
-    public ResponseEntity<Outlet> updateOutlet(@PathVariable String roleId, @PathVariable Long id, @Valid @RequestBody OutletUpdateDto dto){
-        try{
-            Outlet updatedOutlet = outletService.updateOutlet(roleId, id, dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(updatedOutlet);
+    public ResponseEntity<WeightLess> updateWeightLess(@PathVariable String roleId, @PathVariable Long id, @Valid @RequestBody WeightLessUpdateDto dto){
+        try {
+            WeightLess updatedWeightLess = weightLessService.updateWeightLess(roleId, id, dto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(updatedWeightLess);
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -97,20 +93,25 @@ public class OutletController {
         }
     }
 
-    //Delete Outlet
+    //Delele Weight less entry
     @DeleteMapping("/delete/{roleId}/{id}")
-    public ResponseEntity<Void> deleteOutlet(@PathVariable String roleId, @PathVariable Long id){
-        try{
-            boolean deletedOutlet = outletService.deleteOutlet(roleId, id);
+    public ResponseEntity<Void> deleteWeigthLess(@PathVariable String roleId, @PathVariable Long id){
 
-            if(deletedOutlet){
+        try{
+            Boolean deletedWeightLes = weightLessService.deleteWeightLess(roleId, id);
+            if(deletedWeightLes)
+            {
                 return ResponseEntity.noContent().build();
-            }else{
+            }
+            else {
                 return ResponseEntity.notFound().build();
             }
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        catch(RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         catch(Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

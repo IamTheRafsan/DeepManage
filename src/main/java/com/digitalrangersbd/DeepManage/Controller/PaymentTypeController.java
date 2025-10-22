@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/payment")
-public class PaymentTypeController {
+public class  PaymentTypeController {
 
     private final PaymentTypeService paymentTypeService;
 

@@ -528,5 +528,119 @@ public class RoleAuthorization {
             return false;
         }
     }
+
+    //Check for creating StockAdjustment
+    public boolean hasCreateStockAdjustmentPermission(String roleId){
+
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.CREATE_STOCK)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before Viewing Stock Adjustment data
+    public boolean hasViewStockAdjustmentPermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.VIEW_STOCK)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before updating Stock Adjustment data
+    public boolean hasUpdateStockAdjustmentPermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.UPDATE_STOCK)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before deleting Stock Adjustment data
+    public boolean hasDeleteStockAdjustmentPermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.DELETE_STOCK)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check for creating WeightLess
+    public boolean hasCreateWeightLessPermission(String roleId){
+
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.CREATE_WEIGHT_LESS)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before Viewing Weight Less data
+    public boolean hasViewWeightLessPermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.VIEW_WEIGHT_LESS)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before updating Weight Less data
+    public boolean hasUpdateWeightlessPermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.UPDATE_WEIGHT_LESS)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before deleting Weight Less data
+    public boolean hasDeleteWeightLessPermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.DELETE_WEIGHT_LESS)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
 }
 

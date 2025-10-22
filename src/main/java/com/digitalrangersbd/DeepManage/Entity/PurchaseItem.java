@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "purchase_item")
 @Setter
@@ -25,6 +28,9 @@ public class PurchaseItem {
     private double price;
 
     private float quantity;
+
+    @OneToMany(mappedBy = "weightLess", cascade = CascadeType.ALL)
+    private List<WeightLess> weightLessRecords = new ArrayList<>();
 
     public PurchaseItem() {}
 

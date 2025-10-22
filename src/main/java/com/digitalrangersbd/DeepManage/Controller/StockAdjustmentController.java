@@ -1,36 +1,38 @@
 package com.digitalrangersbd.DeepManage.Controller;
-import com.digitalrangersbd.DeepManage.Dto.OutletDto;
-import com.digitalrangersbd.DeepManage.Dto.OutletDto;
-import com.digitalrangersbd.DeepManage.Dto.OutletUpdateDto;
-import com.digitalrangersbd.DeepManage.Entity.Outlet;
-import com.digitalrangersbd.DeepManage.Entity.Outlet;
-import com.digitalrangersbd.DeepManage.Service.OutletService;
-import com.digitalrangersbd.DeepManage.Service.OutletService;
+
+import com.digitalrangersbd.DeepManage.Dto.PurchaseDto;
+import com.digitalrangersbd.DeepManage.Dto.PurchaseUpdateDto;
+import com.digitalrangersbd.DeepManage.Dto.StockAdjustmentDto;
+import com.digitalrangersbd.DeepManage.Dto.StockAdjustmentUpdateDto;
+import com.digitalrangersbd.DeepManage.Entity.Purchase;
+import com.digitalrangersbd.DeepManage.Entity.StockAdjustment;
+import com.digitalrangersbd.DeepManage.Service.PurchaseService;
+import com.digitalrangersbd.DeepManage.Service.StockAdjustmentService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/outlet")
-public class OutletController {
+@RequestMapping("/stock_adjustment")
+public class StockAdjustmentController {
 
-    private final OutletService outletService;
+    private final StockAdjustmentService stockAdjustmentService;
 
-    public OutletController(OutletService outletService) {
-        this.outletService = outletService;
+    public StockAdjustmentController(StockAdjustmentService stockAdjustmentService) {
+        this.stockAdjustmentService = stockAdjustmentService;
     }
 
 
-    //Create new Outlet
+    //create new stock adjustment
     @PostMapping("/add/{roleId}")
-    public ResponseEntity<Outlet> createOutlet(@PathVariable String roleId, @Valid @RequestBody OutletDto dto){
-
-        try {
-            Outlet createdOutlet = outletService.createOutlet(roleId, dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdOutlet);
+    public ResponseEntity<StockAdjustment> createStockAdjustment(@PathVariable String roleId, @Valid @RequestBody StockAdjustmentDto dto){
+        try{
+            StockAdjustment stockAdjustment = stockAdjustmentService.createStockAdjustment(roleId, dto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(stockAdjustment);
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -43,12 +45,11 @@ public class OutletController {
         }
     }
 
-    //View outlet
+    //get all stock adjustment
     @GetMapping("/view/{roleId}")
-    public ResponseEntity<List<Outlet>> getOutlet(@PathVariable String roleId){
-
+    public ResponseEntity<List<StockAdjustment>> getAllStockAdjustment(@PathVariable String roleId){
         try{
-            return ResponseEntity.ok(outletService.getOutlet(roleId));
+            return ResponseEntity.ok(stockAdjustmentService.getAllStockAdjustment(roleId));
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -59,14 +60,14 @@ public class OutletController {
         catch(Exception e) {
             return ResponseEntity.ok(Collections.emptyList());
         }
+
     }
 
-    //View outlet by id
+    //Get Stock adjustment by id
     @GetMapping("/view/{roleId}/{id}")
-    public ResponseEntity<Outlet> getOutletById(@PathVariable String roleId, @PathVariable Long id){
-
+    public ResponseEntity<StockAdjustment> getStockAdjustmentById(@PathVariable String roleId, @PathVariable Long id){
         try{
-            return ResponseEntity.of(outletService.getOutletById(roleId, id));
+            return ResponseEntity.of(stockAdjustmentService.getStockAdjustmentById(roleId, id));
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -79,12 +80,12 @@ public class OutletController {
         }
     }
 
-    //Update outlet date
+    //Update Stock Adjustment
     @PutMapping("/update/{roleId}/{id}")
-    public ResponseEntity<Outlet> updateOutlet(@PathVariable String roleId, @PathVariable Long id, @Valid @RequestBody OutletUpdateDto dto){
+    public ResponseEntity<StockAdjustment> updateStockAdjustment(@PathVariable String roleId, @PathVariable Long id, @Valid @RequestBody StockAdjustmentUpdateDto dto){
         try{
-            Outlet updatedOutlet = outletService.updateOutlet(roleId, id, dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(updatedOutlet);
+            StockAdjustment updatedStockAdjustment = stockAdjustmentService.updateStockAdjustment(roleId, id, dto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(updatedStockAdjustment);
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -97,13 +98,13 @@ public class OutletController {
         }
     }
 
-    //Delete Outlet
+    //Delete Stock adjustment
     @DeleteMapping("/delete/{roleId}/{id}")
-    public ResponseEntity<Void> deleteOutlet(@PathVariable String roleId, @PathVariable Long id){
+    public ResponseEntity<Boolean> deleteStockAdjustment(@PathVariable String roleId, @PathVariable Long id){
         try{
-            boolean deletedOutlet = outletService.deleteOutlet(roleId, id);
+            Boolean deleteStockAdjustment = stockAdjustmentService.deleteStockAdjustment(roleId, id);
 
-            if(deletedOutlet){
+            if(deleteStockAdjustment){
                 return ResponseEntity.noContent().build();
             }else{
                 return ResponseEntity.notFound().build();
@@ -111,6 +112,9 @@ public class OutletController {
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        catch(RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         catch(Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
