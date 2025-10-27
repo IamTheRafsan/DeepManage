@@ -34,6 +34,7 @@ public class WeightLessController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         catch(RuntimeException e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         catch(Exception e) {

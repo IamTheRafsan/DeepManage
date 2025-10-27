@@ -29,9 +29,6 @@ public class PurchaseItem {
 
     private float quantity;
 
-    @OneToMany(mappedBy = "weightLess", cascade = CascadeType.ALL)
-    private List<WeightLess> weightLessRecords = new ArrayList<>();
-
     public PurchaseItem() {}
 
     public PurchaseItem(Product product, Integer quantity, Double price) {

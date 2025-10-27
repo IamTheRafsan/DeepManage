@@ -2,15 +2,10 @@ package com.digitalrangersbd.DeepManage.Service;
 
 import com.digitalrangersbd.DeepManage.Authorization.RoleAuthorization;
 import com.digitalrangersbd.DeepManage.Dto.WeightLessDto;
+import com.digitalrangersbd.DeepManage.Dto.WeightLessItemDto;
 import com.digitalrangersbd.DeepManage.Dto.WeightLessUpdateDto;
-import com.digitalrangersbd.DeepManage.Entity.Product;
-import com.digitalrangersbd.DeepManage.Entity.Purchase;
-import com.digitalrangersbd.DeepManage.Entity.Role;
-import com.digitalrangersbd.DeepManage.Entity.WeightLess;
-import com.digitalrangersbd.DeepManage.Repository.ProductRepository;
-import com.digitalrangersbd.DeepManage.Repository.PurchaseRepository;
-import com.digitalrangersbd.DeepManage.Repository.WeightLessRepository;
-import org.apache.logging.log4j.message.ReusableMessage;
+import com.digitalrangersbd.DeepManage.Entity.*;
+import com.digitalrangersbd.DeepManage.Repository.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -25,42 +20,41 @@ public class WeightLessService {
     private final RoleAuthorization roleAuthorization;
     private final PurchaseRepository purchaseRepository;
     private final ProductRepository productRepository;
+    private final WeightLessItemRepository weightLessItemRepository;
+    private final PurchaseItemRepository purchaseItemRepository;
 
-    public WeightLessService(WeightLessRepository weightLessRepository, RoleAuthorization roleAuthorization, PurchaseRepository purchaseRepository, ProductRepository productRepository) {
+    public WeightLessService(WeightLessRepository weightLessRepository, RoleAuthorization roleAuthorization, PurchaseRepository purchaseRepository, ProductRepository productRepository, WeightLessItemRepository weightLessItemRepository, PurchaseItemRepository purchaseItemRepository) {
         this.weightLessRepository = weightLessRepository;
         this.roleAuthorization = roleAuthorization;
         this.purchaseRepository = purchaseRepository;
         this.productRepository = productRepository;
+        this.weightLessItemRepository = weightLessItemRepository;
+        this.purchaseItemRepository = purchaseItemRepository;
     }
 
     //Create Weight Less
-    public WeightLess createWeightLess(String roleId, WeightLessDto dto){
+    public WeightLess createWeightLess(String roleId, WeightLessDto dto) {
+        if (!roleAuthorization.hasCreateWeightLessPermission(roleId)) {
+            throw new SecurityException("User does not have the permission to create weightless record");
+        } else {
+            WeightLess weightLess = new WeightLess();
 
-        if(!roleAuthorization.hasCreateWeightLessPermission(roleId))
-        {
-            throw new SecurityException("User do not have the permission to create Weight Less product");
+            weightLess.setReason(dto.getReason());
+            weightLess.setCreated_date(LocalDate.now());
+            weightLess.setCreated_time(LocalTime.now());
+            weightLess.setUpdated_date(LocalDate.now());
+            weightLess.setUpdated_time(LocalTime.now());
+
+            List<WeightLessItem> weightLessItems = dto.getWeightLessItem();
+            if (weightLessItems != null && !weightLessItems.isEmpty()) {
+                for (WeightLessItem item : weightLessItems) {
+                    item.setWeightLess(weightLess);
+                    weightLess.getWeightLessItem().add(item);
+                }
+            }
+
+            return weightLessRepository.save(weightLess);
         }
-        //Purchase id check in database
-        Purchase purchase = purchaseRepository.findById(dto.getPurchaseId())
-                .orElseThrow(() -> new RuntimeException("Purchase Id not found"));
-
-        //Product Id check in database
-        Product product = productRepository.findById(dto.getProductId())
-                .orElseThrow(() -> new RuntimeException("Product Id not found"));
-
-
-        //Else just add the new weightless record
-        WeightLess weightLess =  new WeightLess();
-        weightLess.setPurchaseId(purchase);
-        weightLess.setProductId(product);
-        weightLess.setWeightLess(dto.getWeightLess());
-
-        weightLess.setCreated_date(LocalDate.now());
-        weightLess.setCreated_time(LocalTime.now());
-        weightLess.setUpdated_date(LocalDate.now());
-        weightLess.setUpdated_time(LocalTime.now());
-
-        return weightLessRepository.save(weightLess);
     }
 
     //View all weight less
@@ -89,30 +83,36 @@ public class WeightLessService {
             throw new SecurityException("User does not have the permission to update weight less");
         }
         //Check if Weight less entry exists
-        WeightLess weightLess = weightLessRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Weight Less does not exists"));
+        return weightLessRepository.findById(id)
+                .map(weightLess -> {
+                    if (dto.getReason() != null) weightLess.setReason(dto.getReason());
+                    weightLess.setUpdated_date(LocalDate.now());
+                    weightLess.setUpdated_time(LocalTime.now());
 
-        //Purchase id check in database
-        if(dto.getPurchaseId() != null){
-            Purchase purchase = purchaseRepository.findById(dto.getPurchaseId())
-                    .orElseThrow(() -> new RuntimeException("Purchase Id not found"));
+                    if(dto.getWeightLessItem() != null && !dto.getWeightLessItem().isEmpty()){
+                        weightLess.getWeightLessItem().clear();
 
-            weightLess.setPurchaseId(purchase);
-        }
+                        for(WeightLessItem itemDto: dto.getWeightLessItem()){
 
-        //Product Id check in database
-        if(dto.getProductId() != null){
-            Product product = productRepository.findById(dto.getProductId())
-                    .orElseThrow(() -> new RuntimeException("Product Id not found"));
-            weightLess.setProductId(product);
-        }
+                            WeightLessItem item = new WeightLessItem();
 
-        if(dto.getWeightLess() != null){
+                            item.setWeightLess(weightLess);
 
-            weightLess.setWeightLess(dto.getWeightLess());
-        }
+                            PurchaseItem purchaseItem = purchaseItemRepository.findById(itemDto.getPurchaseItem().getId())
+                                    .orElseThrow(() -> new RuntimeException("PurchaseItem not found with id: "));
+                            item.setPurchaseItem(purchaseItem);
 
-        return weightLessRepository.save(weightLess);
+                            item.setQuantity(itemDto.getQuantity());
+
+                            weightLess.getWeightLessItem().add(item);
+
+                        }
+                    }
+
+                    return weightLessRepository.save(weightLess);
+
+                })
+                .orElseThrow(() -> new RuntimeException("Weightless record not found!"));
     }
 
     //Delete Weight less
