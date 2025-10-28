@@ -1,6 +1,7 @@
 package com.digitalrangersbd.DeepManage.Dto;
 
 import com.digitalrangersbd.DeepManage.Entity.WeightLessItem;
+import com.digitalrangersbd.DeepManage.Entity.WeightWastageItem;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,17 +12,16 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-
 @Setter
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
-public class WeightLessUpdateDto {
+@AllArgsConstructor
+public class WeightWastageUpdateDto {
 
     private Long id;
 
     @NotNull(message = "Select atleast one product")
-    private List<WeightLessItem> weightLessItem;
+    private List<WeightWastageItem> weightWastageItem;
 
     @NotNull
     private String reason;

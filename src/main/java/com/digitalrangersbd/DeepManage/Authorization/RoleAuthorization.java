@@ -642,5 +642,119 @@ public class RoleAuthorization {
             return false;
         }
     }
+
+    //Check for creating Weight Wastage
+    public boolean hasCreateWeightWastagePermission(String roleId){
+
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.CREATE_WEIGHT_WASTAGE)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before Viewing Weight Wastage data
+    public boolean hasViewWeightWastagePermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.VIEW_WEIGHT_WASTAGE)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before updating Weight Wastage data
+    public boolean hasUpdateWeightWastagePermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.UPDATE_WEIGHT_WASTAGE)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before deleting Weight Wastage data
+    public boolean hasDeleteWeightWastagePermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.DELETE_WEIGHT_WASTAGE)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check for creating Expense Category
+    public boolean hasCreateExpenseCategoryPermission(String roleId){
+
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.CREATE_EXPENSE_CATEGORY)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before Viewing Expense Category
+    public boolean hasViewExpenseCategoryPermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.VIEW_EXPENSE_CATEGORY)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before updating Expense Category
+    public boolean hasUpdateExpenseCategoryPermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.UPDATE_EXPENSE_CATEGORY)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Check before deleting Expense Category data
+    public boolean hasDeleteExpenseCategoryPermission(String roleId){
+        try{
+            return roleRepository.findById(roleId)
+                    .map(role -> role.getPermission().stream()
+                            .anyMatch(permission -> permission == Permission.DELETE_EXPENSE_CATEGORY)
+                    ).orElse(false);
+        }
+        catch (Exception e){
+            System.err.println("Error checking permission: " + e.getMessage());
+            return false;
+        }
+    }
 }
 

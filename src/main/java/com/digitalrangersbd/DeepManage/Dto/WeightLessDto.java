@@ -24,6 +24,8 @@ public class WeightLessDto {
     @NotNull(message = "Select atleast one product")
     private List<WeightLessItem> weightLessItem;
 
+    private Long purchaseId;
+
     private String reason;
 
     private LocalDate created_date;

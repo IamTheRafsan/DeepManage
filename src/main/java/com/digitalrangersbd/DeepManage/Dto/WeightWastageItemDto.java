@@ -3,7 +3,6 @@ package com.digitalrangersbd.DeepManage.Dto;
 import com.digitalrangersbd.DeepManage.Entity.Purchase;
 import com.digitalrangersbd.DeepManage.Entity.PurchaseItem;
 import com.digitalrangersbd.DeepManage.Entity.WeightLess;
-import com.digitalrangersbd.DeepManage.Entity.WeightLessItem;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +13,8 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class WeightLessItemDto extends WeightLessItem {
+public class WeightWastageItemDto {
+
     private Long id;
 
     //@NotNull(message = "Weight less value is required")
@@ -24,5 +24,5 @@ public class WeightLessItemDto extends WeightLessItem {
     private PurchaseItem purchaseItem;
 
     private Float quantity;
-}
 
+}

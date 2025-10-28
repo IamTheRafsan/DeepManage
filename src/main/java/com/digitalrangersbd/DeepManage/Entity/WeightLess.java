@@ -28,6 +28,9 @@ public class WeightLess {
     @OneToMany(mappedBy = "weightLess", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WeightLessItem> weightLessItem = new ArrayList<>();
 
+    @Column(nullable = false)
+    private Long purchaseId;
+
     private String reason;
 
     @Column(nullable = false, updatable = false)

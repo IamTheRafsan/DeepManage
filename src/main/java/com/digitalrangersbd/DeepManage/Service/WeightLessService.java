@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class WeightLessService {
@@ -36,9 +38,14 @@ public class WeightLessService {
     public WeightLess createWeightLess(String roleId, WeightLessDto dto) {
         if (!roleAuthorization.hasCreateWeightLessPermission(roleId)) {
             throw new SecurityException("User does not have the permission to create weightless record");
-        } else {
+        }
+        if(!purchaseItemRepository.existsById(dto.getPurchaseId())){
+            throw new RuntimeException("Purchase Id does not exists");
+        }
+        else {
             WeightLess weightLess = new WeightLess();
 
+            weightLess.setPurchaseId(dto.getPurchaseId());
             weightLess.setReason(dto.getReason());
             weightLess.setCreated_date(LocalDate.now());
             weightLess.setCreated_time(LocalTime.now());
@@ -47,6 +54,16 @@ public class WeightLessService {
 
             List<WeightLessItem> weightLessItems = dto.getWeightLessItem();
             if (weightLessItems != null && !weightLessItems.isEmpty()) {
+                // Check for duplicate purchase item ID
+                Set<Long> purchaseItemIds = new HashSet<>();
+                for(WeightLessItem item : weightLessItems){
+                    Long purchaseItemId = item.getPurchaseItem().getId();
+                    if(purchaseItemIds.contains(purchaseItemId)){
+                        throw new RuntimeException("Duplicate purchase item ID found: " + purchaseItemId + ". Each purchase item can only be added once.");
+                    }
+                    purchaseItemIds.add(purchaseItemId);
+                }
+
                 for (WeightLessItem item : weightLessItems) {
                     item.setWeightLess(weightLess);
                     weightLess.getWeightLessItem().add(item);

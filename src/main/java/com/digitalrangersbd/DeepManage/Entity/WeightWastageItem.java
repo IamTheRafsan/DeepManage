@@ -19,11 +19,13 @@ public class WeightWastageItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "purchase_id")
-    private Purchase purchase;
+    @ManyToOne
+    @JoinColumn(name = "weight_wastage_id")
+    private WeightWastage weightWastage;
 
-    @JoinColumn(name = "product_id")
-    private  Product product;
+    @ManyToOne
+    @JoinColumn(name = "purchase_item_id")
+    private PurchaseItem purchaseItem;
 
     private Float quantity;
 
