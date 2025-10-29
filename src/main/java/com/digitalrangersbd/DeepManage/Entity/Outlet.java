@@ -1,6 +1,7 @@
 package com.digitalrangersbd.DeepManage.Entity;
 
 import com.digitalrangersbd.DeepManage.Enum.ActiveStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Getter;
@@ -8,6 +9,8 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "outlet")
@@ -38,6 +41,10 @@ public class Outlet {
 
     @Enumerated(EnumType.STRING)
     private ActiveStatus status;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "outlet", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Expense> expense = new ArrayList<>();
 
     @Column(nullable = false, updatable = false)
     private LocalDate created_date;

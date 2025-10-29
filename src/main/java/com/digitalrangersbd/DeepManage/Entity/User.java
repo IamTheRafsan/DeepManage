@@ -1,6 +1,7 @@
 package com.digitalrangersbd.DeepManage.Entity;
 
 import com.digitalrangersbd.DeepManage.Enum.Gender;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.EmbeddableInstantiator;
 import org.hibernate.annotations.GenericGenerator;
@@ -8,6 +9,8 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.lang.model.element.NestingKind;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -69,6 +72,10 @@ public class User {
 
     @Column
     private String warehouse_id;
+
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Expense> expense = new ArrayList<>();
 
 
     public User(){}

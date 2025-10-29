@@ -13,12 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "expense_category")
+@Table(name = "deposit_category")
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExpenseCategory {
+public class DepositCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +29,7 @@ public class ExpenseCategory {
 
     @JsonIgnore
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Expense> expense = new ArrayList<>();
+    private List<Deposit> deposit = new ArrayList<>();
 
     @Column(nullable = false, updatable = false)
     private LocalDate created_date;
@@ -42,6 +42,4 @@ public class ExpenseCategory {
 
     @Column(nullable = false)
     private LocalTime updated_time;
-
-
 }

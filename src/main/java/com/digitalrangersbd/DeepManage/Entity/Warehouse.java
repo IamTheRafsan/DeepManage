@@ -46,6 +46,10 @@ public class Warehouse {
     @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Purchase> purchases = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Expense> expense = new ArrayList<>();
+
     @Column(nullable = false, updatable = false)
     private LocalDate created_date;
 
