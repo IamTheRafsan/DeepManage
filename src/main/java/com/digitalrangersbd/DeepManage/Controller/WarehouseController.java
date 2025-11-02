@@ -24,11 +24,11 @@ public class WarehouseController {
     }
 
     //Create new Warehosue
-    @PostMapping("/add/{roleId}")
-    public ResponseEntity<Warehouse> createWarehosue(@PathVariable String roleId, @Valid @RequestBody WarehouseDto dto){
+    @PostMapping("/add/{userId}")
+    public ResponseEntity<Warehouse> createWarehosue(@PathVariable String userId, @Valid @RequestBody WarehouseDto dto){
 
         try {
-            Warehouse createdWarehouse = warehouseService.createWarehouse(roleId, dto);
+            Warehouse createdWarehouse = warehouseService.createWarehouse(userId, dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdWarehouse);
         }
         catch(SecurityException e) {
@@ -43,11 +43,11 @@ public class WarehouseController {
     }
 
     //View warehouse
-    @GetMapping("/view/{roleId}")
-    public ResponseEntity<List<Warehouse>> getWarehouse(@PathVariable String roleId){
+    @GetMapping("/view/{userId}")
+    public ResponseEntity<List<Warehouse>> getWarehouse(@PathVariable String userId){
 
         try{
-            return ResponseEntity.ok(warehouseService.getWarehouse(roleId));
+            return ResponseEntity.ok(warehouseService.getWarehouse(userId));
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -61,11 +61,11 @@ public class WarehouseController {
     }
 
     //View warehouse by id
-    @GetMapping("/view/{roleId}/{id}")
-    public ResponseEntity<Warehouse> getWarehouseById(@PathVariable String roleId, @PathVariable Long id){
+    @GetMapping("/view/{userId}/{id}")
+    public ResponseEntity<Warehouse> getWarehouseById(@PathVariable String userId, @PathVariable Long id){
 
         try{
-            return ResponseEntity.of(warehouseService.getWarehouseById(roleId, id));
+            return ResponseEntity.of(warehouseService.getWarehouseById(userId, id));
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -79,10 +79,10 @@ public class WarehouseController {
     }
 
     //Update warehouse date
-    @PutMapping("/update/{roleId}/{id}")
-    public ResponseEntity<Warehouse> updateWarehouse(@PathVariable String roleId, @PathVariable Long id, @Valid @RequestBody WarehouseUpdateDto dto){
+    @PutMapping("/update/{userId}/{id}")
+    public ResponseEntity<Warehouse> updateWarehouse(@PathVariable String userId, @PathVariable Long id, @Valid @RequestBody WarehouseUpdateDto dto){
         try{
-            Warehouse updatedWarehouse = warehouseService.updateWarehouse(roleId, id, dto);
+            Warehouse updatedWarehouse = warehouseService.updateWarehouse(userId, id, dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(updatedWarehouse);
         }
         catch(SecurityException e) {
@@ -97,10 +97,10 @@ public class WarehouseController {
     }
 
     //Delete Warehouse
-    @DeleteMapping("/delete/{roleId}/{id}")
-    public ResponseEntity<Void> deleteWarehouse(@PathVariable String roleId, @PathVariable Long id){
+    @DeleteMapping("/delete/{userId}/{id}")
+    public ResponseEntity<Void> deleteWarehouse(@PathVariable String userId, @PathVariable Long id){
         try{
-            boolean deletedWarehouse = warehouseService.deleteWarehouse(roleId, id);
+            boolean deletedWarehouse = warehouseService.deleteWarehouse(userId, id);
 
             if(deletedWarehouse){
                 return ResponseEntity.noContent().build();

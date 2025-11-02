@@ -24,9 +24,9 @@ public class BrandService {
     }
 
     //Add new brand
-    public Brand createBrand(String roleId, BrandDto dto){
+    public Brand createBrand(String userId, BrandDto dto){
 
-        if(!roleAuthorization.hasCreateBrandPermission(roleId)){
+        if(!roleAuthorization.hasCreateBrandPermission(userId)){
             throw new SecurityException("User does not have permission to create Brand");
         }
         else{
@@ -53,8 +53,8 @@ public class BrandService {
     }
 
     //Get brand
-    public List<Brand> getBrand(String roleId){
-        if(!roleAuthorization.hasViewBrandPermission(roleId)){
+    public List<Brand> getBrand(String userId){
+        if(!roleAuthorization.hasViewBrandPermission(userId)){
             throw new SecurityException("User does not have permission to view brand");
         }
         else {
@@ -63,8 +63,8 @@ public class BrandService {
     }
 
     //Get brand by id
-    public Optional<Brand> getBrandById(String roleId, Long id){
-        if(!roleAuthorization.hasViewBrandPermission(roleId)){
+    public Optional<Brand> getBrandById(String userId, Long id){
+        if(!roleAuthorization.hasViewBrandPermission(userId)){
             throw new SecurityException("User does not have permission to view Brand");
         }
         else {
@@ -74,9 +74,9 @@ public class BrandService {
 
 
     //Update Brand
-    public Brand updateBrand(String roleId, Long id, BrandUpdateDto dto){
+    public Brand updateBrand(String userId, Long id, BrandUpdateDto dto){
 
-        if(!roleAuthorization.hasUpdateBrandPermission(roleId)){
+        if(!roleAuthorization.hasUpdateBrandPermission(userId)){
             throw new SecurityException("User does not have permission to update Brand");
         }
         else{
@@ -105,8 +105,8 @@ public class BrandService {
     }
 
     //Delete Brand
-    public boolean deleteBrand(String roleId, Long id){
-        if(!roleAuthorization.hasDeleteBrandPermission(roleId)){
+    public boolean deleteBrand(String userId, Long id){
+        if(!roleAuthorization.hasDeleteBrandPermission(userId)){
             throw new SecurityException("User does not have permission to delete brand");
         }
         else {

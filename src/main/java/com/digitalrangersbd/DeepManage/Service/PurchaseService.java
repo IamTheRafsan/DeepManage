@@ -34,9 +34,9 @@ public class PurchaseService {
     }
 
     //Create new Purchase
-    public Purchase createPurchase(String roleId, PurchaseDto dto){
+    public Purchase createPurchase(String userId, PurchaseDto dto){
 
-        if (!roleAuthorization.hasCreatePurchasePermission(roleId)) {
+        if (!roleAuthorization.hasCreatePurchasePermission(userId)) {
             throw new SecurityException("User does not have the permission to create purchase");
         }
         else{
@@ -67,8 +67,8 @@ public class PurchaseService {
     }
 
     //Get all Purchase
-    public List<Purchase> getAllPurchase(String roleId){
-        if (!roleAuthorization.hasViewPurchasePermission(roleId)) {
+    public List<Purchase> getAllPurchase(String userId){
+        if (!roleAuthorization.hasViewPurchasePermission(userId)) {
             throw new SecurityException("User does not have the permission to view purchase");
         }
         else{
@@ -77,8 +77,8 @@ public class PurchaseService {
     }
 
     //Get purchase by id
-    public Optional<Purchase> getPurchaseById(String roleId, Long id){
-        if (!roleAuthorization.hasViewPurchasePermission(roleId)) {
+    public Optional<Purchase> getPurchaseById(String userId, Long id){
+        if (!roleAuthorization.hasViewPurchasePermission(userId)) {
             throw new SecurityException("User does not have the permission to view purchase");
         }
         else {
@@ -87,9 +87,9 @@ public class PurchaseService {
     }
 
     //Update Purchase
-    public Purchase updatePurchase(String roleId, Long id, PurchaseUpdateDto dto){
+    public Purchase updatePurchase(String userId, Long id, PurchaseUpdateDto dto){
 
-        if (!roleAuthorization.hasUpdatePurchasePermission(roleId)) {
+        if (!roleAuthorization.hasUpdatePurchasePermission(userId)) {
             throw new SecurityException("User does not have the permission to update purchase");
         }
         else{
@@ -124,8 +124,8 @@ public class PurchaseService {
     }
 
     //Delete Purchase
-    public Boolean deletePurchase(String roleId, Long id){
-        if(!roleAuthorization.hasDeletePurchasePermission(roleId)){
+    public Boolean deletePurchase(String userId, Long id){
+        if(!roleAuthorization.hasDeletePurchasePermission(userId)){
             throw new SecurityException("User does not have the permission to delete purchase");
         }
         else {

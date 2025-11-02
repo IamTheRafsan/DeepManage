@@ -32,9 +32,9 @@ public class ProductService {
     }
 
     //Create new product
-    public Product createProduct(String roleId, ProductDto dto){
+    public Product createProduct(String userId, ProductDto dto){
 
-        if(!roleAuthorization.hasCreateProductPermission(roleId)){
+        if(!roleAuthorization.hasCreateProductPermission(userId)){
             throw new SecurityException("User do not have the permission to create product");
         }
         if (productRepository.existsByCode(dto.getCode())) {
@@ -75,8 +75,8 @@ public class ProductService {
     }
 
     //Get All Products
-    public List<Product> getAllProduct(String roleId){
-        if(!roleAuthorization.hasViewProductPermission(roleId)){
+    public List<Product> getAllProduct(String userId){
+        if(!roleAuthorization.hasViewProductPermission(userId)){
             throw new SecurityException("User does not have permission to view products.");
         }
         else {
@@ -85,8 +85,8 @@ public class ProductService {
     }
 
     //Get products by id
-    public Optional<Product> getProductById(String roleId, Long id){
-        if(!roleAuthorization.hasViewProductPermission(roleId)){
+    public Optional<Product> getProductById(String userId, Long id){
+        if(!roleAuthorization.hasViewProductPermission(userId)){
             throw new SecurityException("User does not have permission to view products.");
         }
         else {
@@ -95,8 +95,8 @@ public class ProductService {
     }
 
     //Update product
-    public Product updateProduct(String roleId, Long id, ProductUpdateDto dto){
-        if(!roleAuthorization.hasUpdateProductPermission(roleId)){
+    public Product updateProduct(String userId, Long id, ProductUpdateDto dto){
+        if(!roleAuthorization.hasUpdateProductPermission(userId)){
             throw new SecurityException("User does not have the permission to update product.");
         }
         else{
@@ -137,9 +137,9 @@ public class ProductService {
     }
 
     //Delete Product
-    public boolean deleteProduct(String roleId, Long id){
+    public boolean deleteProduct(String userId, Long id){
 
-        if(!roleAuthorization.hasDeleteProductPermission(roleId)){
+        if(!roleAuthorization.hasDeleteProductPermission(userId)){
             throw new SecurityException("User does not have the permission to delete product.");
         }
         else{

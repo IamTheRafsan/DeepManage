@@ -23,10 +23,10 @@ public class PurchaseController {
     }
 
     //create new purchase
-    @PostMapping("/add/{roleId}")
-    public ResponseEntity<Purchase> createPurchase(@PathVariable String roleId,@Valid @RequestBody PurchaseDto dto){
+    @PostMapping("/add/{userId}")
+    public ResponseEntity<Purchase> createPurchase(@PathVariable String userId,@Valid @RequestBody PurchaseDto dto){
         try{
-            Purchase purchase = purchaseService.createPurchase(roleId, dto);
+            Purchase purchase = purchaseService.createPurchase(userId, dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(purchase);
         }
         catch(SecurityException e) {
@@ -41,10 +41,10 @@ public class PurchaseController {
     }
 
     //get all purchase
-    @GetMapping("/view/{roleId}")
-    public ResponseEntity<List<Purchase>> getAllPurchase(@PathVariable String roleId){
+    @GetMapping("/view/{userId}")
+    public ResponseEntity<List<Purchase>> getAllPurchase(@PathVariable String userId){
         try{
-            return ResponseEntity.ok(purchaseService.getAllPurchase(roleId));
+            return ResponseEntity.ok(purchaseService.getAllPurchase(userId));
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -59,10 +59,10 @@ public class PurchaseController {
     }
 
     //Get Purchase by id
-    @GetMapping("/view/{roleId}/{id}")
-    public ResponseEntity<Purchase> getPurchaseById(@PathVariable String roleId, @PathVariable Long id){
+    @GetMapping("/view/{userId}/{id}")
+    public ResponseEntity<Purchase> getPurchaseById(@PathVariable String userId, @PathVariable Long id){
         try{
-            return ResponseEntity.of(purchaseService.getPurchaseById(roleId, id));
+            return ResponseEntity.of(purchaseService.getPurchaseById(userId, id));
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -76,10 +76,10 @@ public class PurchaseController {
     }
 
     //Update Purchase
-    @PutMapping("/update/{roleId}/{id}")
-    public ResponseEntity<Purchase> updatePurchase(@PathVariable String roleId, @PathVariable Long id, @Valid @RequestBody PurchaseUpdateDto dto){
+    @PutMapping("/update/{userId}/{id}")
+    public ResponseEntity<Purchase> updatePurchase(@PathVariable String userId, @PathVariable Long id, @Valid @RequestBody PurchaseUpdateDto dto){
         try{
-            Purchase updatedPurchase = purchaseService.updatePurchase(roleId,id,dto);
+            Purchase updatedPurchase = purchaseService.updatePurchase(userId,id,dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(updatedPurchase);
         }
         catch(SecurityException e) {
@@ -94,10 +94,10 @@ public class PurchaseController {
     }
 
     //Delete Purchase
-    @DeleteMapping("/delete/{roleId}/{id}")
-    public ResponseEntity<Boolean> deletePurchase(@PathVariable String roleId, @PathVariable Long id){
+    @DeleteMapping("/delete/{userId}/{id}")
+    public ResponseEntity<Boolean> deletePurchase(@PathVariable String userId, @PathVariable Long id){
         try{
-            Boolean deletedPurchase = purchaseService.deletePurchase(roleId, id);
+            Boolean deletedPurchase = purchaseService.deletePurchase(userId, id);
 
             if(deletedPurchase){
                 return ResponseEntity.noContent().build();

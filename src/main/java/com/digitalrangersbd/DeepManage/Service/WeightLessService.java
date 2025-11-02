@@ -35,8 +35,8 @@ public class WeightLessService {
     }
 
     //Create Weight Less
-    public WeightLess createWeightLess(String roleId, WeightLessDto dto) {
-        if (!roleAuthorization.hasCreateWeightLessPermission(roleId)) {
+    public WeightLess createWeightLess(String userId, WeightLessDto dto) {
+        if (!roleAuthorization.hasCreateWeightLessPermission(userId)) {
             throw new SecurityException("User does not have the permission to create weightless record");
         }
         if(!purchaseItemRepository.existsById(dto.getPurchaseId())){
@@ -75,8 +75,8 @@ public class WeightLessService {
     }
 
     //View all weight less
-    public List<WeightLess> getAllWeightLess(String roleId){
-        if(!roleAuthorization.hasViewWeightLessPermission(roleId)){
+    public List<WeightLess> getAllWeightLess(String userId){
+        if(!roleAuthorization.hasViewWeightLessPermission(userId)){
             throw new SecurityException("User does not have the permission to view weightless.");
         }
         else{
@@ -85,8 +85,8 @@ public class WeightLessService {
     }
 
     //View weight less by id
-    public Optional<WeightLess> getWeightLessById(String roleId, Long id){
-        if(!roleAuthorization.hasViewWeightLessPermission(roleId)){
+    public Optional<WeightLess> getWeightLessById(String userId, Long id){
+        if(!roleAuthorization.hasViewWeightLessPermission(userId)){
             throw new SecurityException("User does not have the permission to view weightless.");
         }
         else{
@@ -95,8 +95,8 @@ public class WeightLessService {
     }
 
     //Update weight less
-    public WeightLess updateWeightLess(String roleId, Long id, WeightLessUpdateDto dto){
-        if(!roleAuthorization.hasUpdateWeightlessPermission(roleId)){
+    public WeightLess updateWeightLess(String userId, Long id, WeightLessUpdateDto dto){
+        if(!roleAuthorization.hasUpdateWeightlessPermission(userId)){
             throw new SecurityException("User does not have the permission to update weight less");
         }
         //Check if Weight less entry exists
@@ -133,9 +133,9 @@ public class WeightLessService {
     }
 
     //Delete Weight less
-    public Boolean deleteWeightLess(String roleId, Long id){
+    public Boolean deleteWeightLess(String userId, Long id){
 
-        if(!roleAuthorization.hasDeleteWeightLessPermission(roleId)){
+        if(!roleAuthorization.hasDeleteWeightLessPermission(userId)){
             throw new SecurityException("User does not have the permission to delete weight less entry.");
         }
         else{

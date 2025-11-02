@@ -23,11 +23,11 @@ public class WeightLessController {
     }
 
     //create new weight less
-    @PostMapping("/add/{roleId}")
-    public ResponseEntity<WeightLess> createWeightLess(@PathVariable String roleId, @Valid @RequestBody WeightLessDto dto){
+    @PostMapping("/add/{userId}")
+    public ResponseEntity<WeightLess> createWeightLess(@PathVariable String userId, @Valid @RequestBody WeightLessDto dto){
 
         try{
-            WeightLess weightLess = weightLessService.createWeightLess(roleId, dto) ;
+            WeightLess weightLess = weightLessService.createWeightLess(userId, dto) ;
             return ResponseEntity.status(HttpStatus.CREATED).body(weightLess);
         }
         catch(SecurityException e) {
@@ -43,10 +43,10 @@ public class WeightLessController {
     }
 
     //View weight less
-    @GetMapping("/view/{roleId}")
-    public ResponseEntity<List<WeightLess>> getAllWeightLess(@PathVariable String roleId){
+    @GetMapping("/view/{userId}")
+    public ResponseEntity<List<WeightLess>> getAllWeightLess(@PathVariable String userId){
         try{
-            return ResponseEntity.ok(weightLessService.getAllWeightLess(roleId));
+            return ResponseEntity.ok(weightLessService.getAllWeightLess(userId));
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -60,10 +60,10 @@ public class WeightLessController {
     }
 
     //View weight less by id
-    @GetMapping("/view/{roleId}/{id}")
-    public ResponseEntity<WeightLess> getWeightLessById(@PathVariable String roleId, @PathVariable Long id){
+    @GetMapping("/view/{userId}/{id}")
+    public ResponseEntity<WeightLess> getWeightLessById(@PathVariable String userId, @PathVariable Long id){
         try{
-            return ResponseEntity.of(weightLessService.getWeightLessById(roleId, id));
+            return ResponseEntity.of(weightLessService.getWeightLessById(userId, id));
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -77,10 +77,10 @@ public class WeightLessController {
     }
 
     //Upate weight less
-    @PutMapping("/update/{roleId}/{id}")
-    public ResponseEntity<WeightLess> updateWeightLess(@PathVariable String roleId, @PathVariable Long id, @Valid @RequestBody WeightLessUpdateDto dto){
+    @PutMapping("/update/{userId}/{id}")
+    public ResponseEntity<WeightLess> updateWeightLess(@PathVariable String userId, @PathVariable Long id, @Valid @RequestBody WeightLessUpdateDto dto){
         try {
-            WeightLess updatedWeightLess = weightLessService.updateWeightLess(roleId, id, dto);
+            WeightLess updatedWeightLess = weightLessService.updateWeightLess(userId, id, dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(updatedWeightLess);
         }
         catch(SecurityException e) {
@@ -95,11 +95,11 @@ public class WeightLessController {
     }
 
     //Delele Weight less entry
-    @DeleteMapping("/delete/{roleId}/{id}")
-    public ResponseEntity<Void> deleteWeigthLess(@PathVariable String roleId, @PathVariable Long id){
+    @DeleteMapping("/delete/{userId}/{id}")
+    public ResponseEntity<Void> deleteWeigthLess(@PathVariable String userId, @PathVariable Long id){
 
         try{
-            Boolean deletedWeightLes = weightLessService.deleteWeightLess(roleId, id);
+            Boolean deletedWeightLes = weightLessService.deleteWeightLess(userId, id);
             if(deletedWeightLes)
             {
                 return ResponseEntity.noContent().build();

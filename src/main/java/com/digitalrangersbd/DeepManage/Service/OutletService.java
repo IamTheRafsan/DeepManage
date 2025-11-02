@@ -27,9 +27,9 @@ public class OutletService {
     }
 
     //Create outlet
-    public Outlet createOutlet(String roleId, OutletDto dto){
+    public Outlet createOutlet(String userId, OutletDto dto){
 
-        if(!roleAuthorization.hasCreateOutletPermission(roleId)){
+        if(!roleAuthorization.hasCreateOutletPermission(userId)){
             throw new SecurityException("User does not have permission to create outlet");
         }
         else {
@@ -54,9 +54,9 @@ public class OutletService {
     }
 
     //View outlet
-    public List<Outlet> getOutlet(String roleId){
+    public List<Outlet> getOutlet(String userId){
 
-        if(!roleAuthorization.hasViewOutletPermission(roleId)){
+        if(!roleAuthorization.hasViewOutletPermission(userId)){
             throw new SecurityException("User does not have permission to view outlet");
         }
         else{
@@ -65,9 +65,9 @@ public class OutletService {
     }
 
     //View outlet by id
-    public Optional<Outlet> getOutletById(String roleId, Long id){
+    public Optional<Outlet> getOutletById(String userId, Long id){
 
-        if(!roleAuthorization.hasViewOutletPermission(roleId)){
+        if(!roleAuthorization.hasViewOutletPermission(userId)){
             throw new SecurityException("User does not have permission to view outlet");
         }
         else{
@@ -76,9 +76,9 @@ public class OutletService {
     }
 
     //Update Outlet
-    public Outlet updateOutlet(String roleId, Long id, OutletUpdateDto dto){
+    public Outlet updateOutlet(String userId, Long id, OutletUpdateDto dto){
 
-        if(!roleAuthorization.hasUpdateOutletPermission(roleId)){
+        if(!roleAuthorization.hasUpdateOutletPermission(userId)){
             throw new RuntimeException("User does not have the permission to update outlet");
         }
         else{
@@ -104,9 +104,9 @@ public class OutletService {
     }
 
     //Delete Outlet
-    public Boolean deleteOutlet(String roleId, Long id){
+    public Boolean deleteOutlet(String userId, Long id){
 
-        if (!roleAuthorization.hasDeleteOutletPermission(roleId)){
+        if (!roleAuthorization.hasDeleteOutletPermission(userId)){
             throw new RuntimeException("User does not have the permission to delete outlet");
         }
         else{

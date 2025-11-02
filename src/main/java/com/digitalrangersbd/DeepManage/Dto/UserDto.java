@@ -12,26 +12,26 @@ public class UserDto {
 
     private String user_id;
 
-    @NotBlank(message = "First name not found")
+    @NotNull(message = "First name not found")
     @Size(min=2, max=100, message = "Fist name must be minimum 2 words and maximum 100 words")
     private String firstName;
 
-    @NotBlank(message = "Last name not found")
+    @NotNull(message = "Last name not found")
     @Size(min=2, max=100, message = "Fist name must be minimum 2 words and maximum 100 words")
     private String lastName;
 
-    @NotBlank(message = "Email not found")
+    @NotNull(message = "Email not found")
     @Email
     private String email;
 
-    @NotBlank(message = "Password not found.")
+    @NotNull(message = "Password not found.")
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$", message = "Password must contain at least 8 characters, one uppercase, one lowercase, and one number")
     private String password;
 
-    @NotBlank(message = "Role not found")
+    //@NotBlank(message = "Role not found")
     private String role_name;
 
-    @NotBlank(message = "Role not found")
+    @NotNull(message = "Role not found")
     private String role_id;
 
     @NotNull
@@ -45,6 +45,10 @@ public class UserDto {
 
     private String address;
 
+    private String warehouse_name;
+
+    private String warehouse_id;
+
     private LocalDate created_date;
 
     private LocalTime created_time;
@@ -52,10 +56,6 @@ public class UserDto {
     private LocalDate updated_date;
 
     private LocalTime updated_time;
-
-    private String warehouse_name;
-
-    private String warehouse_id;
 
     public UserDto(){}
 

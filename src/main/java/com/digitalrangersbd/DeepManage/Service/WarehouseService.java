@@ -26,9 +26,9 @@ public class WarehouseService {
     }
 
     //Create new warehouse
-    public Warehouse createWarehouse(String roleId, WarehouseDto dto){
+    public Warehouse createWarehouse(String userId, WarehouseDto dto){
 
-        if(!roleAuthorization.hasCreateWarehousePermission(roleId)){
+        if(!roleAuthorization.hasCreateWarehousePermission(userId)){
             throw new SecurityException("User does not have permission to create warehouse");
         }
         else {
@@ -53,9 +53,9 @@ public class WarehouseService {
     }
 
     //Get warehouse date
-    public List<Warehouse> getWarehouse(String roleId){
+    public List<Warehouse> getWarehouse(String userId){
 
-        if(!roleAuthorization.hasViewWarehousePermission(roleId)){
+        if(!roleAuthorization.hasViewWarehousePermission(userId)){
             throw new SecurityException("User does not have permission to view warehouse");
         }
         else{
@@ -64,9 +64,9 @@ public class WarehouseService {
     }
 
     //Get warehouse by id
-    public Optional<Warehouse> getWarehouseById(String roleId, Long id){
+    public Optional<Warehouse> getWarehouseById(String userId, Long id){
 
-        if(!roleAuthorization.hasViewWarehousePermission(roleId)){
+        if(!roleAuthorization.hasViewWarehousePermission(userId)){
             throw new SecurityException("User does not have permission to view warehouse");
         }
         else{
@@ -75,9 +75,9 @@ public class WarehouseService {
     }
 
     //Update warehouse
-    public Warehouse updateWarehouse(String roleId, Long id, WarehouseUpdateDto dto){
+    public Warehouse updateWarehouse(String userId, Long id, WarehouseUpdateDto dto){
 
-        if(!roleAuthorization.hasUpdateWarehousePermission(roleId)){
+        if(!roleAuthorization.hasUpdateWarehousePermission(userId)){
             throw new SecurityException("User does not have the permission to update warehouse");
         }
         else{
@@ -103,9 +103,9 @@ public class WarehouseService {
     }
 
     //Delete warehouse
-    public Boolean deleteWarehouse(String roleId, Long id){
+    public Boolean deleteWarehouse(String userId, Long id){
 
-        if (!roleAuthorization.hasDeleteWarehousePermission(roleId)){
+        if (!roleAuthorization.hasDeleteWarehousePermission(userId)){
             throw new SecurityException("User does not have the permission to delete warehouse");
         }
         else{

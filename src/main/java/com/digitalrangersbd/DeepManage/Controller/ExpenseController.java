@@ -26,10 +26,10 @@ public class ExpenseController {
     }
 
     //Create new expense
-    @PostMapping("/add/{roleId}")
-    public ResponseEntity<Expense> createExpense(@PathVariable String roleId, @Valid @RequestBody ExpenseDto dto){
+    @PostMapping("/add/{userId}")
+    public ResponseEntity<Expense> createExpense(@PathVariable String userId, @Valid @RequestBody ExpenseDto dto){
         try{
-            Expense createdExpense = expenseService.createExpense(roleId, dto);
+            Expense createdExpense = expenseService.createExpense(userId, dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdExpense);
         }catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -41,10 +41,10 @@ public class ExpenseController {
     }
 
     //View all expense
-    @GetMapping("/view/{roleId}")
-    public ResponseEntity<List<Expense>> getAllExpense(@PathVariable String roleId){
+    @GetMapping("/view/{userId}")
+    public ResponseEntity<List<Expense>> getAllExpense(@PathVariable String userId){
         try{
-            return ResponseEntity.ok(expenseService.getAllExpense(roleId));
+            return ResponseEntity.ok(expenseService.getAllExpense(userId));
         }catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -54,10 +54,10 @@ public class ExpenseController {
     }
 
     //View expense by id
-    @GetMapping("/view/{roleId}/{id}")
-    public ResponseEntity<Expense> getExpenseById(@PathVariable String roleId, @PathVariable Long id){
+    @GetMapping("/view/{userId}/{id}")
+    public ResponseEntity<Expense> getExpenseById(@PathVariable String userId, @PathVariable Long id){
         try{
-            return ResponseEntity.of(expenseService.getExpenseById(roleId, id));
+            return ResponseEntity.of(expenseService.getExpenseById(userId, id));
         }catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -67,11 +67,11 @@ public class ExpenseController {
     }
 
     //Update expense
-    @PutMapping("/update/{roleId}/{id}")
-    public ResponseEntity<Expense> updateExpense(@PathVariable String roleId, @PathVariable Long id, @Valid @RequestBody ExpenseUpdateDto dto){
+    @PutMapping("/update/{userId}/{id}")
+    public ResponseEntity<Expense> updateExpense(@PathVariable String userId, @PathVariable Long id, @Valid @RequestBody ExpenseUpdateDto dto){
 
         try{
-            Expense updatedExpense = expenseService.updateExpense(roleId, id, dto);
+            Expense updatedExpense = expenseService.updateExpense(userId, id, dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(updatedExpense);
         } catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -81,10 +81,10 @@ public class ExpenseController {
     }
 
     //Delete Expense
-    @DeleteMapping("/delete/{roleId}/{id}")
-    public ResponseEntity<Void> deleteExpense(@PathVariable String roleId, @PathVariable Long id){
+    @DeleteMapping("/delete/{userId}/{id}")
+    public ResponseEntity<Void> deleteExpense(@PathVariable String userId, @PathVariable Long id){
         try{
-            boolean deletedExpense = expenseService.deleteExpense(roleId, id);
+            boolean deletedExpense = expenseService.deleteExpense(userId, id);
 
             if(deletedExpense){
                 return ResponseEntity.noContent().build();

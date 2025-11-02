@@ -35,9 +35,9 @@ public class ExpenseService {
     }
 
     //Create new expense
-    public Expense createExpense(String roleId, ExpenseDto dto){
+    public Expense createExpense(String userId, ExpenseDto dto){
 
-        if(!roleAuthorization.hasCreateExpensePermission(roleId)){
+        if(!roleAuthorization.hasCreateExpensePermission(userId)){
             throw new SecurityException("User does not have the persmission to create expense.");
         }
         else{
@@ -92,8 +92,8 @@ public class ExpenseService {
     }
 
     //View all expense
-    public List<Expense> getAllExpense(String roleId){
-        if(!roleAuthorization.hasViewExpensePermission(roleId)){
+    public List<Expense> getAllExpense(String userId){
+        if(!roleAuthorization.hasViewExpensePermission(userId)){
             throw new SecurityException("User does not have the persmission to view expense.");
         }
         else{
@@ -102,8 +102,8 @@ public class ExpenseService {
     }
 
     //View expense by id
-    public Optional<Expense> getExpenseById(String roleId, Long id){
-        if(!roleAuthorization.hasViewExpensePermission(roleId)){
+    public Optional<Expense> getExpenseById(String userId, Long id){
+        if(!roleAuthorization.hasViewExpensePermission(userId)){
             throw new SecurityException("User does not have the persmission to view expense.");
         }
         else{
@@ -112,8 +112,8 @@ public class ExpenseService {
     }
 
     //Update expense
-    public Expense updateExpense(String roleId, Long id, ExpenseUpdateDto dto){
-        if(!roleAuthorization.hasUpdateExpensePermission(roleId)){
+    public Expense updateExpense(String userId, Long id, ExpenseUpdateDto dto){
+        if(!roleAuthorization.hasUpdateExpensePermission(userId)){
             throw new SecurityException("User does not have the persmission to update expense.");
         }
         else{
@@ -147,8 +147,8 @@ public class ExpenseService {
     }
 
     //Delete expense
-    public Boolean deleteExpense(String roleId, Long id){
-        if(!roleAuthorization.hasDeleteExpensePermission(roleId)){
+    public Boolean deleteExpense(String userId, Long id){
+        if(!roleAuthorization.hasDeleteExpensePermission(userId)){
             throw new SecurityException("User does not have the persmission to delete expense.");
         }
         else{

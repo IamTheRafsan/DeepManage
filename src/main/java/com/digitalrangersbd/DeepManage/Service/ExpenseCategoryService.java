@@ -24,8 +24,8 @@ public class ExpenseCategoryService {
     }
 
     //Create Expense Category
-    public ExpenseCategory createExpenseCategory(String roleId, ExpenseCategoryDto dto){
-        if(!roleAuthorization.hasCreateExpenseCategoryPermission(roleId)){
+    public ExpenseCategory createExpenseCategory(String userId, ExpenseCategoryDto dto){
+        if(!roleAuthorization.hasCreateExpenseCategoryPermission(userId)){
             throw new SecurityException("User does not have the permission to create expense category");
         }
         else{
@@ -41,8 +41,8 @@ public class ExpenseCategoryService {
     }
 
     //View expense category
-    public List<ExpenseCategory> getExpenseCategory(String roleId){
-        if(!roleAuthorization.hasViewExpenseCategoryPermission(roleId)){
+    public List<ExpenseCategory> getExpenseCategory(String userId){
+        if(!roleAuthorization.hasViewExpenseCategoryPermission(userId)){
             throw new SecurityException("User does not have the permission to view expense category");
         }
         else{
@@ -51,8 +51,8 @@ public class ExpenseCategoryService {
     }
 
     //View expense category by id
-    public Optional<ExpenseCategory> getExpenseCategoryById(String roleId, Long id){
-        if(!roleAuthorization.hasViewExpenseCategoryPermission(roleId)){
+    public Optional<ExpenseCategory> getExpenseCategoryById(String userId, Long id){
+        if(!roleAuthorization.hasViewExpenseCategoryPermission(userId)){
             throw new SecurityException("User does not have the permission to view expense category");
         }
         else{
@@ -66,8 +66,8 @@ public class ExpenseCategoryService {
     }
 
     //Update Expense Category
-    public ExpenseCategory updateExpenseCategory(String roleId, Long id, ExpenseCategoryUpdateDto dto){
-        if(!roleAuthorization.hasUpdateExpenseCategoryPermission(roleId)){
+    public ExpenseCategory updateExpenseCategory(String userId, Long id, ExpenseCategoryUpdateDto dto){
+        if(!roleAuthorization.hasUpdateExpenseCategoryPermission(userId)){
             throw new SecurityException("User does not have the permission to update expense category");
         }
         else {
@@ -84,8 +84,8 @@ public class ExpenseCategoryService {
     }
 
     //Delete Expense Category
-    public Boolean deleteExpenseCategory(String roleId, Long id){
-        if(!roleAuthorization.hasDeleteExpenseCategoryPermission(roleId)){
+    public Boolean deleteExpenseCategory(String userId, Long id){
+        if(!roleAuthorization.hasDeleteExpenseCategoryPermission(userId)){
             throw new SecurityException("User does not have the permission to delete expense category");
         }
         else {

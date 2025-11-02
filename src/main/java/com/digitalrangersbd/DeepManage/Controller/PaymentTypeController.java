@@ -22,11 +22,11 @@ public class  PaymentTypeController {
     }
 
     //Create new payment
-    @PostMapping("/add/{roleId}")
-    public ResponseEntity<PaymentType> createPaymentType(@PathVariable String roleId, @Valid @RequestBody PaymentTypeDto dto){
+    @PostMapping("/add/{userId}")
+    public ResponseEntity<PaymentType> createPaymentType(@PathVariable String userId, @Valid @RequestBody PaymentTypeDto dto){
 
         try {
-            PaymentType createdPaymentType = paymentTypeService.createPaymentType(roleId, dto);
+            PaymentType createdPaymentType = paymentTypeService.createPaymentType(userId, dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdPaymentType);
         }
         catch(SecurityException e) {
@@ -41,11 +41,11 @@ public class  PaymentTypeController {
     }
 
     //View Payment Type
-    @GetMapping("/view/{roleId}")
-    public ResponseEntity<List<PaymentType>> getAllPaymentType(@PathVariable String roleId){
+    @GetMapping("/view/{userId}")
+    public ResponseEntity<List<PaymentType>> getAllPaymentType(@PathVariable String userId){
 
         try{
-            return ResponseEntity.ok(paymentTypeService.getAllPaymentType(roleId));
+            return ResponseEntity.ok(paymentTypeService.getAllPaymentType(userId));
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -59,10 +59,10 @@ public class  PaymentTypeController {
     }
 
     //delete Payment Type
-    @DeleteMapping("/delete/{roleId}/{id}")
-    public ResponseEntity<Boolean> deletePaymentType(@PathVariable String roleId, @PathVariable Long id){
+    @DeleteMapping("/delete/{userId}/{id}")
+    public ResponseEntity<Boolean> deletePaymentType(@PathVariable String userId, @PathVariable Long id){
         try{
-            Boolean deletedPaymentType = paymentTypeService.deletePayment(roleId, id);
+            Boolean deletedPaymentType = paymentTypeService.deletePayment(userId, id);
             if(deletedPaymentType){
                 return ResponseEntity.noContent().build();
             }

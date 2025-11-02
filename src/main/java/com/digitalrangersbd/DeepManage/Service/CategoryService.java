@@ -25,9 +25,9 @@ public class CategoryService {
     }
 
     //Add new category
-    public Category createCategory(String roleId, CategoryDto dto){
+    public Category createCategory(String userId, CategoryDto dto){
 
-        if(!roleAuthorization.hasCreateCategoryPermission(roleId)){
+        if(!roleAuthorization.hasCreateCategoryPermission(userId)){
             throw new SecurityException("User does not have permission to create Category");
         }
         else{
@@ -54,8 +54,8 @@ public class CategoryService {
     }
 
     //Get category
-    public List<Category> getCategory(String roleId){
-        if(!roleAuthorization.hasViewCategoryPermission(roleId)){
+    public List<Category> getCategory(String userId){
+        if(!roleAuthorization.hasViewCategoryPermission(userId)){
             throw new SecurityException("User does not have permission to view category");
         }
         else {
@@ -64,8 +64,8 @@ public class CategoryService {
     }
 
     //Get category by id
-    public Optional<Category> getCategoryById(String roleId, Long id){
-        if(!roleAuthorization.hasViewCategoryPermission(roleId)){
+    public Optional<Category> getCategoryById(String userId, Long id){
+        if(!roleAuthorization.hasViewCategoryPermission(userId)){
             throw new SecurityException("User does not have permission to view category");
         }
         else {
@@ -75,9 +75,9 @@ public class CategoryService {
 
 
     //Update Category
-    public Category updateCategory(String roleId, Long id, CategoryUpdateDto dto){
+    public Category updateCategory(String userId, Long id, CategoryUpdateDto dto){
 
-        if(!roleAuthorization.hasUpdateCategoryPermission(roleId)){
+        if(!roleAuthorization.hasUpdateCategoryPermission(userId)){
             throw new SecurityException("User does not have permission to update category");
         }
         else{
@@ -106,8 +106,8 @@ public class CategoryService {
     }
 
     //Delete Category
-    public boolean deleteCategory(String roleId, Long id){
-        if(!roleAuthorization.hasDeleteCategoryPermission(roleId)){
+    public boolean deleteCategory(String userId, Long id){
+        if(!roleAuthorization.hasDeleteCategoryPermission(userId)){
             throw new SecurityException("User does not have permission to delete category");
         }
         else {

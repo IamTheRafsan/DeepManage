@@ -25,11 +25,11 @@ public class ExpenseCategoryController {
     }
 
     //Create new expense category
-    @PostMapping("/add/{roleId}")
-    public ResponseEntity<ExpenseCategory> createExpenseCategory(@PathVariable String roleId, @Valid @RequestBody ExpenseCategoryDto dto){
+    @PostMapping("/add/{userId}")
+    public ResponseEntity<ExpenseCategory> createExpenseCategory(@PathVariable String userId, @Valid @RequestBody ExpenseCategoryDto dto){
 
         try{
-            ExpenseCategory expenseCategory = expenseCategoryService.createExpenseCategory(roleId, dto);
+            ExpenseCategory expenseCategory = expenseCategoryService.createExpenseCategory(userId, dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(expenseCategory);
         }catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -42,11 +42,11 @@ public class ExpenseCategoryController {
 
 
     //View all expense category
-    @GetMapping("/view/{roleId}")
-    public ResponseEntity<List<ExpenseCategory>> getExpenseCategory(@PathVariable String roleId){
+    @GetMapping("/view/{userId}")
+    public ResponseEntity<List<ExpenseCategory>> getExpenseCategory(@PathVariable String userId){
 
         try{
-            return ResponseEntity.ok(expenseCategoryService.getExpenseCategory(roleId));
+            return ResponseEntity.ok(expenseCategoryService.getExpenseCategory(userId));
         }catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -56,11 +56,11 @@ public class ExpenseCategoryController {
     }
 
     //View Expense category by id
-    @GetMapping("/view/{roleId}/{id}")
-    public ResponseEntity<ExpenseCategory> getExpenseCategoryById(@PathVariable String roleId, @PathVariable Long id){
+    @GetMapping("/view/{userId}/{id}")
+    public ResponseEntity<ExpenseCategory> getExpenseCategoryById(@PathVariable String userId, @PathVariable Long id){
 
         try{
-            return ResponseEntity.of(expenseCategoryService.getExpenseCategoryById(roleId,id));
+            return ResponseEntity.of(expenseCategoryService.getExpenseCategoryById(userId,id));
         }catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -70,11 +70,11 @@ public class ExpenseCategoryController {
     }
 
     //Update expense category
-    @PutMapping("/update/{roleId}/{id}")
-    public ResponseEntity<ExpenseCategory> updateExpenseCategory(@PathVariable String roleId, @PathVariable Long id, @Valid @RequestBody ExpenseCategoryUpdateDto dto){
+    @PutMapping("/update/{userId}/{id}")
+    public ResponseEntity<ExpenseCategory> updateExpenseCategory(@PathVariable String userId, @PathVariable Long id, @Valid @RequestBody ExpenseCategoryUpdateDto dto){
 
         try{
-            ExpenseCategory expenseCategory = expenseCategoryService.updateExpenseCategory(roleId, id, dto);
+            ExpenseCategory expenseCategory = expenseCategoryService.updateExpenseCategory(userId, id, dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(expenseCategory);
         } catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -84,10 +84,10 @@ public class ExpenseCategoryController {
     }
 
     //Delete Expense Category
-    @DeleteMapping("/delete/{roleId}/{id}")
-    public ResponseEntity<Void> deleteExpenseCategory(@PathVariable String roleId, @PathVariable Long id){
+    @DeleteMapping("/delete/{userId}/{id}")
+    public ResponseEntity<Void> deleteExpenseCategory(@PathVariable String userId, @PathVariable Long id){
         try{
-            boolean deletedExpenseCategory = expenseCategoryService.deleteExpenseCategory(roleId, id);
+            boolean deletedExpenseCategory = expenseCategoryService.deleteExpenseCategory(userId, id);
 
             if(deletedExpenseCategory){
                 return ResponseEntity.noContent().build();

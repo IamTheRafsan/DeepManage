@@ -29,8 +29,8 @@ public class SaleService {
     }
     
     //Create new sale
-    public Sale createSale(String roleId, SaleDto dto){
-        if(!roleAuthorization.hasCreateSalePermission(roleId)){
+    public Sale createSale(String userId, SaleDto dto){
+        if(!roleAuthorization.hasCreateSalePermission(userId)){
             throw new SecurityException("User does not have permission to create sale.");
         }
         else{
@@ -63,8 +63,8 @@ public class SaleService {
     }
 
     //View sale data
-    public List<Sale> getAllSale(String roleId){
-        if(!roleAuthorization.hasViewSalePermission(roleId)){
+    public List<Sale> getAllSale(String userId){
+        if(!roleAuthorization.hasViewSalePermission(userId)){
             throw new SecurityException("User does not have the permission to view sale");
         }
         else{
@@ -73,8 +73,8 @@ public class SaleService {
     }
 
     //View sale by id
-    public Optional<Sale> getSaleById(String roleId, Long id){
-        if(!roleAuthorization.hasViewSalePermission(roleId)){
+    public Optional<Sale> getSaleById(String userId, Long id){
+        if(!roleAuthorization.hasViewSalePermission(userId)){
             throw new SecurityException("User does not have the permission to view sale.");
         }
         else{
@@ -83,9 +83,9 @@ public class SaleService {
     }
 
     //Update sale
-    public Sale updateSale(String roleId, Long id, SaleUpdateDto dto){
+    public Sale updateSale(String userId, Long id, SaleUpdateDto dto){
 
-        if(!roleAuthorization.hasUpdateSalePermission(roleId)){
+        if(!roleAuthorization.hasUpdateSalePermission(userId)){
             throw new SecurityException("User does not have the permission to update sale");
         }
         else{
@@ -120,8 +120,8 @@ public class SaleService {
     }
 
     //Delete Sale
-    public Boolean deleteSale(String roleId, Long id){
-        if(!roleAuthorization.hasDeleteSalePermission(roleId)){
+    public Boolean deleteSale(String userId, Long id){
+        if(!roleAuthorization.hasDeleteSalePermission(userId)){
             throw new SecurityException("User do not have the permission to delete Sale");
         }
         else{
