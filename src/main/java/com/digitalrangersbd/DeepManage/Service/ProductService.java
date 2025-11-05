@@ -6,6 +6,7 @@ import com.digitalrangersbd.DeepManage.Dto.ProductUpdateDto;
 import com.digitalrangersbd.DeepManage.Entity.Brand;
 import com.digitalrangersbd.DeepManage.Entity.Category;
 import com.digitalrangersbd.DeepManage.Entity.Product;
+import com.digitalrangersbd.DeepManage.JWT.UserContext;
 import com.digitalrangersbd.DeepManage.Repository.BrandRepository;
 import com.digitalrangersbd.DeepManage.Repository.CategoryRepository;
 import com.digitalrangersbd.DeepManage.Repository.ProductRepository;
@@ -32,7 +33,9 @@ public class ProductService {
     }
 
     //Create new product
-    public Product createProduct(String userId, ProductDto dto){
+    public Product createProduct(ProductDto dto){
+
+        String userId = UserContext.getUserId();
 
         if(!roleAuthorization.hasCreateProductPermission(userId)){
             throw new SecurityException("User do not have the permission to create product");
@@ -75,7 +78,9 @@ public class ProductService {
     }
 
     //Get All Products
-    public List<Product> getAllProduct(String userId){
+    public List<Product> getAllProduct(){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasViewProductPermission(userId)){
             throw new SecurityException("User does not have permission to view products.");
         }
@@ -85,7 +90,9 @@ public class ProductService {
     }
 
     //Get products by id
-    public Optional<Product> getProductById(String userId, Long id){
+    public Optional<Product> getProductById(Long id){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasViewProductPermission(userId)){
             throw new SecurityException("User does not have permission to view products.");
         }
@@ -95,7 +102,9 @@ public class ProductService {
     }
 
     //Update product
-    public Product updateProduct(String userId, Long id, ProductUpdateDto dto){
+    public Product updateProduct(Long id, ProductUpdateDto dto){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasUpdateProductPermission(userId)){
             throw new SecurityException("User does not have the permission to update product.");
         }
@@ -137,8 +146,9 @@ public class ProductService {
     }
 
     //Delete Product
-    public boolean deleteProduct(String userId, Long id){
+    public boolean deleteProduct(Long id){
 
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasDeleteProductPermission(userId)){
             throw new SecurityException("User does not have the permission to delete product.");
         }

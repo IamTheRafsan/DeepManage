@@ -28,10 +28,10 @@ public class StockAdjustmentController {
 
 
     //create new stock adjustment
-    @PostMapping("/add/{userId}")
-    public ResponseEntity<StockAdjustment> createStockAdjustment(@PathVariable String userId, @Valid @RequestBody StockAdjustmentDto dto){
+    @PostMapping("/add")
+    public ResponseEntity<StockAdjustment> createStockAdjustment(@Valid @RequestBody StockAdjustmentDto dto){
         try{
-            StockAdjustment stockAdjustment = stockAdjustmentService.createStockAdjustment(userId, dto);
+            StockAdjustment stockAdjustment = stockAdjustmentService.createStockAdjustment(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(stockAdjustment);
         }
         catch(SecurityException e) {
@@ -46,10 +46,10 @@ public class StockAdjustmentController {
     }
 
     //get all stock adjustment
-    @GetMapping("/view/{userId}")
-    public ResponseEntity<List<StockAdjustment>> getAllStockAdjustment(@PathVariable String userId){
+    @GetMapping("/view")
+    public ResponseEntity<List<StockAdjustment>> getAllStockAdjustment(){
         try{
-            return ResponseEntity.ok(stockAdjustmentService.getAllStockAdjustment(userId));
+            return ResponseEntity.ok(stockAdjustmentService.getAllStockAdjustment());
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -64,10 +64,10 @@ public class StockAdjustmentController {
     }
 
     //Get Stock adjustment by id
-    @GetMapping("/view/{userId}/{id}")
-    public ResponseEntity<StockAdjustment> getStockAdjustmentById(@PathVariable String userId, @PathVariable Long id){
+    @GetMapping("/view/{id}")
+    public ResponseEntity<StockAdjustment> getStockAdjustmentById(@PathVariable Long id){
         try{
-            return ResponseEntity.of(stockAdjustmentService.getStockAdjustmentById(userId, id));
+            return ResponseEntity.of(stockAdjustmentService.getStockAdjustmentById(id));
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -81,10 +81,10 @@ public class StockAdjustmentController {
     }
 
     //Update Stock Adjustment
-    @PutMapping("/update/{userId}/{id}")
-    public ResponseEntity<StockAdjustment> updateStockAdjustment(@PathVariable String userId, @PathVariable Long id, @Valid @RequestBody StockAdjustmentUpdateDto dto){
+    @PutMapping("/update/{id}")
+    public ResponseEntity<StockAdjustment> updateStockAdjustment(@PathVariable Long id, @Valid @RequestBody StockAdjustmentUpdateDto dto){
         try{
-            StockAdjustment updatedStockAdjustment = stockAdjustmentService.updateStockAdjustment(userId, id, dto);
+            StockAdjustment updatedStockAdjustment = stockAdjustmentService.updateStockAdjustment(id, dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(updatedStockAdjustment);
         }
         catch(SecurityException e) {
@@ -99,10 +99,10 @@ public class StockAdjustmentController {
     }
 
     //Delete Stock adjustment
-    @DeleteMapping("/delete/{userId}/{id}")
-    public ResponseEntity<Boolean> deleteStockAdjustment(@PathVariable String userId, @PathVariable Long id){
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Boolean> deleteStockAdjustment(@PathVariable Long id){
         try{
-            Boolean deleteStockAdjustment = stockAdjustmentService.deleteStockAdjustment(userId, id);
+            Boolean deleteStockAdjustment = stockAdjustmentService.deleteStockAdjustment(id);
 
             if(deleteStockAdjustment){
                 return ResponseEntity.noContent().build();

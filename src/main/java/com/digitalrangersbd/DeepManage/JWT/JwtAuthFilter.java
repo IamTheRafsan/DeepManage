@@ -1,5 +1,6 @@
 package com.digitalrangersbd.DeepManage.JWT;
 
+import com.digitalrangersbd.DeepManage.Controller.UserController;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,22 +27,31 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        String authHeader = request.getHeader("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        try{
+            String authHeader =  request.getHeader("Authorization");
+            if(authHeader != null && authHeader.startsWith("Bearer ")){
+                String token = authHeader.substring(7);
+
+                if(jwtService.isTokenValid(token)){
+                    String username = jwtService.extractUsername(token);
+                    String userId = jwtService.extractUserId(token);
+
+
+                    //Storing user id here from jwt token
+                    UserContext.setUserId(userId);
+
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, null, Collections.emptyList());
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            }
+
             filterChain.doFilter(request, response);
-            return;
-        }
 
-        String token = authHeader.substring(7);
-        if (jwtService.isTokenValid(token)) {
-            String username = jwtService.extractUsername(token);
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                    username, null, Collections.emptyList());
-            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        } finally {
+            UserContext.clear();
         }
-
-        filterChain.doFilter(request, response);
     }
 }
 

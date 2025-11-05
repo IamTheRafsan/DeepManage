@@ -8,6 +8,7 @@ import com.digitalrangersbd.DeepManage.Entity.Product;
 import com.digitalrangersbd.DeepManage.Entity.Purchase;
 import com.digitalrangersbd.DeepManage.Entity.StockAdjustItem;
 import com.digitalrangersbd.DeepManage.Entity.StockAdjustment;
+import com.digitalrangersbd.DeepManage.JWT.UserContext;
 import com.digitalrangersbd.DeepManage.Repository.ProductRepository;
 import com.digitalrangersbd.DeepManage.Repository.StockAdjustItemRepository;
 import com.digitalrangersbd.DeepManage.Repository.StockAdjustmentRepository;
@@ -32,8 +33,9 @@ public class StockAdjustmentService {
     }
 
     //Create new stock adjustment
-    public StockAdjustment createStockAdjustment(String userId, StockAdjustmentDto dto)
+    public StockAdjustment createStockAdjustment(StockAdjustmentDto dto)
     {
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasCreateStockAdjustmentPermission(userId)){
             throw new SecurityException("User does not have the permission to adjust stock");
         }
@@ -66,7 +68,9 @@ public class StockAdjustmentService {
     }
 
     //Get all Stock adjustment
-    public List<StockAdjustment> getAllStockAdjustment(String userId){
+    public List<StockAdjustment> getAllStockAdjustment(){
+
+        String userId = UserContext.getUserId();
         if (!roleAuthorization.hasViewStockAdjustmentPermission(userId)) {
             throw new SecurityException("User does not have the permission to view Stock adjustment");
         }
@@ -76,7 +80,9 @@ public class StockAdjustmentService {
     }
 
     //Get stock adjustment by id
-    public Optional<StockAdjustment> getStockAdjustmentById(String userId, Long id){
+    public Optional<StockAdjustment> getStockAdjustmentById(Long id){
+
+        String userId = UserContext.getUserId();
         if (!roleAuthorization.hasViewStockAdjustmentPermission(userId)) {
             throw new SecurityException("User does not have the permission to view stock adjustment");
         }
@@ -86,8 +92,9 @@ public class StockAdjustmentService {
     }
 
     //update stock adjustment
-    public StockAdjustment updateStockAdjustment(String userId,Long id,  StockAdjustmentUpdateDto dto)
+    public StockAdjustment updateStockAdjustment(Long id,  StockAdjustmentUpdateDto dto)
     {
+        String userId = UserContext.getUserId();
         if (!roleAuthorization.hasUpdateStockAdjustmentPermission(userId)) {
             throw new SecurityException("User does not have the permission to update stock adjustment");
         }
@@ -124,7 +131,10 @@ public class StockAdjustmentService {
     }
 
     //Delete Stock Adjustment
-    public Boolean deleteStockAdjustment(String userId, Long id){
+    public Boolean deleteStockAdjustment(Long id){
+
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasDeleteStockAdjustmentPermission(userId)){
             throw new SecurityException("User does not have the permission to delete Stock Adjustment");
         }

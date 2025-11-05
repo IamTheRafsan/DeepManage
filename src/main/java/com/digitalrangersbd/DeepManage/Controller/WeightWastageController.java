@@ -26,11 +26,11 @@ public class WeightWastageController {
     }
 
     //Create new weight wastage controller
-    @PostMapping("/add/{userId}")
-    public ResponseEntity<WeightWastage> createWeightWastage(@PathVariable String userId, @Valid @RequestBody WeightWastageDto dto){
+    @PostMapping("/add")
+    public ResponseEntity<WeightWastage> createWeightWastage(@Valid @RequestBody WeightWastageDto dto){
 
         try{
-            WeightWastage weightWastage = weightWastageService.createWeightWastage(userId, dto);
+            WeightWastage weightWastage = weightWastageService.createWeightWastage(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(weightWastage);
         }
         catch(SecurityException e) {
@@ -46,10 +46,10 @@ public class WeightWastageController {
     }
 
     //View weight wastage
-    @GetMapping("/view/{userId}")
-    public ResponseEntity<List<WeightWastage>> getAllWeightWastage(@PathVariable String userId){
+    @GetMapping("/view")
+    public ResponseEntity<List<WeightWastage>> getAllWeightWastage(){
         try{
-            return ResponseEntity.ok(weightWastageService.getAllWeightWastage(userId));
+            return ResponseEntity.ok(weightWastageService.getAllWeightWastage());
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -63,10 +63,10 @@ public class WeightWastageController {
     }
 
     //View weight wastage by id
-    @GetMapping("/view/{userId}/{id}")
-    public ResponseEntity<WeightWastage> getWeightWastageById(@PathVariable String userId, @PathVariable Long id){
+    @GetMapping("/view/{id}")
+    public ResponseEntity<WeightWastage> getWeightWastageById(@PathVariable Long id){
         try{
-            return ResponseEntity.of(weightWastageService.getWeightWastageById(userId, id));
+            return ResponseEntity.of(weightWastageService.getWeightWastageById(id));
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -80,10 +80,10 @@ public class WeightWastageController {
     }
 
     //Upate weight wastage
-    @PutMapping("/update/{userId}/{id}")
-    public ResponseEntity<WeightWastage> updateWeightWastage(@PathVariable String userId, @PathVariable Long id, @Valid @RequestBody WeightWastageUpdateDto dto){
+    @PutMapping("/update/{id}")
+    public ResponseEntity<WeightWastage> updateWeightWastage(@PathVariable Long id, @Valid @RequestBody WeightWastageUpdateDto dto){
         try {
-            WeightWastage updatedWeightWastage = weightWastageService.updateWeightWastage(userId, id, dto);
+            WeightWastage updatedWeightWastage = weightWastageService.updateWeightWastage(id, dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(updatedWeightWastage);
         }
         catch(SecurityException e) {
@@ -98,11 +98,11 @@ public class WeightWastageController {
     }
 
     //Delele Weight wastage entry
-    @DeleteMapping("/delete/{userId}/{id}")
-    public ResponseEntity<Void> deleteWeigthWastage(@PathVariable String userId, @PathVariable Long id){
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteWeigthWastage(@PathVariable Long id){
 
         try{
-            Boolean deletedWeightWastage = weightWastageService.deleteWeightWastage(userId, id);
+            Boolean deletedWeightWastage = weightWastageService.deleteWeightWastage(id);
             if(deletedWeightWastage)
             {
                 return ResponseEntity.noContent().build();
@@ -121,7 +121,4 @@ public class WeightWastageController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
-
-
 }

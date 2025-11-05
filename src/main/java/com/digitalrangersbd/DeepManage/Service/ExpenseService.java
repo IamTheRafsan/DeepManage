@@ -5,6 +5,7 @@ import com.digitalrangersbd.DeepManage.Dto.ExpenseDto;
 import com.digitalrangersbd.DeepManage.Dto.ExpenseUpdateDto;
 import com.digitalrangersbd.DeepManage.Dto.OutletDto;
 import com.digitalrangersbd.DeepManage.Entity.*;
+import com.digitalrangersbd.DeepManage.JWT.UserContext;
 import com.digitalrangersbd.DeepManage.Repository.*;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +36,9 @@ public class ExpenseService {
     }
 
     //Create new expense
-    public Expense createExpense(String userId, ExpenseDto dto){
+    public Expense createExpense(ExpenseDto dto){
 
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasCreateExpensePermission(userId)){
             throw new SecurityException("User does not have the persmission to create expense.");
         }
@@ -92,7 +94,9 @@ public class ExpenseService {
     }
 
     //View all expense
-    public List<Expense> getAllExpense(String userId){
+    public List<Expense> getAllExpense(){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasViewExpensePermission(userId)){
             throw new SecurityException("User does not have the persmission to view expense.");
         }
@@ -102,7 +106,9 @@ public class ExpenseService {
     }
 
     //View expense by id
-    public Optional<Expense> getExpenseById(String userId, Long id){
+    public Optional<Expense> getExpenseById(Long id){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasViewExpensePermission(userId)){
             throw new SecurityException("User does not have the persmission to view expense.");
         }
@@ -112,7 +118,9 @@ public class ExpenseService {
     }
 
     //Update expense
-    public Expense updateExpense(String userId, Long id, ExpenseUpdateDto dto){
+    public Expense updateExpense(Long id, ExpenseUpdateDto dto){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasUpdateExpensePermission(userId)){
             throw new SecurityException("User does not have the persmission to update expense.");
         }
@@ -147,7 +155,9 @@ public class ExpenseService {
     }
 
     //Delete expense
-    public Boolean deleteExpense(String userId, Long id){
+    public Boolean deleteExpense(Long id){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasDeleteExpensePermission(userId)){
             throw new SecurityException("User does not have the persmission to delete expense.");
         }

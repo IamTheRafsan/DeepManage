@@ -6,6 +6,7 @@ import com.digitalrangersbd.DeepManage.Dto.SaleUpdateDto;
 import com.digitalrangersbd.DeepManage.Entity.Product;
 import com.digitalrangersbd.DeepManage.Entity.Sale;
 import com.digitalrangersbd.DeepManage.Entity.SaleItem;
+import com.digitalrangersbd.DeepManage.JWT.UserContext;
 import com.digitalrangersbd.DeepManage.Repository.ProductRepository;
 import com.digitalrangersbd.DeepManage.Repository.SaleRepository;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,9 @@ public class SaleService {
     }
     
     //Create new sale
-    public Sale createSale(String userId, SaleDto dto){
+    public Sale createSale(SaleDto dto){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasCreateSalePermission(userId)){
             throw new SecurityException("User does not have permission to create sale.");
         }
@@ -63,7 +66,9 @@ public class SaleService {
     }
 
     //View sale data
-    public List<Sale> getAllSale(String userId){
+    public List<Sale> getAllSale(){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasViewSalePermission(userId)){
             throw new SecurityException("User does not have the permission to view sale");
         }
@@ -73,7 +78,9 @@ public class SaleService {
     }
 
     //View sale by id
-    public Optional<Sale> getSaleById(String userId, Long id){
+    public Optional<Sale> getSaleById(Long id){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasViewSalePermission(userId)){
             throw new SecurityException("User does not have the permission to view sale.");
         }
@@ -83,8 +90,9 @@ public class SaleService {
     }
 
     //Update sale
-    public Sale updateSale(String userId, Long id, SaleUpdateDto dto){
+    public Sale updateSale(Long id, SaleUpdateDto dto){
 
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasUpdateSalePermission(userId)){
             throw new SecurityException("User does not have the permission to update sale");
         }
@@ -120,7 +128,9 @@ public class SaleService {
     }
 
     //Delete Sale
-    public Boolean deleteSale(String userId, Long id){
+    public Boolean deleteSale(Long id){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasDeleteSalePermission(userId)){
             throw new SecurityException("User do not have the permission to delete Sale");
         }

@@ -3,6 +3,7 @@ package com.digitalrangersbd.DeepManage.Service;
 import com.digitalrangersbd.DeepManage.Authorization.RoleAuthorization;
 import com.digitalrangersbd.DeepManage.Dto.PaymentTypeDto;
 import com.digitalrangersbd.DeepManage.Entity.PaymentType;
+import com.digitalrangersbd.DeepManage.JWT.UserContext;
 import com.digitalrangersbd.DeepManage.Repository.PaymentTypeRepository;
 import org.apache.catalina.LifecycleState;
 import org.springframework.stereotype.Service;
@@ -23,8 +24,9 @@ public class PaymentTypeService {
     }
 
     //Create Payment Type
-    public PaymentType createPaymentType(String userId, PaymentTypeDto dto){
+    public PaymentType createPaymentType(PaymentTypeDto dto){
 
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasCreatePaymentTypePermission(userId)){
             throw new SecurityException("User do not have the permission to create payment");
         }
@@ -42,7 +44,9 @@ public class PaymentTypeService {
     }
 
     //Get Payment type
-    public List<PaymentType> getAllPaymentType(String userId){
+    public List<PaymentType> getAllPaymentType(){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasViewPaymentTypePermission(userId)){
             throw new SecurityException("User do not have the permission to view payment");
         }
@@ -52,8 +56,9 @@ public class PaymentTypeService {
     }
 
     //Delete Payment
-    public Boolean deletePayment(String userId, Long id){
+    public Boolean deletePayment(Long id){
 
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasDeletePaymentTypePermission(userId)){
             throw new SecurityException("User do not have the permission to delete payment");
         }

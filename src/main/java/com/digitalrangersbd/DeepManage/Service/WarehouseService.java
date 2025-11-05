@@ -4,6 +4,7 @@ import com.digitalrangersbd.DeepManage.Authorization.RoleAuthorization;
 import com.digitalrangersbd.DeepManage.Dto.WarehouseDto;
 import com.digitalrangersbd.DeepManage.Dto.WarehouseUpdateDto;
 import com.digitalrangersbd.DeepManage.Entity.Warehouse;
+import com.digitalrangersbd.DeepManage.JWT.UserContext;
 import com.digitalrangersbd.DeepManage.Repository.RoleRepository;
 import com.digitalrangersbd.DeepManage.Repository.WarehouseRepository;
 import org.springframework.stereotype.Service;
@@ -26,8 +27,9 @@ public class WarehouseService {
     }
 
     //Create new warehouse
-    public Warehouse createWarehouse(String userId, WarehouseDto dto){
+    public Warehouse createWarehouse(WarehouseDto dto){
 
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasCreateWarehousePermission(userId)){
             throw new SecurityException("User does not have permission to create warehouse");
         }
@@ -53,7 +55,9 @@ public class WarehouseService {
     }
 
     //Get warehouse date
-    public List<Warehouse> getWarehouse(String userId){
+    public List<Warehouse> getWarehouse(){
+
+        String userId = UserContext.getUserId();
 
         if(!roleAuthorization.hasViewWarehousePermission(userId)){
             throw new SecurityException("User does not have permission to view warehouse");
@@ -64,8 +68,9 @@ public class WarehouseService {
     }
 
     //Get warehouse by id
-    public Optional<Warehouse> getWarehouseById(String userId, Long id){
+    public Optional<Warehouse> getWarehouseById(Long id){
 
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasViewWarehousePermission(userId)){
             throw new SecurityException("User does not have permission to view warehouse");
         }
@@ -75,8 +80,9 @@ public class WarehouseService {
     }
 
     //Update warehouse
-    public Warehouse updateWarehouse(String userId, Long id, WarehouseUpdateDto dto){
+    public Warehouse updateWarehouse(Long id, WarehouseUpdateDto dto){
 
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasUpdateWarehousePermission(userId)){
             throw new SecurityException("User does not have the permission to update warehouse");
         }
@@ -103,8 +109,9 @@ public class WarehouseService {
     }
 
     //Delete warehouse
-    public Boolean deleteWarehouse(String userId, Long id){
+    public Boolean deleteWarehouse(Long id){
 
+        String userId = UserContext.getUserId();
         if (!roleAuthorization.hasDeleteWarehousePermission(userId)){
             throw new SecurityException("User does not have the permission to delete warehouse");
         }

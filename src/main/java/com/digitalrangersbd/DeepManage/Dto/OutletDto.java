@@ -1,10 +1,13 @@
 package com.digitalrangersbd.DeepManage.Dto;
 
+import com.digitalrangersbd.DeepManage.Entity.Warehouse;
 import com.digitalrangersbd.DeepManage.Enum.ActiveStatus;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -12,6 +15,8 @@ import java.time.LocalTime;
 
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class OutletDto {
 
     private Long id;
@@ -24,7 +29,7 @@ public class OutletDto {
     @Email
     private String email;
 
-    @NotNull
+    //@NotNull
     private Number mobile;
 
     private String country;
@@ -37,6 +42,8 @@ public class OutletDto {
     @NotNull(message = "Outlet cannot be empty")
     private ActiveStatus status;
 
+    private Long warehouse_id;
+
     private LocalDate created_date;
 
     private LocalTime created_time;
@@ -45,15 +52,5 @@ public class OutletDto {
 
     private LocalTime updated_time;
 
-    public OutletDto(){}
 
-    public OutletDto(String name, String email, Number mobile, String country, String city, String area, ActiveStatus status){
-        this.name = name;
-        this.email = email;
-        this.mobile = mobile;
-        this.country = country;
-        this.city = city;
-        this.area = area;
-        this.status = status;
-    }
 }

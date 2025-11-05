@@ -22,10 +22,10 @@ public class SaleController {
     }
 
     //Create new Sale
-    @PostMapping("/add/{userId}")
-    public ResponseEntity<Sale> createSale(@PathVariable String userId, @Valid @RequestBody SaleDto dto){
+    @PostMapping("/add")
+    public ResponseEntity<Sale> createSale(@Valid @RequestBody SaleDto dto){
         try{
-            Sale sale = saleService.createSale(userId, dto);
+            Sale sale = saleService.createSale(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(sale);
         }
         catch(SecurityException e) {
@@ -40,10 +40,10 @@ public class SaleController {
     }
 
     //View all Sale
-    @GetMapping("/view/{userId}")
-    public ResponseEntity<List<Sale>> getAllSale(@PathVariable String userId){
+    @GetMapping("/view")
+    public ResponseEntity<List<Sale>> getAllSale(){
         try {
-            return ResponseEntity.ok(saleService.getAllSale(userId));
+            return ResponseEntity.ok(saleService.getAllSale());
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -57,10 +57,10 @@ public class SaleController {
     }
 
     //View sale by id
-    @GetMapping("/view/{userId}/{id}")
-    public ResponseEntity<Sale> getSaleById(@PathVariable String userId,@PathVariable Long id){
+    @GetMapping("/view/{id}")
+    public ResponseEntity<Sale> getSaleById(@PathVariable Long id){
         try{
-            return ResponseEntity.of(saleService.getSaleById(userId, id));
+            return ResponseEntity.of(saleService.getSaleById(id));
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -74,10 +74,10 @@ public class SaleController {
     }
 
     //Update Sale
-    @PutMapping("/update/{userId}/{id}")
-    public ResponseEntity<Sale> updateSale(@PathVariable String userId, @PathVariable Long id, @Valid @RequestBody SaleUpdateDto dto){
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Sale> updateSale(@PathVariable Long id, @Valid @RequestBody SaleUpdateDto dto){
         try{
-            Sale updatedSale = saleService.updateSale(userId, id, dto);
+            Sale updatedSale = saleService.updateSale(id, dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(updatedSale);
         }
         catch(SecurityException e) {
@@ -92,10 +92,10 @@ public class SaleController {
     }
 
     //Delete Sale
-    @DeleteMapping("/delete/{userId}/{id}")
-    public ResponseEntity<Boolean> deleteSale(@PathVariable String userId, @PathVariable Long id){
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Boolean> deleteSale(@PathVariable Long id){
         try{
-            Boolean deletedSale = saleService.deleteSale(userId, id);
+            Boolean deletedSale = saleService.deleteSale(id);
 
             if(deletedSale){
                 return ResponseEntity.noContent().build();

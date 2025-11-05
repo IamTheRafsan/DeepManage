@@ -32,7 +32,7 @@ public class LoginService {
                 throw new RuntimeException("Password does not match");
             }
 
-            String token = jwtService.generateToken(user.getUser_id());
+            String token = jwtService.generateToken(user.getEmail(), user.getUser_id());
 
             return token;
         }

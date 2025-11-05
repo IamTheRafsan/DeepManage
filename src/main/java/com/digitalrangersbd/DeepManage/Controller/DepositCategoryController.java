@@ -22,11 +22,11 @@ public class DepositCategoryController {
     }
 
     //Create new diposit category
-    @PostMapping("/add/{userId}")
-    public ResponseEntity<DepositCategory> createDepositCategory(@PathVariable String userId, @Valid @RequestBody DepositCategoryDto dto){
+    @PostMapping("/add")
+    public ResponseEntity<DepositCategory> createDepositCategory(@Valid @RequestBody DepositCategoryDto dto){
 
         try{
-            DepositCategory dipositCategory = dipositCategoryService.createDepositCategory(userId, dto);
+            DepositCategory dipositCategory = dipositCategoryService.createDepositCategory(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(dipositCategory);
         }catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -39,11 +39,11 @@ public class DepositCategoryController {
 
 
     //View all diposit category
-    @GetMapping("/view/{userId}")
-    public ResponseEntity<List<DepositCategory>> getDepositCategory(@PathVariable String userId){
+    @GetMapping("/view")
+    public ResponseEntity<List<DepositCategory>> getDepositCategory(){
 
         try{
-            return ResponseEntity.ok(dipositCategoryService.getDepositCategory(userId));
+            return ResponseEntity.ok(dipositCategoryService.getDepositCategory());
         }catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -53,11 +53,11 @@ public class DepositCategoryController {
     }
 
     //View Deposit category by id
-    @GetMapping("/view/{userId}/{id}")
-    public ResponseEntity<DepositCategory> getDepositCategoryById(@PathVariable String userId, @PathVariable Long id){
+    @GetMapping("/view/{id}")
+    public ResponseEntity<DepositCategory> getDepositCategoryById(@PathVariable Long id){
 
         try{
-            return ResponseEntity.of(dipositCategoryService.getDepositCategoryById(userId,id));
+            return ResponseEntity.of(dipositCategoryService.getDepositCategoryById(id));
         }catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -67,11 +67,11 @@ public class DepositCategoryController {
     }
 
     //Update diposit category
-    @PutMapping("/update/{userId}/{id}")
-    public ResponseEntity<DepositCategory> updateDepositCategory(@PathVariable String userId, @PathVariable Long id, @Valid @RequestBody DepositCategoryUpdateDto dto){
+    @PutMapping("/update/{id}")
+    public ResponseEntity<DepositCategory> updateDepositCategory(@PathVariable Long id, @Valid @RequestBody DepositCategoryUpdateDto dto){
 
         try{
-            DepositCategory dipositCategory = dipositCategoryService.updateDepositCategory(userId, id, dto);
+            DepositCategory dipositCategory = dipositCategoryService.updateDepositCategory(id, dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(dipositCategory);
         } catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -81,10 +81,10 @@ public class DepositCategoryController {
     }
 
     //Delete Deposit Category
-    @DeleteMapping("/delete/{userId}/{id}")
-    public ResponseEntity<Void> deleteDepositCategory(@PathVariable String userId, @PathVariable Long id){
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteDepositCategory(@PathVariable Long id){
         try{
-            boolean deletedDepositCategory = dipositCategoryService.deleteDepositCategory(userId, id);
+            boolean deletedDepositCategory = dipositCategoryService.deleteDepositCategory(id);
 
             if(deletedDepositCategory){
                 return ResponseEntity.noContent().build();

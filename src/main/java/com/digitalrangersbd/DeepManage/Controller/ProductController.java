@@ -25,11 +25,11 @@ public class ProductController {
     }
 
     //Create new product
-    @PostMapping("/add/{userId}")
-    public ResponseEntity<Product> createProduct(@PathVariable String userId, @Valid @RequestBody ProductDto dto){
+    @PostMapping("/add")
+    public ResponseEntity<Product> createProduct(@Valid @RequestBody ProductDto dto){
 
         try{
-            Product createdProduct = productService.createProduct(userId, dto);
+            Product createdProduct = productService.createProduct(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
         } catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -39,10 +39,10 @@ public class ProductController {
     }
 
     //Get all products
-    @GetMapping("/view/{userId}")
-    public ResponseEntity<List<Product>> getAllProduct(@PathVariable String userId){
+    @GetMapping("/view")
+    public ResponseEntity<List<Product>> getAllProduct(){
         try {
-            return ResponseEntity.ok(productService.getAllProduct(userId));
+            return ResponseEntity.ok(productService.getAllProduct());
         }
         catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -53,10 +53,10 @@ public class ProductController {
     }
 
     //Get Products by id
-    @GetMapping("/view/{userId}/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable String userId, @PathVariable Long id){
+    @GetMapping("/view/{id}")
+    public ResponseEntity<Product> getProductById(@PathVariable Long id){
         try{
-            return ResponseEntity.of(productService.getProductById(userId, id));
+            return ResponseEntity.of(productService.getProductById(id));
         }catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -66,11 +66,11 @@ public class ProductController {
     }
 
     //Update Product
-    @PutMapping("/update/{userId}/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable String userId, @PathVariable Long id, @RequestBody ProductUpdateDto dto){
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody ProductUpdateDto dto){
 
         try{
-            Product updatedProduct = productService.updateProduct(userId, id, dto);
+            Product updatedProduct = productService.updateProduct(id, dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(updatedProduct);
         }catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -82,11 +82,11 @@ public class ProductController {
     }
 
     //Delete Product
-    @DeleteMapping("/delete/{userId}/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable String userId, @PathVariable Long id){
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id){
 
         try{
-            boolean deletedProduct = productService.deleteProduct(userId,id);
+            boolean deletedProduct = productService.deleteProduct(id);
             return ResponseEntity.noContent().build();
         } catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

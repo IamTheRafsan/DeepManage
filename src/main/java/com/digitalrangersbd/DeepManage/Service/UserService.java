@@ -3,9 +3,15 @@ package com.digitalrangersbd.DeepManage.Service;
 import com.digitalrangersbd.DeepManage.Authorization.RoleAuthorization;
 import com.digitalrangersbd.DeepManage.Dto.UserDto;
 import com.digitalrangersbd.DeepManage.Dto.UserUpdateDto;
+import com.digitalrangersbd.DeepManage.Entity.Outlet;
+import com.digitalrangersbd.DeepManage.Entity.Role;
 import com.digitalrangersbd.DeepManage.Entity.User;
+import com.digitalrangersbd.DeepManage.Entity.Warehouse;
+import com.digitalrangersbd.DeepManage.JWT.UserContext;
+import com.digitalrangersbd.DeepManage.Repository.OutletRepository;
 import com.digitalrangersbd.DeepManage.Repository.RoleRepository;
 import com.digitalrangersbd.DeepManage.Repository.UserRepository;
+import com.digitalrangersbd.DeepManage.Repository.WarehouseRepository;
 import jdk.dynalink.linker.LinkerServices;
 import org.springframework.expression.spel.ast.OpAnd;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,8 +20,10 @@ import org.springframework.stereotype.Service;
 import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -26,18 +34,25 @@ public class UserService {
 
     private final RoleRepository roleRepository;
 
+    private final WarehouseRepository warehouseRepository;
+
+    private final OutletRepository outletRepository;
+
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, RoleAuthorization roleAuthorization, RoleRepository roleRepository, PasswordEncoder passwordEncoder){
+    public UserService(UserRepository userRepository, RoleAuthorization roleAuthorization, RoleRepository roleRepository, WarehouseRepository warehouseRepository, OutletRepository outletRepository, PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
         this.roleAuthorization = roleAuthorization;
         this.roleRepository = roleRepository;
+        this.warehouseRepository = warehouseRepository;
+        this.outletRepository = outletRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     //Create a user in the database
-    public User createUser(String userId, UserDto dto){
+    public User createUser(UserDto dto){
 
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasCreateUserPermission(userId)){
             throw new SecurityException("User does not have permission to create users");
         }
@@ -47,31 +62,51 @@ public class UserService {
         if (userRepository.existsByMobile(dto.getMobile())) {
             throw new RuntimeException("Mobile already exists: " + dto.getMobile());
         }
-        if (!roleRepository.existsById(dto.getRole_id())) {
-            throw new RuntimeException("Role id does not exist: " + dto.getRole_id());
-        }
-//        if (!roleRepository.existsByName(dto.getRole_name())) {
-//            throw new RuntimeException("Role name does not exist: " + dto.getRole_name());
-//        }
+
         else{
             User user = new User();
 
             user.setFirstName(dto.getFirstName());
             user.setLastName(dto.getLastName());
             user.setEmail(dto.getEmail());
-            user.setRole_id(dto.getRole_id());
-            user.setRole_name(dto.getRole_name());
             user.setGender(dto.getGender());
             user.setMobile(dto.getMobile());
             user.setCountry(dto.getCountry());
             user.setCity(dto.getCity());
             user.setAddress(dto.getAddress());
-            user.setWarehouse_id(dto.getWarehouse_id());
-            user.setWarehouse_name(dto.getWarehouse_name());
 
             //Put the password in database after encryption
             String encodedPassword = passwordEncoder.encode(dto.getPassword());
             user.setPassword(encodedPassword);
+
+
+            //Getting the roles for user
+            Set<Role> roleSet = new HashSet<>();
+            for(String roleId : dto.getRole_id()){
+                Role role = roleRepository.findById(roleId)
+                        .orElseThrow(() -> new RuntimeException("Role not found"));
+                roleSet.add(role);
+            }
+            user.setRole(roleSet);
+
+            //Getting the warehouse for user
+            Set<Warehouse> warehouseSet = new HashSet<>();
+            for(Long warehouseId : dto.getWarehouse()){
+                Warehouse warehouse = warehouseRepository.findById(warehouseId)
+                        .orElseThrow(() -> new RuntimeException("Warehouse not found"));
+                warehouseSet.add(warehouse);
+            }
+            user.setWarehouse(warehouseSet);
+
+            //Getting the outlet for users
+            Set<Outlet> outletSet = new HashSet<>();
+            for(Long outletId: dto.getOutlet()){
+                Outlet outlet = outletRepository.findById(outletId)
+                        .orElseThrow(() -> new RuntimeException("Outlet not found"));
+                outletSet.add(outlet);
+            }
+            user.setOutlet(outletSet);
+
 
             user.setCreated_date(LocalDate.now());
             user.setCreated_time(LocalTime.now());
@@ -84,7 +119,9 @@ public class UserService {
     }
 
     //Get all users
-    public List<User> getAllUser(String userId){
+    public List<User> getAllUser(){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasViewUserPermission(userId)){
             throw new SecurityException("User does not have permission to view users");
         }
@@ -94,7 +131,9 @@ public class UserService {
     }
 
     //Get Users by id
-    public Optional<User> getUserById(String userId, String id){
+    public Optional<User> getUserById(String id){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasViewUserPermission(userId)){
             throw new SecurityException("User does not have permission to view users");
         }
@@ -104,7 +143,9 @@ public class UserService {
     }
 
     //Update user
-    public User updateUser(String userId, String id, UserUpdateDto dto){
+    public User updateUser(String id, UserUpdateDto dto){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasUpdateUserPermission(userId)){
             throw new SecurityException("User does not have permission to update users");
         }
@@ -114,12 +155,6 @@ public class UserService {
         if (userRepository.existsByMobile(dto.getMobile())) {
             throw new RuntimeException("Mobile already exists: " + dto.getMobile());
         }
-        if (!roleRepository.existsById(dto.getRole_id())) {
-            throw new RuntimeException("Role id does not exist: " + dto.getRole_id());
-        }
-//        if (!roleRepository.existsByName(dto.getRole_name())) {
-//            throw new RuntimeException("Role name does not exist: " + dto.getRole_name());
-//        }
         else{
             return userRepository.findById(id)
                     .map(user -> {
@@ -127,15 +162,52 @@ public class UserService {
                         if(dto.getLastName() != null) user.setLastName(dto.getLastName());
                         if(dto.getEmail() != null) user.setEmail(dto.getEmail());
                         if(dto.getPassword() != null) user.setPassword(dto.getPassword());
-                        if(dto.getRole_id() != null) user.setRole_id(dto.getRole_id());
-                        if(dto.getRole_name() != null) user.setRole_name(dto.getRole_name());
                         if(dto.getGender() != null) user.setGender(dto.getGender());
                         if(dto.getMobile() != null) user.setMobile(dto.getMobile());
                         if(dto.getCountry() != null) user.setCountry(dto.getCountry());
                         if(dto.getCity() != null) user.setCity(dto.getCity());
                         if(dto.getAddress() != null) user.setAddress(dto.getAddress());
-                        if(dto.getWarehouse_id() != null) user.setWarehouse_id(dto.getWarehouse_id());
-                        if(dto.getWarehouse_name() != null) user.setWarehouse_name(dto.getWarehouse_name());
+
+                        //Encode password
+                        if (dto.getPassword() != null) {
+                            String encodedPassword = passwordEncoder.encode(dto.getPassword());
+                            user.setPassword(encodedPassword);
+                        }
+
+                        //Update the roles
+                        if (dto.getRole_id() != null && !dto.getRole_id().isEmpty()) {
+                            Set<Role> roleSet = new HashSet<>();
+                            for (String roleId : dto.getRole_id()) {
+                                Role role = roleRepository.findById(roleId)
+                                        .orElseThrow(() -> new RuntimeException("Role not found: " + roleId));
+                                roleSet.add(role);
+                            }
+                            user.setRole(roleSet);
+                        }
+
+                        //Update the warehosue
+                        if(dto.getWarehouse() != null && !dto.getWarehouse().isEmpty()){
+                            Set<Warehouse> warehouseSet = new HashSet<>();
+
+                            for(Long warehouseId : dto.getWarehouse()){
+                                Warehouse warehouse = warehouseRepository.findById(warehouseId)
+                                        .orElseThrow(() -> new RuntimeException("Warehouse not found"+ warehouseId));
+                                warehouseSet.add(warehouse);
+                            }
+                            user.setWarehouse(warehouseSet);
+                        }
+
+                        //Update the outlets
+                        if(dto.getOutlet() != null && !dto.getOutlet().isEmpty()){
+                            Set<Outlet> outletSet = new HashSet<>();
+
+                            for(Long outletId : dto.getOutlet()){
+                                Outlet outlet = outletRepository.findById(outletId)
+                                        .orElseThrow(() -> new RuntimeException("Outlet not found"+ outletId));
+                                outletSet.add(outlet);
+                            }
+                            user.setOutlet(outletSet);
+                        }
 
                         user.setUpdated_date(LocalDate.now());
                         user.setUpdated_time(LocalTime.now());
@@ -149,8 +221,9 @@ public class UserService {
 
 
     //Delete user
-    public boolean deleteUser(String userId, String id){
+    public boolean deleteUser(String id){
 
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasDeleteUserPermission(userId)){
             throw new SecurityException("User does not have permission to delete users");
         }

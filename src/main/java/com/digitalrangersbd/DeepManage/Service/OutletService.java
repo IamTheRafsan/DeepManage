@@ -7,7 +7,9 @@ import com.digitalrangersbd.DeepManage.Dto.WarehouseDto;
 import com.digitalrangersbd.DeepManage.Dto.WarehouseUpdateDto;
 import com.digitalrangersbd.DeepManage.Entity.Outlet;
 import com.digitalrangersbd.DeepManage.Entity.Warehouse;
+import com.digitalrangersbd.DeepManage.JWT.UserContext;
 import com.digitalrangersbd.DeepManage.Repository.OutletRepository;
+import com.digitalrangersbd.DeepManage.Repository.WarehouseRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -19,16 +21,19 @@ import java.util.Optional;
 public class OutletService {
 
     private final OutletRepository outletRepository;
+    private final WarehouseRepository warehouseRepository;
     private final RoleAuthorization roleAuthorization;
 
-    public OutletService(OutletRepository outletRepository, RoleAuthorization roleAuthorization) {
+    public OutletService(OutletRepository outletRepository, WarehouseRepository warehouseRepository, RoleAuthorization roleAuthorization) {
         this.outletRepository = outletRepository;
+        this.warehouseRepository = warehouseRepository;
         this.roleAuthorization = roleAuthorization;
     }
 
     //Create outlet
-    public Outlet createOutlet(String userId, OutletDto dto){
+    public Outlet createOutlet(OutletDto dto){
 
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasCreateOutletPermission(userId)){
             throw new SecurityException("User does not have permission to create outlet");
         }
@@ -42,6 +47,11 @@ public class OutletService {
             outlet.setCity(dto.getCity());
             outlet.setArea(dto.getArea());
             outlet.setStatus(dto.getStatus());
+            if(dto.getWarehouse_id() != null){
+                Warehouse warehouse = warehouseRepository.findById(dto.getWarehouse_id())
+                        .orElseThrow(() -> new RuntimeException("Warehouse not found"));
+                outlet.setWarehouse(warehouse);
+            }
 
             outlet.setCreated_date(LocalDate.now());
             outlet.setCreated_time(LocalTime.now());
@@ -54,8 +64,9 @@ public class OutletService {
     }
 
     //View outlet
-    public List<Outlet> getOutlet(String userId){
+    public List<Outlet> getOutlet(){
 
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasViewOutletPermission(userId)){
             throw new SecurityException("User does not have permission to view outlet");
         }
@@ -65,8 +76,9 @@ public class OutletService {
     }
 
     //View outlet by id
-    public Optional<Outlet> getOutletById(String userId, Long id){
+    public Optional<Outlet> getOutletById(Long id){
 
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasViewOutletPermission(userId)){
             throw new SecurityException("User does not have permission to view outlet");
         }
@@ -76,8 +88,9 @@ public class OutletService {
     }
 
     //Update Outlet
-    public Outlet updateOutlet(String userId, Long id, OutletUpdateDto dto){
+    public Outlet updateOutlet(Long id, OutletUpdateDto dto){
 
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasUpdateOutletPermission(userId)){
             throw new RuntimeException("User does not have the permission to update outlet");
         }
@@ -92,6 +105,11 @@ public class OutletService {
                         if(dto.getCity() != null) outlet.setCity(dto.getCity());
                         if(dto.getArea() != null) outlet.setArea(dto.getArea());
                         if(dto.getStatus() != null) outlet.setStatus(dto.getStatus());
+                        if(dto.getWarehouse_id() != null){
+                            Warehouse warehouse = warehouseRepository.findById(dto.getWarehouse_id())
+                                    .orElseThrow(() -> new RuntimeException("Warehouse not found"));
+                            outlet.setWarehouse(warehouse);
+                        }
 
                         outlet.setUpdated_date(LocalDate.now());
                         outlet.setUpdated_time(LocalTime.now());
@@ -104,8 +122,9 @@ public class OutletService {
     }
 
     //Delete Outlet
-    public Boolean deleteOutlet(String userId, Long id){
+    public Boolean deleteOutlet(Long id){
 
+        String userId = UserContext.getUserId();
         if (!roleAuthorization.hasDeleteOutletPermission(userId)){
             throw new RuntimeException("User does not have the permission to delete outlet");
         }

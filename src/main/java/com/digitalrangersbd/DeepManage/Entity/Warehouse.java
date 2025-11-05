@@ -3,25 +3,31 @@ package com.digitalrangersbd.DeepManage.Entity;
 import com.digitalrangersbd.DeepManage.Enum.ActiveStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "warehouse")
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Warehouse {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column()
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
@@ -43,6 +49,14 @@ public class Warehouse {
     private ActiveStatus status;
 
     @JsonIgnore
+    @ManyToMany(mappedBy = "warehouse", fetch = FetchType.LAZY)
+    private Set<User> user = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Outlet> outlet = new ArrayList<>();
+
+    @JsonIgnore
     @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Purchase> purchases = new ArrayList<>();
 
@@ -62,17 +76,6 @@ public class Warehouse {
     @Column
     private LocalTime updated_time;
 
-    public Warehouse(){}
-
-    public Warehouse(String name, String email, Number mobile, String country, String city, String area, ActiveStatus status){
-        this.name = name;
-        this.email = email;
-        this.mobile = mobile;
-        this.country = country;
-        this.city = city;
-        this.area = area;
-        this.status = status;
-    }
 
 
 

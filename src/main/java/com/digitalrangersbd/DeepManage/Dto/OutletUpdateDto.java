@@ -1,9 +1,12 @@
 package com.digitalrangersbd.DeepManage.Dto;
 
 import com.digitalrangersbd.DeepManage.Enum.ActiveStatus;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -11,28 +14,34 @@ import java.time.LocalTime;
 
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class OutletUpdateDto {
+
     private Long id;
 
-    @NotNull(message = "Name cannot be blank")
+    //@NotNull(message = "Name cannot be blank")
     @Size(min = 2, max = 200, message = "Outlet name should be more than 2 letters and less than 200")
     private String name;
 
-    @NotNull
+    //@NotNull
+    @Email
     private String email;
 
-    @NotNull
+    //@NotNull
     private Number mobile;
 
     private String country;
 
     private String city;
 
-    @NotNull(message = "Outlet must have and area")
+    //@NotNull(message = "Outlet must have and area")
     private String area;
 
-    @NotNull(message = "Outlet cannot be empty")
+    //@NotNull(message = "Outlet cannot be empty")
     private ActiveStatus status;
+
+    private Long warehouse_id;
 
     private LocalDate created_date;
 
@@ -42,15 +51,4 @@ public class OutletUpdateDto {
 
     private LocalTime updated_time;
 
-    public OutletUpdateDto(){}
-
-    public OutletUpdateDto(String name, String email, Number mobile, String country, String city, String area, ActiveStatus status){
-        this.name = name;
-        this.email = email;
-        this.mobile = mobile;
-        this.country = country;
-        this.city = city;
-        this.area = area;
-        this.status = status;
-    }
 }

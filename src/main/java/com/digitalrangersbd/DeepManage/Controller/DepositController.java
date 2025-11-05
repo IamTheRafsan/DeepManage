@@ -23,10 +23,10 @@ public class DepositController {
     }
 
     //Create new deposit
-    @PostMapping("/add/{roleId}")
-    public ResponseEntity<Deposit> createDeposit(@PathVariable String roleId, @Valid @RequestBody DepositDto dto){
+    @PostMapping("/add")
+    public ResponseEntity<Deposit> createDeposit(@Valid @RequestBody DepositDto dto){
         try{
-            Deposit createdDeposit = depositService.createDeposit(roleId, dto);
+            Deposit createdDeposit = depositService.createDeposit(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdDeposit);
         }catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -38,10 +38,10 @@ public class DepositController {
     }
 
     //View all deposit
-    @GetMapping("/view/{roleId}")
-    public ResponseEntity<List<Deposit>> getAllDeposit(@PathVariable String roleId){
+    @GetMapping("/view")
+    public ResponseEntity<List<Deposit>> getAllDeposit(){
         try{
-            return ResponseEntity.ok(depositService.getAllDeposit(roleId));
+            return ResponseEntity.ok(depositService.getAllDeposit());
         }catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -51,10 +51,10 @@ public class DepositController {
     }
 
     //View deposit by id
-    @GetMapping("/view/{userId}/{id}")
-    public ResponseEntity<Deposit> getDepositById(@PathVariable String roleId, @PathVariable Long id){
+    @GetMapping("/view/{id}")
+    public ResponseEntity<Deposit> getDepositById(@PathVariable Long id){
         try{
-            return ResponseEntity.of(depositService.getDepositById(roleId, id));
+            return ResponseEntity.of(depositService.getDepositById(id));
         }catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -64,11 +64,11 @@ public class DepositController {
     }
 
     //Update deposit
-    @PutMapping("/update/{roleId}/{id}")
-    public ResponseEntity<Deposit> updateDeposit(@PathVariable String roleId, @PathVariable Long id, @Valid @RequestBody DepositUpdateDto dto){
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Deposit> updateDeposit(@PathVariable Long id, @Valid @RequestBody DepositUpdateDto dto){
 
         try{
-            Deposit updatedDeposit = depositService.updateDeposit(roleId, id, dto);
+            Deposit updatedDeposit = depositService.updateDeposit(id, dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(updatedDeposit);
         } catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -78,10 +78,10 @@ public class DepositController {
     }
 
     //Delete Deposit
-    @DeleteMapping("/delete/{roleId}/{id}")
-    public ResponseEntity<Void> deleteDeposit(@PathVariable String roleId, @PathVariable Long id){
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteDeposit(@PathVariable Long id){
         try{
-            boolean deletedDeposit = depositService.deleteDeposit(roleId, id);
+            boolean deletedDeposit = depositService.deleteDeposit(id);
 
             if(deletedDeposit){
                 return ResponseEntity.noContent().build();

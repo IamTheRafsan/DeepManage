@@ -6,6 +6,7 @@ import com.digitalrangersbd.DeepManage.Dto.DepositCategoryDto;
 import com.digitalrangersbd.DeepManage.Dto.DepositCategoryUpdateDto;
 import com.digitalrangersbd.DeepManage.Entity.DepositCategory;
 import com.digitalrangersbd.DeepManage.Entity.DepositCategory;
+import com.digitalrangersbd.DeepManage.JWT.UserContext;
 import com.digitalrangersbd.DeepManage.Repository.DepositCategoryRepository;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,9 @@ public class DepositCategoryService {
 
 
     //Create Deposit Category
-    public DepositCategory createDepositCategory(String userId, DepositCategoryDto dto){
+    public DepositCategory createDepositCategory(DepositCategoryDto dto){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasCreateDepositCategoryPermission(userId)){
             throw new SecurityException("User does not have the permission to create deposit category");
         }
@@ -45,7 +48,9 @@ public class DepositCategoryService {
     }
 
     //View deposit category
-    public List<DepositCategory> getDepositCategory(String userId){
+    public List<DepositCategory> getDepositCategory(){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasViewDepositCategoryPermission(userId)){
             throw new SecurityException("User does not have the permission to view deposit category");
         }
@@ -55,7 +60,9 @@ public class DepositCategoryService {
     }
 
     //View deposit category by id
-    public Optional<DepositCategory> getDepositCategoryById(String userId, Long id){
+    public Optional<DepositCategory> getDepositCategoryById(Long id){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasViewDepositCategoryPermission(userId)){
             throw new SecurityException("User does not have the permission to view deposit category");
         }
@@ -70,7 +77,9 @@ public class DepositCategoryService {
     }
 
     //Update Deposit Category
-    public DepositCategory updateDepositCategory(String userId, Long id, DepositCategoryUpdateDto dto){
+    public DepositCategory updateDepositCategory(Long id, DepositCategoryUpdateDto dto){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasUpdateDepositCategoryPermission(userId)){
             throw new SecurityException("User does not have the permission to update deposit category");
         }
@@ -88,7 +97,9 @@ public class DepositCategoryService {
     }
 
     //Delete Deposit Category
-    public Boolean deleteDepositCategory(String userId, Long id){
+    public Boolean deleteDepositCategory(Long id){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasDeleteDepositCategoryPermission(userId)){
             throw new SecurityException("User does not have the permission to delete deposit category");
         }

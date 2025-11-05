@@ -5,6 +5,7 @@ import com.digitalrangersbd.DeepManage.Dto.WeightLessDto;
 import com.digitalrangersbd.DeepManage.Dto.WeightLessItemDto;
 import com.digitalrangersbd.DeepManage.Dto.WeightLessUpdateDto;
 import com.digitalrangersbd.DeepManage.Entity.*;
+import com.digitalrangersbd.DeepManage.JWT.UserContext;
 import com.digitalrangersbd.DeepManage.Repository.*;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,9 @@ public class WeightLessService {
     }
 
     //Create Weight Less
-    public WeightLess createWeightLess(String userId, WeightLessDto dto) {
+    public WeightLess createWeightLess(WeightLessDto dto) {
+
+        String userId = UserContext.getUserId();
         if (!roleAuthorization.hasCreateWeightLessPermission(userId)) {
             throw new SecurityException("User does not have the permission to create weightless record");
         }
@@ -75,7 +78,9 @@ public class WeightLessService {
     }
 
     //View all weight less
-    public List<WeightLess> getAllWeightLess(String userId){
+    public List<WeightLess> getAllWeightLess(){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasViewWeightLessPermission(userId)){
             throw new SecurityException("User does not have the permission to view weightless.");
         }
@@ -85,7 +90,9 @@ public class WeightLessService {
     }
 
     //View weight less by id
-    public Optional<WeightLess> getWeightLessById(String userId, Long id){
+    public Optional<WeightLess> getWeightLessById(Long id){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasViewWeightLessPermission(userId)){
             throw new SecurityException("User does not have the permission to view weightless.");
         }
@@ -95,7 +102,9 @@ public class WeightLessService {
     }
 
     //Update weight less
-    public WeightLess updateWeightLess(String userId, Long id, WeightLessUpdateDto dto){
+    public WeightLess updateWeightLess(Long id, WeightLessUpdateDto dto){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasUpdateWeightlessPermission(userId)){
             throw new SecurityException("User does not have the permission to update weight less");
         }
@@ -133,8 +142,9 @@ public class WeightLessService {
     }
 
     //Delete Weight less
-    public Boolean deleteWeightLess(String userId, Long id){
+    public Boolean deleteWeightLess(Long id){
 
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasDeleteWeightLessPermission(userId)){
             throw new SecurityException("User does not have the permission to delete weight less entry.");
         }

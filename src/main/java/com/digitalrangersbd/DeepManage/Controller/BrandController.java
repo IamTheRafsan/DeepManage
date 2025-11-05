@@ -22,11 +22,11 @@ public class BrandController {
     }
 
     //Create new brand
-    @PostMapping("/add/{userId}")
-    public ResponseEntity<Brand> createBrand(@PathVariable String userId, @Valid @RequestBody BrandDto dto){
+    @PostMapping("/add")
+    public ResponseEntity<Brand> createBrand(@Valid @RequestBody BrandDto dto){
 
         try{
-            Brand createdBrand = brandService.createBrand(userId, dto);
+            Brand createdBrand = brandService.createBrand(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdBrand);
         }catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -39,11 +39,11 @@ public class BrandController {
 
 
     //View all brand
-    @GetMapping("/view/{userId}")
-    public ResponseEntity<List<Brand>> getBrand(@PathVariable String userId){
+    @GetMapping("/view")
+    public ResponseEntity<List<Brand>> getBrand(){
 
         try{
-            return ResponseEntity.ok(brandService.getBrand(userId));
+            return ResponseEntity.ok(brandService.getBrand());
         }catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -53,11 +53,11 @@ public class BrandController {
     }
 
     //View brand by id
-    @GetMapping("/view/{userId}/{id}")
-    public ResponseEntity<Brand> getBrandById(@PathVariable String userId, @PathVariable Long id){
+    @GetMapping("/view/{id}")
+    public ResponseEntity<Brand> getBrandById(@PathVariable Long id){
 
         try{
-            return ResponseEntity.of(brandService.getBrandById(userId,id));
+            return ResponseEntity.of(brandService.getBrandById(id));
         }catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -67,11 +67,11 @@ public class BrandController {
     }
 
     //Update brand
-    @PutMapping("/update/{userId}/{id}")
-    public ResponseEntity<Brand> updateBrand(@PathVariable String userId, @PathVariable Long id, @Valid @RequestBody BrandUpdateDto dto){
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Brand> updateBrand(@PathVariable Long id, @Valid @RequestBody BrandUpdateDto dto){
 
         try{
-            Brand updatedBrand = brandService.updateBrand(userId, id, dto);
+            Brand updatedBrand = brandService.updateBrand(id, dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(updatedBrand);
         } catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -81,10 +81,10 @@ public class BrandController {
     }
 
     //Delete Brand
-    @DeleteMapping("/delete/{userId}/{id}")
-    public ResponseEntity<Void> deleteBrand(@PathVariable String userId, @PathVariable Long id){
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteBrand(@PathVariable Long id){
         try{
-            boolean deletedBrand = brandService.deleteBrand(userId, id);
+            boolean deletedBrand = brandService.deleteBrand(id);
 
             if(deletedBrand){
                 return ResponseEntity.noContent().build();

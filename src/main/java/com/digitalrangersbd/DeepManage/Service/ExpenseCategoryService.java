@@ -4,6 +4,7 @@ import com.digitalrangersbd.DeepManage.Authorization.RoleAuthorization;
 import com.digitalrangersbd.DeepManage.Dto.ExpenseCategoryDto;
 import com.digitalrangersbd.DeepManage.Dto.ExpenseCategoryUpdateDto;
 import com.digitalrangersbd.DeepManage.Entity.ExpenseCategory;
+import com.digitalrangersbd.DeepManage.JWT.UserContext;
 import com.digitalrangersbd.DeepManage.Repository.ExpenseCategoryRepository;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,9 @@ public class ExpenseCategoryService {
     }
 
     //Create Expense Category
-    public ExpenseCategory createExpenseCategory(String userId, ExpenseCategoryDto dto){
+    public ExpenseCategory createExpenseCategory(ExpenseCategoryDto dto){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasCreateExpenseCategoryPermission(userId)){
             throw new SecurityException("User does not have the permission to create expense category");
         }
@@ -41,7 +44,9 @@ public class ExpenseCategoryService {
     }
 
     //View expense category
-    public List<ExpenseCategory> getExpenseCategory(String userId){
+    public List<ExpenseCategory> getExpenseCategory(){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasViewExpenseCategoryPermission(userId)){
             throw new SecurityException("User does not have the permission to view expense category");
         }
@@ -51,7 +56,9 @@ public class ExpenseCategoryService {
     }
 
     //View expense category by id
-    public Optional<ExpenseCategory> getExpenseCategoryById(String userId, Long id){
+    public Optional<ExpenseCategory> getExpenseCategoryById(Long id){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasViewExpenseCategoryPermission(userId)){
             throw new SecurityException("User does not have the permission to view expense category");
         }
@@ -66,7 +73,9 @@ public class ExpenseCategoryService {
     }
 
     //Update Expense Category
-    public ExpenseCategory updateExpenseCategory(String userId, Long id, ExpenseCategoryUpdateDto dto){
+    public ExpenseCategory updateExpenseCategory(Long id, ExpenseCategoryUpdateDto dto){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasUpdateExpenseCategoryPermission(userId)){
             throw new SecurityException("User does not have the permission to update expense category");
         }
@@ -84,7 +93,9 @@ public class ExpenseCategoryService {
     }
 
     //Delete Expense Category
-    public Boolean deleteExpenseCategory(String userId, Long id){
+    public Boolean deleteExpenseCategory(Long id){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasDeleteExpenseCategoryPermission(userId)){
             throw new SecurityException("User does not have the permission to delete expense category");
         }

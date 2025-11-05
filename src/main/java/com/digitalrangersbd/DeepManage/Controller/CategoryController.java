@@ -23,11 +23,11 @@ public class CategoryController {
     }
 
     //Create new category
-    @PostMapping("/add/{userId}")
-    public ResponseEntity<Category> createCategory(@PathVariable String userId, @Valid @RequestBody CategoryDto dto){
+    @PostMapping("/add")
+    public ResponseEntity<Category> createCategory(@Valid @RequestBody CategoryDto dto){
 
         try{
-            Category createdCategory = categoryService.createCategory(userId, dto);
+            Category createdCategory = categoryService.createCategory(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdCategory);
         }catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -40,11 +40,11 @@ public class CategoryController {
 
 
     //View all category
-    @GetMapping("/view/{userId}")
-    public ResponseEntity<List<Category>> getCategory(@PathVariable String userId){
+    @GetMapping("/view")
+    public ResponseEntity<List<Category>> getCategory(){
 
         try{
-            return ResponseEntity.ok(categoryService.getCategory(userId));
+            return ResponseEntity.ok(categoryService.getCategory());
         }catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -54,11 +54,11 @@ public class CategoryController {
     }
 
     //View category by id
-    @GetMapping("/view/{userId}/{id}")
-    public ResponseEntity<Category> getCategoryById(@PathVariable String userId, @PathVariable Long id){
+    @GetMapping("/view/{id}")
+    public ResponseEntity<Category> getCategoryById(@PathVariable Long id){
 
         try{
-            return ResponseEntity.of(categoryService.getCategoryById(userId,id));
+            return ResponseEntity.of(categoryService.getCategoryById(id));
         }catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -68,11 +68,11 @@ public class CategoryController {
     }
 
     //Update category
-    @PutMapping("/update/{userId}/{id}")
-    public ResponseEntity<Category> updateCategory(@PathVariable String userId, @PathVariable Long id, @Valid @RequestBody CategoryUpdateDto dto){
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Category> updateCategory(@PathVariable Long id, @Valid @RequestBody CategoryUpdateDto dto){
 
         try{
-            Category category = categoryService.updateCategory(userId, id, dto);
+            Category category = categoryService.updateCategory(id, dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(category);
         } catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -82,12 +82,12 @@ public class CategoryController {
     }
 
     //Delete Category
-    @DeleteMapping("/delete/{userId}/{id}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable String userId, @PathVariable Long id){
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteCategory(@PathVariable Long id){
 
 
         try{
-            boolean deletedCategory = categoryService.deleteCategory(userId,id);
+            boolean deletedCategory = categoryService.deleteCategory(id);
 
             if(deletedCategory){
                 return ResponseEntity.noContent().build();

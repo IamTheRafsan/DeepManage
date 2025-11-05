@@ -26,10 +26,10 @@ public class ExpenseController {
     }
 
     //Create new expense
-    @PostMapping("/add/{userId}")
-    public ResponseEntity<Expense> createExpense(@PathVariable String userId, @Valid @RequestBody ExpenseDto dto){
+    @PostMapping("/add")
+    public ResponseEntity<Expense> createExpense(@Valid @RequestBody ExpenseDto dto){
         try{
-            Expense createdExpense = expenseService.createExpense(userId, dto);
+            Expense createdExpense = expenseService.createExpense(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdExpense);
         }catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -41,10 +41,10 @@ public class ExpenseController {
     }
 
     //View all expense
-    @GetMapping("/view/{userId}")
-    public ResponseEntity<List<Expense>> getAllExpense(@PathVariable String userId){
+    @GetMapping("/view")
+    public ResponseEntity<List<Expense>> getAllExpense(){
         try{
-            return ResponseEntity.ok(expenseService.getAllExpense(userId));
+            return ResponseEntity.ok(expenseService.getAllExpense());
         }catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -54,10 +54,10 @@ public class ExpenseController {
     }
 
     //View expense by id
-    @GetMapping("/view/{userId}/{id}")
-    public ResponseEntity<Expense> getExpenseById(@PathVariable String userId, @PathVariable Long id){
+    @GetMapping("/view/{id}")
+    public ResponseEntity<Expense> getExpenseById(@PathVariable Long id){
         try{
-            return ResponseEntity.of(expenseService.getExpenseById(userId, id));
+            return ResponseEntity.of(expenseService.getExpenseById(id));
         }catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -67,11 +67,11 @@ public class ExpenseController {
     }
 
     //Update expense
-    @PutMapping("/update/{userId}/{id}")
-    public ResponseEntity<Expense> updateExpense(@PathVariable String userId, @PathVariable Long id, @Valid @RequestBody ExpenseUpdateDto dto){
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Expense> updateExpense(@PathVariable Long id, @Valid @RequestBody ExpenseUpdateDto dto){
 
         try{
-            Expense updatedExpense = expenseService.updateExpense(userId, id, dto);
+            Expense updatedExpense = expenseService.updateExpense(id, dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(updatedExpense);
         } catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -81,10 +81,10 @@ public class ExpenseController {
     }
 
     //Delete Expense
-    @DeleteMapping("/delete/{userId}/{id}")
-    public ResponseEntity<Void> deleteExpense(@PathVariable String userId, @PathVariable Long id){
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteExpense(@PathVariable Long id){
         try{
-            boolean deletedExpense = expenseService.deleteExpense(userId, id);
+            boolean deletedExpense = expenseService.deleteExpense(id);
 
             if(deletedExpense){
                 return ResponseEntity.noContent().build();

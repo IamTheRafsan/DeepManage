@@ -4,6 +4,7 @@ import com.digitalrangersbd.DeepManage.Authorization.RoleAuthorization;
 import com.digitalrangersbd.DeepManage.Dto.CategoryDto;
 import com.digitalrangersbd.DeepManage.Dto.CategoryUpdateDto;
 import com.digitalrangersbd.DeepManage.Entity.Category;
+import com.digitalrangersbd.DeepManage.JWT.UserContext;
 import com.digitalrangersbd.DeepManage.Repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +26,9 @@ public class CategoryService {
     }
 
     //Add new category
-    public Category createCategory(String userId, CategoryDto dto){
+    public Category createCategory(CategoryDto dto){
 
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasCreateCategoryPermission(userId)){
             throw new SecurityException("User does not have permission to create Category");
         }
@@ -54,7 +56,9 @@ public class CategoryService {
     }
 
     //Get category
-    public List<Category> getCategory(String userId){
+    public List<Category> getCategory(){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasViewCategoryPermission(userId)){
             throw new SecurityException("User does not have permission to view category");
         }
@@ -64,7 +68,9 @@ public class CategoryService {
     }
 
     //Get category by id
-    public Optional<Category> getCategoryById(String userId, Long id){
+    public Optional<Category> getCategoryById(Long id){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasViewCategoryPermission(userId)){
             throw new SecurityException("User does not have permission to view category");
         }
@@ -75,8 +81,9 @@ public class CategoryService {
 
 
     //Update Category
-    public Category updateCategory(String userId, Long id, CategoryUpdateDto dto){
+    public Category updateCategory(Long id, CategoryUpdateDto dto){
 
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasUpdateCategoryPermission(userId)){
             throw new SecurityException("User does not have permission to update category");
         }
@@ -106,7 +113,9 @@ public class CategoryService {
     }
 
     //Delete Category
-    public boolean deleteCategory(String userId, Long id){
+    public boolean deleteCategory(Long id){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasDeleteCategoryPermission(userId)){
             throw new SecurityException("User does not have permission to delete category");
         }

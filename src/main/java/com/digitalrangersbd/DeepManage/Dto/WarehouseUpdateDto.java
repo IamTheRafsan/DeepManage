@@ -17,24 +17,24 @@ public class WarehouseUpdateDto {
 
     private Long id;
 
-    @NotNull(message = "Name cannot be blank")
+    //@NotNull(message = "Name cannot be blank")
     @Size(min = 2, max = 200, message = "Warehouse name should be more than 2 letters and less than 200")
     private String name;
 
-    @NotNull
+    //@NotNull
     private String email;
 
-    @NotNull
+    //@NotNull
     private Number mobile;
 
     private String country;
 
     private String city;
 
-    @NotNull(message = "Warehouse must have and area")
+    //@NotNull(message = "Warehouse must have and area")
     private String area;
 
-    @NotNull(message = "Status cannot be empty")
+    //@NotNull(message = "Status cannot be empty")
     private ActiveStatus status;
 
     private LocalDate created_date;

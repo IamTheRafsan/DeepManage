@@ -12,19 +12,18 @@ import java.util.Set;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class RoleDto {
 
     private String role_id;
 
-    @NotBlank(message = "Role Name not found")
+    @NotNull(message = "Role Name not found")
     @Size(min = 2, max = 100, message = "Role name must be between 2 and 100 characters")
     private String name;
 
     @NotNull(message = "Role created by Id not found")
     private String created_by_id;
-
-    @NotNull(message = "Role created by name not found")
-    private String created_by_name;
 
     @NotNull(message = "No permission assigned to role")
     private Set<Permission> permission = new HashSet<>();
@@ -36,17 +35,6 @@ public class RoleDto {
     private LocalDate updated_date;
 
     private LocalTime updated_time;
-
-    public RoleDto(){}
-
-    public RoleDto(String name, String created_by_id, String created_by_name, Set<Permission> permission){
-
-        this.name = name;
-        this.created_by_id = created_by_id;
-        this.created_by_name = created_by_name;
-        this.permission = permission;
-
-    }
 
 
 

@@ -7,6 +7,7 @@ import com.digitalrangersbd.DeepManage.Dto.PurchaseUpdateDto;
 import com.digitalrangersbd.DeepManage.Entity.Product;
 import com.digitalrangersbd.DeepManage.Entity.Purchase;
 import com.digitalrangersbd.DeepManage.Entity.PurchaseItem;
+import com.digitalrangersbd.DeepManage.JWT.UserContext;
 import com.digitalrangersbd.DeepManage.Repository.ProductRepository;
 import com.digitalrangersbd.DeepManage.Repository.PurchaseRepository;
 import com.digitalrangersbd.DeepManage.Repository.WarehouseRepository;
@@ -34,7 +35,9 @@ public class PurchaseService {
     }
 
     //Create new Purchase
-    public Purchase createPurchase(String userId, PurchaseDto dto){
+    public Purchase createPurchase(PurchaseDto dto){
+
+        String userId = UserContext.getUserId();
 
         if (!roleAuthorization.hasCreatePurchasePermission(userId)) {
             throw new SecurityException("User does not have the permission to create purchase");
@@ -67,7 +70,9 @@ public class PurchaseService {
     }
 
     //Get all Purchase
-    public List<Purchase> getAllPurchase(String userId){
+    public List<Purchase> getAllPurchase(){
+
+        String userId = UserContext.getUserId();
         if (!roleAuthorization.hasViewPurchasePermission(userId)) {
             throw new SecurityException("User does not have the permission to view purchase");
         }
@@ -77,7 +82,9 @@ public class PurchaseService {
     }
 
     //Get purchase by id
-    public Optional<Purchase> getPurchaseById(String userId, Long id){
+    public Optional<Purchase> getPurchaseById(Long id){
+
+        String userId = UserContext.getUserId();
         if (!roleAuthorization.hasViewPurchasePermission(userId)) {
             throw new SecurityException("User does not have the permission to view purchase");
         }
@@ -87,8 +94,9 @@ public class PurchaseService {
     }
 
     //Update Purchase
-    public Purchase updatePurchase(String userId, Long id, PurchaseUpdateDto dto){
+    public Purchase updatePurchase(Long id, PurchaseUpdateDto dto){
 
+        String userId = UserContext.getUserId();
         if (!roleAuthorization.hasUpdatePurchasePermission(userId)) {
             throw new SecurityException("User does not have the permission to update purchase");
         }
@@ -124,7 +132,9 @@ public class PurchaseService {
     }
 
     //Delete Purchase
-    public Boolean deletePurchase(String userId, Long id){
+    public Boolean deletePurchase(Long id){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasDeletePurchasePermission(userId)){
             throw new SecurityException("User does not have the permission to delete purchase");
         }

@@ -40,7 +40,7 @@ public class RoleController {
     }
 
     //Get all roles
-    @GetMapping()
+    @GetMapping("/view")
     public ResponseEntity<List<Role>> getAllRoles(){
 
         try{
@@ -52,7 +52,7 @@ public class RoleController {
     }
 
     //Get roles by id
-    @GetMapping("/{id}")
+    @GetMapping("/view/{id}")
     public ResponseEntity<Role> getRolesById(@PathVariable String id){
 
         try{

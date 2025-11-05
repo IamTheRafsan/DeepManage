@@ -28,11 +28,11 @@ public class UserController {
 
 
     //Create a new user
-    @PostMapping("/add/{userId}")
-    public ResponseEntity<?> createUser(@PathVariable String userId,@Valid @RequestBody UserDto dto){
+    @PostMapping("/add")
+    public ResponseEntity<?> createUser(@Valid @RequestBody UserDto dto){
 
         try{
-            User createUser = userService.createUser(userId, dto);
+            User createUser = userService.createUser(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(createUser);
         }catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -42,10 +42,10 @@ public class UserController {
     }
 
     //Get all users
-    @GetMapping("/view/{userId}")
-    public ResponseEntity<List<User>> getAllUser(@PathVariable String userId){
+    @GetMapping("/view")
+    public ResponseEntity<List<User>> getAllUser(){
         try {
-            return ResponseEntity.ok(userService.getAllUser(userId));
+            return ResponseEntity.ok(userService.getAllUser());
         }catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -55,10 +55,10 @@ public class UserController {
     }
 
     //Get users by id
-    @GetMapping("/view/{userId}/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable String userId,@PathVariable String id){
+    @GetMapping("/view/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable String id){
         try {
-            return ResponseEntity.of(userService.getUserById(userId,id));
+            return ResponseEntity.of(userService.getUserById(id));
         }catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -68,11 +68,11 @@ public class UserController {
     }
 
     //Update User
-    @PutMapping("/update/{userId}/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable String userId, @PathVariable String id, @Valid @RequestBody UserUpdateDto dto){
+    @PutMapping("/update/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable String id, @Valid @RequestBody UserUpdateDto dto){
 
         try{
-            User updatedUser = userService.updateUser(userId, id, dto);
+            User updatedUser = userService.updateUser(id, dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(updatedUser);
         }catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -84,11 +84,11 @@ public class UserController {
 
 
     //Delete User
-    @DeleteMapping("/delete/{userId}/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable String userId, @PathVariable String id){
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable String id){
 
         try{
-            boolean deletedUser = userService.deleteUser(userId, id);
+            boolean deletedUser = userService.deleteUser(id);
             if(deletedUser){
                 return ResponseEntity.noContent().build();
             }

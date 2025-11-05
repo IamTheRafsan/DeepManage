@@ -22,11 +22,11 @@ public class  PaymentTypeController {
     }
 
     //Create new payment
-    @PostMapping("/add/{userId}")
-    public ResponseEntity<PaymentType> createPaymentType(@PathVariable String userId, @Valid @RequestBody PaymentTypeDto dto){
+    @PostMapping("/add")
+    public ResponseEntity<PaymentType> createPaymentType(@Valid @RequestBody PaymentTypeDto dto){
 
         try {
-            PaymentType createdPaymentType = paymentTypeService.createPaymentType(userId, dto);
+            PaymentType createdPaymentType = paymentTypeService.createPaymentType(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdPaymentType);
         }
         catch(SecurityException e) {
@@ -41,11 +41,11 @@ public class  PaymentTypeController {
     }
 
     //View Payment Type
-    @GetMapping("/view/{userId}")
-    public ResponseEntity<List<PaymentType>> getAllPaymentType(@PathVariable String userId){
+    @GetMapping("/view")
+    public ResponseEntity<List<PaymentType>> getAllPaymentType(){
 
         try{
-            return ResponseEntity.ok(paymentTypeService.getAllPaymentType(userId));
+            return ResponseEntity.ok(paymentTypeService.getAllPaymentType());
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -59,10 +59,10 @@ public class  PaymentTypeController {
     }
 
     //delete Payment Type
-    @DeleteMapping("/delete/{userId}/{id}")
-    public ResponseEntity<Boolean> deletePaymentType(@PathVariable String userId, @PathVariable Long id){
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Boolean> deletePaymentType(@PathVariable Long id){
         try{
-            Boolean deletedPaymentType = paymentTypeService.deletePayment(userId, id);
+            Boolean deletedPaymentType = paymentTypeService.deletePayment(id);
             if(deletedPaymentType){
                 return ResponseEntity.noContent().build();
             }

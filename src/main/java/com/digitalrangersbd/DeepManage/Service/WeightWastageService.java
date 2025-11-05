@@ -4,6 +4,7 @@ import com.digitalrangersbd.DeepManage.Authorization.RoleAuthorization;
 import com.digitalrangersbd.DeepManage.Dto.WeightWastageDto;
 import com.digitalrangersbd.DeepManage.Dto.WeightWastageUpdateDto;
 import com.digitalrangersbd.DeepManage.Entity.*;
+import com.digitalrangersbd.DeepManage.JWT.UserContext;
 import com.digitalrangersbd.DeepManage.Repository.*;
 import jdk.dynalink.linker.LinkerServices;
 import org.springframework.stereotype.Service;
@@ -33,8 +34,9 @@ public class WeightWastageService {
     }
 
     //Create new Weight Wastage
-    public WeightWastage createWeightWastage(String userId, WeightWastageDto dto){
+    public WeightWastage createWeightWastage(WeightWastageDto dto){
 
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasCreateWeightWastagePermission(userId)){
             throw new SecurityException("User does not have the permission to create weight wastage");
         }
@@ -74,7 +76,9 @@ public class WeightWastageService {
     }
 
     //View all weight wastage
-    public List<WeightWastage> getAllWeightWastage(String userId){
+    public List<WeightWastage> getAllWeightWastage(){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasViewWeightWastagePermission(userId)){
             throw new SecurityException("User does not have the permission to view weight wastage.");
         }
@@ -84,7 +88,9 @@ public class WeightWastageService {
     }
 
     //View weight wastage by id
-    public Optional<WeightWastage> getWeightWastageById(String userId, Long id){
+    public Optional<WeightWastage> getWeightWastageById(Long id){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasViewWeightWastagePermission(userId)){
             throw new SecurityException("User does not have the permission to view weight wastage.");
         }
@@ -94,7 +100,9 @@ public class WeightWastageService {
     }
 
     //Update weight wastage
-    public WeightWastage updateWeightWastage(String userId, Long id, WeightWastageUpdateDto dto){
+    public WeightWastage updateWeightWastage(Long id, WeightWastageUpdateDto dto){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasUpdateWeightWastagePermission(userId)){
             throw new SecurityException("User does not have the permission to update the weight wastage record");
         }
@@ -131,8 +139,9 @@ public class WeightWastageService {
     }
 
     //Delete Weight wastage
-    public Boolean deleteWeightWastage(String userId, Long id){
+    public Boolean deleteWeightWastage(Long id){
 
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasDeleteWeightWastagePermission(userId)){
             throw new SecurityException("User does not have the permission to delete weight wastage entry.");
         }

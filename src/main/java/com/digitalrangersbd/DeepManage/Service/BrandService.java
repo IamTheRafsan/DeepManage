@@ -4,6 +4,7 @@ import com.digitalrangersbd.DeepManage.Authorization.RoleAuthorization;
 import com.digitalrangersbd.DeepManage.Dto.BrandDto;
 import com.digitalrangersbd.DeepManage.Dto.BrandUpdateDto;
 import com.digitalrangersbd.DeepManage.Entity.Brand;
+import com.digitalrangersbd.DeepManage.JWT.UserContext;
 import com.digitalrangersbd.DeepManage.Repository.BrandRepository;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +25,9 @@ public class BrandService {
     }
 
     //Add new brand
-    public Brand createBrand(String userId, BrandDto dto){
+    public Brand createBrand(BrandDto dto){
 
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasCreateBrandPermission(userId)){
             throw new SecurityException("User does not have permission to create Brand");
         }
@@ -53,7 +55,9 @@ public class BrandService {
     }
 
     //Get brand
-    public List<Brand> getBrand(String userId){
+    public List<Brand> getBrand(){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasViewBrandPermission(userId)){
             throw new SecurityException("User does not have permission to view brand");
         }
@@ -63,7 +67,9 @@ public class BrandService {
     }
 
     //Get brand by id
-    public Optional<Brand> getBrandById(String userId, Long id){
+    public Optional<Brand> getBrandById(Long id){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasViewBrandPermission(userId)){
             throw new SecurityException("User does not have permission to view Brand");
         }
@@ -74,8 +80,9 @@ public class BrandService {
 
 
     //Update Brand
-    public Brand updateBrand(String userId, Long id, BrandUpdateDto dto){
+    public Brand updateBrand(Long id, BrandUpdateDto dto){
 
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasUpdateBrandPermission(userId)){
             throw new SecurityException("User does not have permission to update Brand");
         }
@@ -105,7 +112,9 @@ public class BrandService {
     }
 
     //Delete Brand
-    public boolean deleteBrand(String userId, Long id){
+    public boolean deleteBrand(Long id){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasDeleteBrandPermission(userId)){
             throw new SecurityException("User does not have permission to delete brand");
         }

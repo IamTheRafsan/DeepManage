@@ -25,11 +25,11 @@ public class OutletController {
 
 
     //Create new Outlet
-    @PostMapping("/add/{userId}")
-    public ResponseEntity<Outlet> createOutlet(@PathVariable String userId, @Valid @RequestBody OutletDto dto){
+    @PostMapping("/add")
+    public ResponseEntity<Outlet> createOutlet(@Valid @RequestBody OutletDto dto){
 
         try {
-            Outlet createdOutlet = outletService.createOutlet(userId, dto);
+            Outlet createdOutlet = outletService.createOutlet(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdOutlet);
         }
         catch(SecurityException e) {
@@ -44,11 +44,11 @@ public class OutletController {
     }
 
     //View outlet
-    @GetMapping("/view/{userId}")
-    public ResponseEntity<List<Outlet>> getOutlet(@PathVariable String userId){
+    @GetMapping("/view")
+    public ResponseEntity<List<Outlet>> getOutlet(){
 
         try{
-            return ResponseEntity.ok(outletService.getOutlet(userId));
+            return ResponseEntity.ok(outletService.getOutlet());
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -62,11 +62,11 @@ public class OutletController {
     }
 
     //View outlet by id
-    @GetMapping("/view/{userId}/{id}")
-    public ResponseEntity<Outlet> getOutletById(@PathVariable String userId, @PathVariable Long id){
+    @GetMapping("/view/{id}")
+    public ResponseEntity<Outlet> getOutletById(@PathVariable Long id){
 
         try{
-            return ResponseEntity.of(outletService.getOutletById(userId, id));
+            return ResponseEntity.of(outletService.getOutletById(id));
         }
         catch(SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -80,10 +80,10 @@ public class OutletController {
     }
 
     //Update outlet date
-    @PutMapping("/update/{userId}/{id}")
-    public ResponseEntity<Outlet> updateOutlet(@PathVariable String userId, @PathVariable Long id, @Valid @RequestBody OutletUpdateDto dto){
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Outlet> updateOutlet(@PathVariable Long id, @Valid @RequestBody OutletUpdateDto dto){
         try{
-            Outlet updatedOutlet = outletService.updateOutlet(userId, id, dto);
+            Outlet updatedOutlet = outletService.updateOutlet(id, dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(updatedOutlet);
         }
         catch(SecurityException e) {
@@ -98,10 +98,10 @@ public class OutletController {
     }
 
     //Delete Outlet
-    @DeleteMapping("/delete/{userId}/{id}")
-    public ResponseEntity<Void> deleteOutlet(@PathVariable String userId, @PathVariable Long id){
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteOutlet(@PathVariable Long id){
         try{
-            boolean deletedOutlet = outletService.deleteOutlet(userId, id);
+            boolean deletedOutlet = outletService.deleteOutlet(id);
 
             if(deletedOutlet){
                 return ResponseEntity.noContent().build();

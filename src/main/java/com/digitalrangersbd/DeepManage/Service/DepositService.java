@@ -4,6 +4,7 @@ import com.digitalrangersbd.DeepManage.Authorization.RoleAuthorization;
 import com.digitalrangersbd.DeepManage.Dto.DepositDto;
 import com.digitalrangersbd.DeepManage.Dto.DepositUpdateDto;
 import com.digitalrangersbd.DeepManage.Entity.*;
+import com.digitalrangersbd.DeepManage.JWT.UserContext;
 import com.digitalrangersbd.DeepManage.Repository.*;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +36,9 @@ public class DepositService {
 
 
     //Create new deposit
-    public Deposit createDeposit(String userId, DepositDto dto){
+    public Deposit createDeposit(DepositDto dto){
 
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasCreateDepositPermission(userId)){
             throw new SecurityException("User does not have the persmission to create deposit.");
         }
@@ -92,7 +94,9 @@ public class DepositService {
     }
 
     //View all deposit
-    public List<Deposit> getAllDeposit(String userId){
+    public List<Deposit> getAllDeposit(){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasViewDepositPermission(userId)){
             throw new SecurityException("User does not have the persmission to view deposit.");
         }
@@ -102,7 +106,9 @@ public class DepositService {
     }
 
     //View deposit by id
-    public Optional<Deposit> getDepositById(String userId, Long id){
+    public Optional<Deposit> getDepositById(Long id){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasViewDepositPermission(userId)){
             throw new SecurityException("User does not have the persmission to view deposit.");
         }
@@ -112,7 +118,9 @@ public class DepositService {
     }
 
     //Update deposit
-    public Deposit updateDeposit(String userId, Long id, DepositUpdateDto dto){
+    public Deposit updateDeposit(Long id, DepositUpdateDto dto){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasUpdateDepositPermission(userId)){
             throw new SecurityException("User does not have the persmission to update deposit.");
         }
@@ -147,7 +155,9 @@ public class DepositService {
     }
 
     //Delete deposit
-    public Boolean deleteDeposit(String userId, Long id){
+    public Boolean deleteDeposit(Long id){
+
+        String userId = UserContext.getUserId();
         if(!roleAuthorization.hasDeleteDepositPermission(userId)){
             throw new SecurityException("User does not have the persmission to delete deposit.");
         }
