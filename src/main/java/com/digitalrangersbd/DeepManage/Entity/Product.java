@@ -2,7 +2,9 @@ package com.digitalrangersbd.DeepManage.Entity;
 
 import com.digitalrangersbd.DeepManage.Enum.ProductStatus;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -12,6 +14,8 @@ import java.time.LocalTime;
 @Table(name = "product")
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product {
 
     @Id
@@ -56,16 +60,5 @@ public class Product {
     @Column(nullable = false)
     private LocalTime updated_time;
 
-    public Product(){}
-
-    public Product(String name, String code, Brand brand, Category category, String description, ProductStatus status, Double price){
-        this.name = name;
-        this.code = code;
-        this.brand= brand;
-        this.category = category;
-        this.description = description;
-        this.status = status;
-        this.price = price;
-    }
 
 }

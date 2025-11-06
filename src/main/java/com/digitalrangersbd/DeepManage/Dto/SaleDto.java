@@ -4,7 +4,9 @@ import com.digitalrangersbd.DeepManage.Entity.Outlet;
 import com.digitalrangersbd.DeepManage.Entity.SaleItem;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -14,6 +16,8 @@ import java.util.List;
 
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class SaleDto {
 
     private Long id;
@@ -21,12 +25,16 @@ public class SaleDto {
     @NotNull(message = "Reference cannot be empty")
     private String reference;
 
+    private String customer;
+
     private String soldBy;
 
     private LocalDate saleDate;
 
     @NotNull(message = "Outlet cannot be empty")
-    private Outlet outlet;
+    private Long outlet;
+
+    private Long paymentType;
 
     @NotNull(message = "Select products")
     private List<SaleItem> saleItem = new ArrayList<>();
@@ -39,14 +47,4 @@ public class SaleDto {
 
     private LocalTime updated_time;
 
-    public SaleDto(){}
-
-    public SaleDto(String reference, String soldBy, LocalDate saleDate, Outlet outlet, List<SaleItem> saleItem){
-        this.reference = reference;
-        this.soldBy = soldBy;
-        this.saleDate = saleDate;
-        this.outlet = outlet;
-        this.saleItem = saleItem;
-
-    }
 }

@@ -3,7 +3,9 @@ package com.digitalrangersbd.DeepManage.Dto;
 import com.digitalrangersbd.DeepManage.Entity.PurchaseItem;
 import com.digitalrangersbd.DeepManage.Entity.Warehouse;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -13,6 +15,8 @@ import java.util.List;
 
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PurchaseUpdateDto {
 
     private Long id;
@@ -21,15 +25,17 @@ public class PurchaseUpdateDto {
 
     private String purchasedBy;
 
-    @NotNull(message = "Warehouse name not found.")
-    private Warehouse warehouse;
+    //@NotNull(message = "Warehouse name not found.")
+    private Long warehouse;
 
-    @NotNull(message = "Please ")
+    //@NotNull(message = "Please ")
     private String reference;
 
     private LocalDate purchaseDate;
 
-    @NotNull(message = "No products selected")
+    private Long paymentType;
+
+    //@NotNull(message = "No products selected")
     private List<PurchaseItem> purchaseItem = new ArrayList<>();
 
     private LocalDate created_date;
@@ -39,17 +45,4 @@ public class PurchaseUpdateDto {
     private LocalDate updated_date;
 
     private LocalTime updated_time;
-
-    public PurchaseUpdateDto(){}
-
-    public PurchaseUpdateDto(String supplier, String purchasedBy, Warehouse warehouse, String reference, LocalDate purchaseDate, List<PurchaseItem> purchaseItem)
-    {
-        this.supplier = supplier;
-        this.purchasedBy = purchasedBy;
-        this.warehouse = warehouse;
-        this.reference = reference;
-        this.purchaseDate = purchaseDate;
-        this.purchaseItem = purchaseItem;
-
-    }
 }

@@ -3,12 +3,9 @@ package com.digitalrangersbd.DeepManage.Service;
 import com.digitalrangersbd.DeepManage.Authorization.RoleAuthorization;
 import com.digitalrangersbd.DeepManage.Dto.SaleDto;
 import com.digitalrangersbd.DeepManage.Dto.SaleUpdateDto;
-import com.digitalrangersbd.DeepManage.Entity.Product;
-import com.digitalrangersbd.DeepManage.Entity.Sale;
-import com.digitalrangersbd.DeepManage.Entity.SaleItem;
+import com.digitalrangersbd.DeepManage.Entity.*;
 import com.digitalrangersbd.DeepManage.JWT.UserContext;
-import com.digitalrangersbd.DeepManage.Repository.ProductRepository;
-import com.digitalrangersbd.DeepManage.Repository.SaleRepository;
+import com.digitalrangersbd.DeepManage.Repository.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -22,11 +19,17 @@ public class SaleService {
     private final SaleRepository saleRepository;
     private final RoleAuthorization roleAuthorization;
     private final ProductRepository productRepository;
+    private final UserRepository userRepository;
+    private final OutletRepository outletRepository;
+    private final PaymentTypeRepository paymentTypeRepository;
 
-    public SaleService(SaleRepository saleRepository, RoleAuthorization roleAuthorization, ProductRepository productRepository) {
+    public SaleService(SaleRepository saleRepository, RoleAuthorization roleAuthorization, ProductRepository productRepository, UserRepository userRepository, OutletRepository outletRepository, PaymentTypeRepository paymentTypeRepository) {
         this.saleRepository = saleRepository;
         this.roleAuthorization = roleAuthorization;
         this.productRepository = productRepository;
+        this.userRepository = userRepository;
+        this.outletRepository = outletRepository;
+        this.paymentTypeRepository = paymentTypeRepository;
     }
     
     //Create new sale
@@ -41,13 +44,35 @@ public class SaleService {
 
             sale.setReference(dto.getReference());
             sale.setSaleDate(dto.getSaleDate());
-            sale.setOutlet(dto.getOutlet());
-            sale.setSoldBy(dto.getSoldBy());
 
             sale.setCreated_date(LocalDate.now());
             sale.setCreated_time(LocalTime.now());
             sale.setUpdated_date(LocalDate.now());
             sale.setUpdated_time(LocalTime.now());
+
+            if(dto.getCustomer() != null){
+                User customer = userRepository.findById(dto.getCustomer())
+                        .orElseThrow(() -> new RuntimeException("User not found"));
+                sale.setCustomer(customer);
+            }
+
+            if(dto.getSoldBy() != null){
+                User soldBy = userRepository.findById(dto.getSoldBy())
+                        .orElseThrow(() -> new RuntimeException("User not found"));
+                sale.setSoldBy(soldBy);
+            }
+
+            if(dto.getOutlet() != null){
+                Outlet outlet = outletRepository.findById(dto.getOutlet())
+                        .orElseThrow(() -> new RuntimeException("Outlet not found"));
+                sale.setOutlet(outlet);
+            }
+
+            if(dto.getPaymentType() != null){
+                PaymentType paymentType = paymentTypeRepository.findById(dto.getPaymentType())
+                        .orElseThrow(() -> new RuntimeException("Payment type not found"));
+                sale.setPaymentType(paymentType);
+            }
 
             List<SaleItem> saleItem = dto.getSaleItem();
             if(saleItem != null && !saleItem.isEmpty()){
@@ -102,10 +127,32 @@ public class SaleService {
                     .map(sale -> {
                         if(dto.getReference() != null) sale.setReference(dto.getReference());
                         if(dto.getSaleDate() != null) sale.setSaleDate(dto.getSaleDate());
-                        if(dto.getOutlet() != null) sale.setOutlet(dto.getOutlet());
-                        if(dto.getSoldBy() != null) sale.setSoldBy(dto.getSoldBy());
                         sale.setUpdated_date(LocalDate.now());
                         sale.setUpdated_time(LocalTime.now());
+
+                        if(dto.getCustomer() != null){
+                            User customer = userRepository.findById(dto.getCustomer())
+                                    .orElseThrow(() -> new RuntimeException("User not found"));
+                            sale.setCustomer(customer);
+                        }
+
+                        if(dto.getSoldBy() != null){
+                            User soldBy = userRepository.findById(dto.getSoldBy())
+                                    .orElseThrow(() -> new RuntimeException("User not found"));
+                            sale.setSoldBy(soldBy);
+                        }
+
+                        if(dto.getOutlet() != null){
+                            Outlet outlet = outletRepository.findById(dto.getOutlet())
+                                    .orElseThrow(() -> new RuntimeException("Outlet not found"));
+                            sale.setOutlet(outlet);
+                        }
+
+                        if(dto.getPaymentType() != null){
+                            PaymentType paymentType = paymentTypeRepository.findById(dto.getPaymentType())
+                                    .orElseThrow(() -> new RuntimeException("Payment type not found"));
+                            sale.setPaymentType(paymentType);
+                        }
 
                         if(dto.getSaleItem() != null){
                             sale.getSaleItem().clear();

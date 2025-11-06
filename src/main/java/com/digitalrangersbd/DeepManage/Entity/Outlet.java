@@ -60,6 +60,14 @@ public class Outlet {
     @OneToMany(mappedBy = "outlet", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Expense> expense = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "outlet", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Deposit> deposit= new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "outlet", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Sale> sale = new ArrayList<>();
+
     @Column(nullable = false, updatable = false)
     private LocalDate created_date;
 

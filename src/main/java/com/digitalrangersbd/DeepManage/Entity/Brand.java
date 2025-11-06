@@ -2,7 +2,9 @@ package com.digitalrangersbd.DeepManage.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 
@@ -15,6 +17,8 @@ import java.util.List;
 @Table(name = "brand")
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Brand {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +32,7 @@ public class Brand {
 
     @JsonIgnore
     @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Product> products = new ArrayList<>();
+    private List<Product> product = new ArrayList<>();
 
     @Column(nullable = false, updatable = false)
     private LocalDate created_date;
@@ -42,13 +46,4 @@ public class Brand {
     @Column(nullable = false)
     private LocalTime updated_time;
 
-
-    //Default Constructor
-    public Brand() {
-    }
-
-    public Brand(String name, String code) {
-        this.name = name;
-        this.code = code;
-    }
 }

@@ -57,6 +57,7 @@ public class ProductService {
             product.setDescription(dto.getDescription());
             product.setStatus(dto.getStatus());
             product.setPrice(dto.getPrice());
+            product.setStock(dto.getStock());
 
             if(dto.getBrandId() != null){
                 Brand brand = brandRepository.findById(dto.getBrandId())
@@ -64,9 +65,11 @@ public class ProductService {
                 product.setBrand(brand);
             }
 
-            Category category = categoryRepository.findById(dto.getCategoryId())
-                    .orElseThrow(() -> new RuntimeException("Category not found"));
-            product.setCategory(category);
+            if(dto.getCategoryId() != null){
+                Category category = categoryRepository.findById(dto.getCategoryId())
+                        .orElseThrow(() -> new RuntimeException("Category not found"));
+                product.setCategory(category);
+            }
 
             product.setCreated_date(LocalDate.now());
             product.setCreated_time(LocalTime.now());
@@ -137,6 +140,7 @@ public class ProductService {
                         if(dto.getDescription() != null) product.setDescription(dto.getDescription());
                         if(dto.getStatus() != null) product.setStatus(dto.getStatus());
                         if(dto.getPrice() != null) product.setPrice(dto.getPrice());
+                        if(dto.getStock() != null) product.setStock(dto.getStock());
 
                         return productRepository.save(product);
 

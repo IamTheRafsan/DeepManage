@@ -79,12 +79,9 @@ public class DepositService {
             }
 
             if(dto.getUserId() != null){
-                if(!userRepository.existsById(dto.getUserId())){
-                    throw new RuntimeException("User id does not exists");
-                }
-                else{
-                    deposit.setUserId(dto.getUserId());
-                }
+                User user = userRepository.findById(dto.getUserId())
+                        .orElseThrow(() -> new RuntimeException("User not found"));
+                deposit.setUserId(user);
             }
 
             return depositRepository.save(deposit);
@@ -145,6 +142,24 @@ public class DepositService {
                             PaymentType paymentType = paymentTypeRepository.findById(dto.getPaymentType().getId())
                                     .orElseThrow(() -> new RuntimeException("Payment type does not exists"));
                             deposit.setPaymentType(paymentType);
+                        }
+
+                        if(dto.getWarehouseId() != null){
+                            Warehouse warehouse = warehouseRepository.findById(dto.getWarehouseId())
+                                    .orElseThrow(() -> new RuntimeException("Warehouse does not exists"));
+                            deposit.setWarehouse(warehouse);
+                        }
+
+                        if(dto.getOutletId() != null){
+                            Outlet outlet = outletRepository.findById(dto.getOutletId())
+                                    .orElseThrow(() -> new RuntimeException("Outlet does not exists"));
+                            deposit.setOutlet(outlet);
+                        }
+
+                        if(dto.getUserId() != null){
+                            User user = userRepository.findById(dto.getUserId())
+                                    .orElseThrow(() -> new RuntimeException("User not found"));
+                            deposit.setUserId(user);
                         }
 
                         return depositRepository.save(deposit);

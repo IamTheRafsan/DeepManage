@@ -85,6 +85,31 @@ public class User {
     )
     private Set<Outlet> outlet = new HashSet<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Expense> expense = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Deposit> deposit = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Purchase> purchase_supplier = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "purchasedBy", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Purchase> purchasedBy = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Sale> sale_customer = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "soldBy", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Sale> sold_by = new ArrayList<>();
+
+
     @Column(nullable = false, updatable = false)
     private LocalDate created_date;
 

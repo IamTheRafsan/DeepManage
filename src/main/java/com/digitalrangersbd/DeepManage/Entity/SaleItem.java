@@ -1,13 +1,17 @@
 package com.digitalrangersbd.DeepManage.Entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "sale_item")
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class SaleItem {
 
     @Id
@@ -26,11 +30,4 @@ public class SaleItem {
 
     private float quantity;
 
-    public SaleItem() {}
-
-    public SaleItem(Product product, Integer quantity, Double price) {
-        this.product = product;
-        this.quantity = quantity;
-        this.price = price;
-    }
 }

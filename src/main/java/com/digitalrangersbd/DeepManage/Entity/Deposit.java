@@ -50,11 +50,9 @@ public class Deposit {
     @JoinColumn(name = "outlet_id")
     private Outlet outlet;
 
-    private String userId;
-
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private User userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User userId;
 
     @Column(nullable = false, updatable = false)
     private LocalDate created_date;

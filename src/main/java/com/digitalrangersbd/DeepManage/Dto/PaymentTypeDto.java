@@ -6,7 +6,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -14,6 +16,8 @@ import java.time.LocalTime;
 
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PaymentTypeDto {
 
     private Long id;
@@ -28,9 +32,8 @@ public class PaymentTypeDto {
     @Column(nullable = false, updatable = false)
     private LocalTime created_time;
 
-    public PaymentTypeDto(){}
+    private LocalDate updated_date;
 
-    public PaymentTypeDto(String name){
-        this.name = name;
-    }
+    private LocalTime updated_time;
+
 }

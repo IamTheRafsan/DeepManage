@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PaymentTypeService {
@@ -38,6 +39,8 @@ public class PaymentTypeService {
             paymentType.setName(dto.getName());
             paymentType.setCreated_date(LocalDate.now());
             paymentType.setCreated_time(LocalTime.now());
+            paymentType.setUpdated_date(LocalDate.now());
+            paymentType.setUpdated_time(LocalTime.now());
 
             return paymentTypeRepository.save(paymentType);
         }
@@ -53,6 +56,38 @@ public class PaymentTypeService {
         else{
             return paymentTypeRepository.findAll();
         }
+    }
+
+    //Get Payment Type with id
+    public Optional<PaymentType> getPaymentTypeById(Long id){
+        String userId = UserContext.getUserId();
+        if(!roleAuthorization.hasViewPaymentTypePermission(userId)){
+            throw new SecurityException("User do not have the permission to view payment");
+        }
+        else{
+            return paymentTypeRepository.findById(id);
+        }
+    }
+
+    //Update Payment Type
+    public PaymentType updatePaymentType(Long id, PaymentTypeDto dto){
+        String userId = UserContext.getUserId();
+        if(!roleAuthorization.hasUpdateSalePermission(userId)){
+            throw new SecurityException("User do not have the permission to update payment");
+        }
+        else{
+            return paymentTypeRepository.findById(id)
+                    .map(paymentType -> {
+                        if(dto.getName() != null) paymentType.setName(dto.getName());
+
+                        paymentType.setUpdated_date(LocalDate.now());
+                        paymentType.setUpdated_time(LocalTime.now());
+
+                        return paymentTypeRepository.save(paymentType);
+                    })
+                    .orElseThrow(() -> new RuntimeException("Payment type does not exist"));
+        }
+
     }
 
     //Delete Payment

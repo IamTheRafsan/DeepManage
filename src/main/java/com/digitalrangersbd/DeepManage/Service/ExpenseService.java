@@ -79,12 +79,9 @@ public class ExpenseService {
             }
 
             if(dto.getUserId() != null){
-                if(!userRepository.existsById(dto.getUserId())){
-                    throw new RuntimeException("User id does not exists");
-                }
-                else{
-                    expense.setUserId(dto.getUserId());
-                }
+                User user =  userRepository.findById(dto.getUserId())
+                        .orElseThrow(() -> new RuntimeException("User does not exist"));
+                expense.setUserId(user);
             }
 
             return expenseRepository.save(expense);
@@ -145,6 +142,24 @@ public class ExpenseService {
                             PaymentType paymentType = paymentTypeRepository.findById(dto.getPaymentType().getId())
                                     .orElseThrow(() -> new RuntimeException("Payment type does not exists"));
                             expense.setPaymentType(paymentType);
+                        }
+
+                        if(dto.getWarehouseId() != null){
+                            Warehouse warehouse = warehouseRepository.findById(dto.getWarehouseId())
+                                    .orElseThrow(() -> new RuntimeException("Warehouse does not exists"));
+                            expense.setWarehouse(warehouse);
+                        }
+
+                        if(dto.getOutletId() != null){
+                            Outlet outlet = outletRepository.findById(dto.getOutletId())
+                                    .orElseThrow(() -> new RuntimeException("Outlet does not exists"));
+                            expense.setOutlet(outlet);
+                        }
+
+                        if(dto.getUserId() != null){
+                            User user =  userRepository.findById(dto.getUserId())
+                                    .orElseThrow(() -> new RuntimeException("User does not exist"));
+                            expense.setUserId(user);
                         }
 
                         return expenseRepository.save(expense);

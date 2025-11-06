@@ -24,23 +24,23 @@ public class Expense {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private ExpenseCategory category;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private PaymentStatus status;
-
-    @ManyToOne
-    @JoinColumn(name = "payment_type")
-    private PaymentType paymentType;
-
     @Column()
     private Double amount;
 
     @Column(columnDefinition = "TEXT")
     private String description;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private PaymentStatus status;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id")
+    private ExpenseCategory category;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payment_type")
+    private PaymentType paymentType;
 
     @ManyToOne
     @JoinColumn(name = "warehouse_id")
@@ -50,7 +50,9 @@ public class Expense {
     @JoinColumn(name = "outlet_id")
     private Outlet outlet;
 
-    private String userId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User userId;
 
 //    @ManyToOne
 //    @JoinColumn(name = "user_id")

@@ -2,7 +2,9 @@ package com.digitalrangersbd.DeepManage.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -14,6 +16,8 @@ import java.util.List;
 @Table(name = "category")
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +31,7 @@ public class Category {
 
     @JsonIgnore
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Product> products = new ArrayList<>();
+    private List<Product> product = new ArrayList<>();
 
     @Column(nullable = false, updatable = false)
     private LocalDate created_date;
@@ -40,15 +44,5 @@ public class Category {
 
     @Column(nullable = false)
     private LocalTime updated_time;
-
-
-
-    //Default Constructor
-    public Category() {}
-
-    public Category(String name, String code) {
-        this.name = name;
-        this.code = code;
-    }
 
 }

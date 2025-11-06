@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/expense_category")
+@RequestMapping("/expense-category")
 public class ExpenseCategoryController {
     public final ExpenseCategoryService expenseCategoryService;
 

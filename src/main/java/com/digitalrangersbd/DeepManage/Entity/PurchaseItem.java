@@ -1,7 +1,9 @@
 package com.digitalrangersbd.DeepManage.Entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -11,6 +13,8 @@ import java.util.List;
 @Table(name = "purchase_item")
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PurchaseItem {
 
     @Id
@@ -29,11 +33,5 @@ public class PurchaseItem {
 
     private float quantity;
 
-    public PurchaseItem() {}
 
-    public PurchaseItem(Product product, Integer quantity, Double price) {
-        this.product = product;
-        this.quantity = quantity;
-        this.price = price;
-    }
 }

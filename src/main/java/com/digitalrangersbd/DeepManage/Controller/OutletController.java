@@ -79,7 +79,7 @@ public class OutletController {
         }
     }
 
-    //Update outlet date
+    //Update outlet
     @PutMapping("/update/{id}")
     public ResponseEntity<Outlet> updateOutlet(@PathVariable Long id, @Valid @RequestBody OutletUpdateDto dto){
         try{

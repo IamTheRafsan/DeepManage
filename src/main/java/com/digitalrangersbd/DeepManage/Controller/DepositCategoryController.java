@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/deposit_category")
+@RequestMapping("/deposit-category")
 public class DepositCategoryController {
     public final DepositCategoryService dipositCategoryService;
 

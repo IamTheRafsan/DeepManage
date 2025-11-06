@@ -1,6 +1,8 @@
 package com.digitalrangersbd.DeepManage.Controller;
 
+import com.digitalrangersbd.DeepManage.Dto.OutletUpdateDto;
 import com.digitalrangersbd.DeepManage.Dto.PaymentTypeDto;
+import com.digitalrangersbd.DeepManage.Entity.Outlet;
 import com.digitalrangersbd.DeepManage.Entity.PaymentType;
 import com.digitalrangersbd.DeepManage.Service.PaymentTypeService;
 import jakarta.validation.Valid;
@@ -55,6 +57,42 @@ public class  PaymentTypeController {
         }
         catch(Exception e) {
             return ResponseEntity.ok(Collections.emptyList());
+        }
+    }
+
+    //View Payment Type by id
+    @GetMapping("/view/{id}")
+    public ResponseEntity<PaymentType> getPaymentTypeById(@PathVariable Long id){
+
+        try{
+            return ResponseEntity.of(paymentTypeService.getPaymentTypeById(id));
+        }
+        catch(SecurityException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        catch(RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    //Update Payment Type
+    @PutMapping("/update/{id}")
+    public ResponseEntity<PaymentType> updatePaymentType(@PathVariable Long id, @Valid @RequestBody PaymentTypeDto dto){
+        try{
+            PaymentType paymentType = paymentTypeService.updatePaymentType(id, dto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(paymentType);
+        }
+        catch(SecurityException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        catch(RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 

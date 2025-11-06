@@ -2,7 +2,9 @@ package com.digitalrangersbd.DeepManage.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -14,17 +16,21 @@ import java.util.List;
 @Table(name = "purchase")
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Purchase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column()
-    private String supplier;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "supplier")
+    private User supplier;
 
-    @Column
-    private String purchasedBy;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "purchasedBy")
+    private User purchasedBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "warehouse_id")
@@ -40,6 +46,10 @@ public class Purchase {
     @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PurchaseItem> purchaseItem = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payment_type_id")
+    private PaymentType paymentType;
+
     @Column(nullable = false, updatable = false)
     private LocalDate created_date;
 
@@ -51,18 +61,5 @@ public class Purchase {
 
     @Column(nullable = false)
     private LocalTime updated_time;
-
-    public Purchase(){}
-
-    public Purchase(String supplier, String purchasedBy, Warehouse warehouse, String reference, LocalDate purchaseDate, List<PurchaseItem> purchaseItem)
-    {
-        this.supplier = supplier;
-        this.warehouse = warehouse;
-        this.purchasedBy = purchasedBy;
-        this.reference = reference;
-        this.purchaseDate = purchaseDate;
-        this.purchaseItem = purchaseItem;
-
-    }
 
 }

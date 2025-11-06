@@ -4,11 +4,15 @@ import com.digitalrangersbd.DeepManage.Entity.Product;
 import com.digitalrangersbd.DeepManage.Entity.Purchase;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class PurchaseItemDto {
 
     private Long id;
@@ -21,11 +25,4 @@ public class PurchaseItemDto {
 
     private float quantity;
 
-    public PurchaseItemDto() {}
-
-    public PurchaseItemDto( Product product, Integer quantity, Double price) {
-        this.product = product;
-        this.quantity = quantity;
-        this.price = price;
-    }
 }

@@ -4,13 +4,9 @@ import com.digitalrangersbd.DeepManage.Authorization.RoleAuthorization;
 import com.digitalrangersbd.DeepManage.Dto.PurchaseDto;
 import com.digitalrangersbd.DeepManage.Dto.PurchaseItemDto;
 import com.digitalrangersbd.DeepManage.Dto.PurchaseUpdateDto;
-import com.digitalrangersbd.DeepManage.Entity.Product;
-import com.digitalrangersbd.DeepManage.Entity.Purchase;
-import com.digitalrangersbd.DeepManage.Entity.PurchaseItem;
+import com.digitalrangersbd.DeepManage.Entity.*;
 import com.digitalrangersbd.DeepManage.JWT.UserContext;
-import com.digitalrangersbd.DeepManage.Repository.ProductRepository;
-import com.digitalrangersbd.DeepManage.Repository.PurchaseRepository;
-import com.digitalrangersbd.DeepManage.Repository.WarehouseRepository;
+import com.digitalrangersbd.DeepManage.Repository.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -26,12 +22,16 @@ public class PurchaseService {
     private final RoleAuthorization roleAuthorization;
     private final ProductRepository productRepository;
     private final WarehouseRepository warehouseRepository;
+    private final UserRepository userRepository;
+    private final PaymentTypeRepository paymentTypeRepository;
 
-    public PurchaseService(ProductRepository productRepository, PurchaseRepository purchaseRepository, RoleAuthorization roleAuthorization, ProductRepository productRepository1, WarehouseRepository warehouseRepository) {
+    public PurchaseService(ProductRepository productRepository, PurchaseRepository purchaseRepository, RoleAuthorization roleAuthorization, ProductRepository productRepository1, WarehouseRepository warehouseRepository, UserRepository userRepository, PaymentTypeRepository paymentTypeRepository) {
         this.purchaseRepository = purchaseRepository;
         this.roleAuthorization = roleAuthorization;
         this.productRepository = productRepository1;
         this.warehouseRepository = warehouseRepository;
+        this.userRepository = userRepository;
+        this.paymentTypeRepository = paymentTypeRepository;
     }
 
     //Create new Purchase
@@ -45,11 +45,32 @@ public class PurchaseService {
         else{
             Purchase purchase = new Purchase();
 
-            purchase.setSupplier(dto.getSupplier());
-            purchase.setPurchasedBy(dto.getPurchasedBy());
             purchase.setReference(dto.getReference());
             purchase.setPurchaseDate(dto.getPurchaseDate());
-            purchase.setWarehouse(dto.getWarehouse());
+
+            if(dto.getSupplier() != null){
+                User supplier = userRepository.findById(dto.getSupplier())
+                        .orElseThrow(() -> new RuntimeException("Supplier not found"));
+                purchase.setSupplier(supplier);
+            }
+
+            if(dto.getPurchasedBy() != null){
+                User purchasedBy = userRepository.findById(dto.getPurchasedBy())
+                        .orElseThrow(() -> new RuntimeException("Purchased By id not found"));
+                purchase.setPurchasedBy(purchasedBy);
+            }
+
+            if(dto.getWarehouse() != null){
+                Warehouse warehouse = warehouseRepository.findById(dto.getWarehouse())
+                        .orElseThrow(() -> new RuntimeException("Warehouse not found"));
+                purchase.setWarehouse(warehouse);
+            }
+
+            if(dto.getPaymentType() != null){
+                PaymentType paymentType = paymentTypeRepository.findById(dto.getPaymentType())
+                        .orElseThrow(() -> new RuntimeException("Payment type not found"));
+                purchase.setPaymentType(paymentType);
+            }
 
             purchase.setCreated_date(LocalDate.now());
             purchase.setCreated_time(LocalTime.now());
@@ -103,14 +124,35 @@ public class PurchaseService {
         else{
             return purchaseRepository.findById(id)
                     .map(purchase -> {
-                        if(dto.getSupplier() != null) purchase.setSupplier(dto.getSupplier());
-                        if(dto.getPurchasedBy() != null) purchase.setPurchasedBy(dto.getPurchasedBy());
                         if(dto.getReference() != null) purchase.setReference(dto.getReference());
-                        if(dto.getWarehouse() != null) purchase.setWarehouse(dto.getWarehouse());
                         if(dto.getPurchaseDate() != null) purchase.setPurchaseDate(dto.getPurchaseDate());
 
                         purchase.setUpdated_date(LocalDate.now());
                         purchase.setUpdated_time(LocalTime.now());
+
+                        if(dto.getSupplier() != null){
+                            User supplier = userRepository.findById(dto.getSupplier())
+                                    .orElseThrow(() -> new RuntimeException("Supplier not found"));
+                            purchase.setSupplier(supplier);
+                        }
+
+                        if(dto.getPurchasedBy() != null){
+                            User purchasedBy = userRepository.findById(dto.getPurchasedBy())
+                                    .orElseThrow(() -> new RuntimeException("Purchased By id not found"));
+                            purchase.setPurchasedBy(purchasedBy);
+                        }
+
+                        if(dto.getWarehouse() != null){
+                            Warehouse warehouse = warehouseRepository.findById(dto.getWarehouse())
+                                    .orElseThrow(() -> new RuntimeException("Warehouse not found"));
+                            purchase.setWarehouse(warehouse);
+                        }
+
+                        if(dto.getPaymentType() != null){
+                            PaymentType paymentType = paymentTypeRepository.findById(dto.getPaymentType())
+                                    .orElseThrow(() -> new RuntimeException("Payment type not found"));
+                            purchase.setPaymentType(paymentType);
+                        }
 
                         if(dto.getPurchaseItem() != null) {
                             purchase.getPurchaseItem().clear();

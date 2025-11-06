@@ -64,6 +64,14 @@ public class Warehouse {
     @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Expense> expense = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Deposit> deposit = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Purchase> purchase = new ArrayList<>();
+
     @Column(nullable = false, updatable = false)
     private LocalDate created_date;
 
