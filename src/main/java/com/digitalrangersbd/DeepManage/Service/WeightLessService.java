@@ -25,14 +25,16 @@ public class WeightLessService {
     private final ProductRepository productRepository;
     private final WeightLessItemRepository weightLessItemRepository;
     private final PurchaseItemRepository purchaseItemRepository;
+    private final UserRepository userRepository;
 
-    public WeightLessService(WeightLessRepository weightLessRepository, RoleAuthorization roleAuthorization, PurchaseRepository purchaseRepository, ProductRepository productRepository, WeightLessItemRepository weightLessItemRepository, PurchaseItemRepository purchaseItemRepository) {
+    public WeightLessService(WeightLessRepository weightLessRepository, RoleAuthorization roleAuthorization, PurchaseRepository purchaseRepository, ProductRepository productRepository, WeightLessItemRepository weightLessItemRepository, PurchaseItemRepository purchaseItemRepository, UserRepository userRepository) {
         this.weightLessRepository = weightLessRepository;
         this.roleAuthorization = roleAuthorization;
         this.purchaseRepository = purchaseRepository;
         this.productRepository = productRepository;
         this.weightLessItemRepository = weightLessItemRepository;
         this.purchaseItemRepository = purchaseItemRepository;
+        this.userRepository = userRepository;
     }
 
     //Create Weight Less
@@ -42,18 +44,29 @@ public class WeightLessService {
         if (!roleAuthorization.hasCreateWeightLessPermission(userId)) {
             throw new SecurityException("User does not have the permission to create weightless record");
         }
-        if(!purchaseItemRepository.existsById(dto.getPurchaseId())){
-            throw new RuntimeException("Purchase Id does not exists");
+        if(purchaseRepository.existsById(dto.getPurchaseId())){
+            throw new RuntimeException("Weightless entry already exists");
         }
         else {
             WeightLess weightLess = new WeightLess();
 
-            weightLess.setPurchaseId(dto.getPurchaseId());
             weightLess.setReason(dto.getReason());
             weightLess.setCreated_date(LocalDate.now());
             weightLess.setCreated_time(LocalTime.now());
             weightLess.setUpdated_date(LocalDate.now());
             weightLess.setUpdated_time(LocalTime.now());
+
+            if(dto.getPurchaseId() != null){
+                Purchase purchase = purchaseRepository.findById(dto.getPurchaseId())
+                        .orElseThrow(() -> new RuntimeException("PUrcahse ID not found"));
+                weightLess.setPurchase(purchase);
+            }
+
+            if(dto.getUserId() != null){
+                User user = userRepository.findById(dto.getUserId())
+                        .orElseThrow(() -> new RuntimeException("User not found"));
+                weightLess.setUser(user);
+            }
 
             List<WeightLessItem> weightLessItems = dto.getWeightLessItem();
             if (weightLessItems != null && !weightLessItems.isEmpty()) {
@@ -65,9 +78,16 @@ public class WeightLessService {
                         throw new RuntimeException("Duplicate purchase item ID found: " + purchaseItemId + ". Each purchase item can only be added once.");
                     }
                     purchaseItemIds.add(purchaseItemId);
-                }
 
-                for (WeightLessItem item : weightLessItems) {
+                    PurchaseItem purchaseItem = purchaseItemRepository.findById(purchaseItemId)
+                            .orElseThrow(() -> new RuntimeException("Purchase item not found: " + purchaseItemId));
+
+                    if(!purchaseItem.getPurchase().getId().equals(dto.getPurchaseId())) {
+                        throw new RuntimeException("Purchase item ID " + purchaseItemId +
+                                " does not belong to purchase ID " + dto.getPurchaseId());
+                    }
+
+                    item.setPurchaseItem(purchaseItem);
                     item.setWeightLess(weightLess);
                     weightLess.getWeightLessItem().add(item);
                 }
@@ -115,23 +135,40 @@ public class WeightLessService {
                     weightLess.setUpdated_date(LocalDate.now());
                     weightLess.setUpdated_time(LocalTime.now());
 
-                    if(dto.getWeightLessItem() != null && !dto.getWeightLessItem().isEmpty()){
-                        weightLess.getWeightLessItem().clear();
+                    if(dto.getPurchaseId() != null){
+                        Purchase purchase = purchaseRepository.findById(dto.getPurchaseId())
+                                .orElseThrow(() -> new RuntimeException("PUrcahse ID not found"));
+                        weightLess.setPurchase(purchase);
+                    }
 
-                        for(WeightLessItem itemDto: dto.getWeightLessItem()){
+                    if(dto.getUserId() != null){
+                        User user = userRepository.findById(dto.getUserId())
+                                .orElseThrow(() -> new RuntimeException("User not found"));
+                        weightLess.setUser(user);
+                    }
 
-                            WeightLessItem item = new WeightLessItem();
+                    List<WeightLessItem> weightLessItems = dto.getWeightLessItem();
+                    if (weightLessItems != null && !weightLessItems.isEmpty()) {
+                        // Check for duplicate purchase item ID
+                        Set<Long> purchaseItemIds = new HashSet<>();
+                        for(WeightLessItem item : weightLessItems){
+                            Long purchaseItemId = item.getPurchaseItem().getId();
+                            if(purchaseItemIds.contains(purchaseItemId)){
+                                throw new RuntimeException("Duplicate purchase item ID found: " + purchaseItemId + ". Each purchase item can only be added once.");
+                            }
+                            purchaseItemIds.add(purchaseItemId);
 
-                            item.setWeightLess(weightLess);
+                            PurchaseItem purchaseItem = purchaseItemRepository.findById(purchaseItemId)
+                                    .orElseThrow(() -> new RuntimeException("Purchase item not found: " + purchaseItemId));
 
-                            PurchaseItem purchaseItem = purchaseItemRepository.findById(itemDto.getPurchaseItem().getId())
-                                    .orElseThrow(() -> new RuntimeException("PurchaseItem not found with id: "));
+                            if(!purchaseItem.getPurchase().getId().equals(dto.getPurchaseId())) {
+                                throw new RuntimeException("Purchase item ID " + purchaseItemId +
+                                        " does not belong to purchase ID " + dto.getPurchaseId());
+                            }
+
                             item.setPurchaseItem(purchaseItem);
-
-                            item.setQuantity(itemDto.getQuantity());
-
+                            item.setWeightLess(weightLess);
                             weightLess.getWeightLessItem().add(item);
-
                         }
                     }
 

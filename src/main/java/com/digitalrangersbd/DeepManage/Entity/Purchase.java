@@ -50,6 +50,10 @@ public class Purchase {
     @JoinColumn(name = "payment_type_id")
     private PaymentType paymentType;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WeightWastage> purchase = new ArrayList<>();
+
     @Column(nullable = false, updatable = false)
     private LocalDate created_date;
 

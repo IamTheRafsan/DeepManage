@@ -1,6 +1,7 @@
 package com.digitalrangersbd.DeepManage.Dto;
 
 import com.digitalrangersbd.DeepManage.Enum.Gender;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +20,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class UserUpdateDto {
 
-    private String user_id;
+    //private String user_id;
 
     @Size(min=2, max=100, message = "Fist name must be minimum 2 words and maximum 100 words")
     private String firstName;
@@ -30,6 +31,7 @@ public class UserUpdateDto {
     @Email
     private String email;
 
+    @Null
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$", message = "Password must contain at least 8 characters, one uppercase, one lowercase, and one number")
     private String password;
 

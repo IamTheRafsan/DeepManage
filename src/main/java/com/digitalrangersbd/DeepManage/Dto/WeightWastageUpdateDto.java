@@ -24,9 +24,15 @@ public class WeightWastageUpdateDto {
     private List<WeightWastageItem> weightWastageItem;
 
     @NotNull
+    private Long purchaseId;
+
+    @NotNull
+    private String userId;
+
     private String reason;
 
     private LocalDate updated_date;
 
     private LocalTime updated_time;
+
 }

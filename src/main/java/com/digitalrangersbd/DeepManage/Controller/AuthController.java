@@ -1,5 +1,7 @@
 package com.digitalrangersbd.DeepManage.Controller;
 
+import com.digitalrangersbd.DeepManage.Dto.LoginDto;
+import com.digitalrangersbd.DeepManage.Dto.LoginResponseDto;
 import com.digitalrangersbd.DeepManage.JWT.JwtService;
 import com.digitalrangersbd.DeepManage.Service.LoginService;
 import org.springframework.http.HttpStatus;
@@ -19,9 +21,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) {
+    public ResponseEntity<?> login(@RequestBody LoginDto dto) {
         try{
-            String token = loginService.login(email, password);
+            LoginResponseDto token = loginService.login(dto);
             return ResponseEntity.ok(Map.of("token", token));
         }
         catch(RuntimeException e){

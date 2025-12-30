@@ -1,5 +1,6 @@
 package com.digitalrangersbd.DeepManage.Entity;
 
+import com.digitalrangersbd.DeepManage.Controller.StockAdjustmentController;
 import com.digitalrangersbd.DeepManage.Enum.ActiveStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -71,6 +72,10 @@ public class Warehouse {
     @JsonIgnore
     @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Purchase> purchase = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<StockAdjustment> stockAdjustment = new ArrayList<>();
 
     @Column(nullable = false, updatable = false)
     private LocalDate created_date;

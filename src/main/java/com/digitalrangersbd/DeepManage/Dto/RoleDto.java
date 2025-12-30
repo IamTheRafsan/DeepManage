@@ -22,9 +22,6 @@ public class RoleDto {
     @Size(min = 2, max = 100, message = "Role name must be between 2 and 100 characters")
     private String name;
 
-    @NotNull(message = "Role created by Id not found")
-    private String created_by_id;
-
     @NotNull(message = "No permission assigned to role")
     private Set<Permission> permission = new HashSet<>();
 

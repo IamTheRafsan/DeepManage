@@ -9,6 +9,7 @@ import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,9 +33,18 @@ public class Role {
     @Column
     private String created_by_id;
 
+    @Column
+    private String created_by_name;
+
+    @Column
+    private String updated_by_id;
+
+    @Column
+    private String updated_by_name;
+
     @JsonIgnore
     @ManyToMany(mappedBy = "role", fetch = FetchType.LAZY)
-    private Set<User> user = new HashSet<>();
+    private List<User> user = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
@@ -56,6 +66,16 @@ public class Role {
 
     @Column
     private LocalTime updated_time;
+
+    private boolean deleted = false;
+
+    private String deletedById;
+
+    private String deletedByName;
+
+    private LocalDate deletedDate;
+
+    private LocalTime deletedTime;
 
 
     private void addPermission(Permission permission){

@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.lang.model.element.NestingKind;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -25,6 +26,9 @@ public class WeightWastageDto {
 
     @NotNull
     private Long purchaseId;
+
+    @NotNull
+    private String userId;
 
     private String reason;
 

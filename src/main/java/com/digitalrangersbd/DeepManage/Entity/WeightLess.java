@@ -28,8 +28,13 @@ public class WeightLess {
     @OneToMany(mappedBy = "weightLess", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WeightLessItem> weightLessItem = new ArrayList<>();
 
-    @Column(nullable = false)
-    private Long purchaseId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "purchase_id")
+    private Purchase purchase;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     private String reason;
 

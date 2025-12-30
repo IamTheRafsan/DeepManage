@@ -1,5 +1,8 @@
 package com.digitalrangersbd.DeepManage.Service;
 
+import com.digitalrangersbd.DeepManage.Dto.LoginDto;
+import com.digitalrangersbd.DeepManage.Dto.LoginResponseDto;
+import com.digitalrangersbd.DeepManage.Dto.UserResponseDto;
 import com.digitalrangersbd.DeepManage.Entity.User;
 import com.digitalrangersbd.DeepManage.JWT.JwtService;
 import com.digitalrangersbd.DeepManage.Repository.UserRepository;
@@ -8,6 +11,8 @@ import jakarta.validation.constraints.Email;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.stream.Collectors;
 
 @Service
 public class LoginService {
@@ -22,22 +27,37 @@ public class LoginService {
         this.jwtService = jwtService;
     }
 
-    public String login(String email, String rawPassword){
+    public LoginResponseDto login(LoginDto dto){
 
-        if(email != null && rawPassword != null){
-            User user = userRepository.findByEmail(email)
+        if(dto.getEmail() != null && dto.getPassword() != null){
+            User user = userRepository.findByEmail(dto.getEmail())
                     .orElseThrow(() -> new RuntimeException("Email not found"));
 
-            if(!passwordEncoder.matches(rawPassword, user.getPassword())){
+            if(!passwordEncoder.matches(dto.getPassword(), user.getPassword())){
                 throw new RuntimeException("Password does not match");
             }
 
             String token = jwtService.generateToken(user.getEmail(), user.getUser_id());
 
-            return token;
+            UserResponseDto safeUser = new UserResponseDto(
+                    user.getUser_id(),
+                    user.getFirstName(),
+                    user.getLastName(),
+                    user.getEmail(),
+                    user.getGender().name(),
+                    String.valueOf(user.getMobile()),
+                    user.getCountry(),
+                    user.getCity(),
+                    user.getAddress(),
+                    user.getRole().stream()
+                            .map(r -> r.getName())
+                            .collect(Collectors.toList())
+            );
+
+            return new LoginResponseDto(token, safeUser);
         }
         else {
-            return "Email or Password cannot be empty";
+            throw new RuntimeException("Email or Password cannot be empty");
         }
 
     }

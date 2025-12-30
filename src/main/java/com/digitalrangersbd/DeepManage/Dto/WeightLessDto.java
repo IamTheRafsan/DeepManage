@@ -26,6 +26,8 @@ public class WeightLessDto {
 
     private Long purchaseId;
 
+    private String userId;
+
     private String reason;
 
     private LocalDate created_date;

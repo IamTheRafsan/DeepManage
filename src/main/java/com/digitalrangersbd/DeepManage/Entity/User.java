@@ -1,6 +1,7 @@
 package com.digitalrangersbd.DeepManage.Entity;
 
 import com.digitalrangersbd.DeepManage.Controller.OutletController;
+import com.digitalrangersbd.DeepManage.Controller.StockAdjustmentController;
 import com.digitalrangersbd.DeepManage.Controller.WarehouseController;
 import com.digitalrangersbd.DeepManage.Enum.Gender;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -109,6 +110,13 @@ public class User {
     @OneToMany(mappedBy = "soldBy", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Sale> sold_by = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "adjustedBy", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<StockAdjustment> adjusted_by = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WeightWastage> user = new ArrayList<>();
 
     @Column(nullable = false, updatable = false)
     private LocalDate created_date;
@@ -122,6 +130,27 @@ public class User {
     @Column
     private LocalTime updated_time;
 
+    private boolean deleted = false;
+
+    private String deletedById;
+
+    private String deletedByName;
+
+    private LocalDate deletedDate;
+
+    private LocalTime deletedTime;
+
+    @Column
+    private String created_by_id;
+
+    @Column
+    private String created_by_name;
+
+    @Column
+    private String updated_by_id;
+
+    @Column
+    private String updated_by_name;
 
 
 

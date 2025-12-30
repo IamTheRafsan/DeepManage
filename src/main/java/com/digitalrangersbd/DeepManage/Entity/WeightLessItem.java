@@ -1,5 +1,6 @@
 package com.digitalrangersbd.DeepManage.Entity;
 
+import com.mysql.cj.x.protobuf.MysqlxCursor;
 import com.mysql.cj.xdevapi.WarningImpl;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -24,11 +25,11 @@ public class WeightLessItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "weight_less_id")
     private WeightLess weightLess;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "purchase_item_id")
     private PurchaseItem purchaseItem;
 

@@ -24,20 +24,20 @@ public class StockAdjustmentUpdateDto {
 
     private Long id;
 
-    private Warehouse warehouse;
+    private Long warehouse;
 
-    private Outlet outlet;
+    private Long outlet;
 
-    @NotNull(message = "Need to add atleast one product")
+    //@NotNull(message = "Need to add atleast one product")
     private List<StockAdjustItem> stockItems =  new ArrayList<>();
 
-    @NotNull(message = "Adjusted by not found")
-    private User adjustedBy;
+    //@NotNull(message = "Adjusted by not found")
+    private String adjustedBy;
 
-    @NotNull(message = "Reason of stock adjustment missing.")
+    //@NotNull(message = "Reason of stock adjustment missing.")
     private String reason;
 
-    @NotNull(message = "Put the adjustment type.")
+    //@NotNull(message = "Put the adjustment type.")
     private StockAdjustmentStatus adjustmentType;
 
     private LocalDate createdDate;

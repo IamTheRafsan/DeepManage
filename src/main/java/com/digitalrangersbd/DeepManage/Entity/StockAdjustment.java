@@ -1,6 +1,7 @@
 package com.digitalrangersbd.DeepManage.Entity;
 
 import com.digitalrangersbd.DeepManage.Enum.StockAdjustmentStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,6 +36,7 @@ public class StockAdjustment {
     @JoinColumn(name = "outlet_id")
     private Outlet outlet;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "stockAdjustment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StockAdjustItem> stockItems =  new ArrayList<>();
 
@@ -42,7 +44,7 @@ public class StockAdjustment {
     @JoinColumn(name = "adjusted_by")
     private User adjustedBy;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String reason;
 
     @Enumerated(EnumType.STRING)

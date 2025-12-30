@@ -46,6 +46,9 @@ public class RoleController {
         try{
             return ResponseEntity.ok(roleService.getAllRoles());
         }
+        catch (SecurityException e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         catch (Exception e){
             return ResponseEntity.ok(Collections.emptyList());
         }
@@ -57,6 +60,9 @@ public class RoleController {
 
         try{
             return ResponseEntity.of(roleService.getRolesById(id));
+        }
+        catch (SecurityException e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -78,21 +84,21 @@ public class RoleController {
 
     //Delete Role
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteRole(@PathVariable String id){
+    public ResponseEntity<Void> deleteRole(@PathVariable String id) {
+        try {
+            Role deletedRole = roleService.deleteRole(id);
 
-        try{
-            boolean deletedRole =  roleService.deleteRole(id);
-            if(deletedRole){
+            if (deletedRole != null) {
                 return ResponseEntity.noContent().build();
-            }
-            else {
+            } else {
                 return ResponseEntity.notFound().build();
             }
-        }catch (SecurityException e){
+        } catch (SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
         }
-
-
     }
+
 
 }

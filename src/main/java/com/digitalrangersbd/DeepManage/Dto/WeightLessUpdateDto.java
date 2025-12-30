@@ -24,6 +24,11 @@ public class WeightLessUpdateDto {
     private List<WeightLessItem> weightLessItem;
 
     @NotNull
+    private Long purchaseId;
+
+    @NotNull
+    private String userId;
+
     private String reason;
 
     private LocalDate updated_date;

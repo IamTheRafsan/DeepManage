@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/weight_less")
+@RequestMapping("/weight-less")
 public class WeightLessController {
 
     private final WeightLessService weightLessService;

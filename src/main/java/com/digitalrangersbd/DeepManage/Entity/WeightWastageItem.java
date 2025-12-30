@@ -19,11 +19,11 @@ public class WeightWastageItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "weight_wastage_id")
     private WeightWastage weightWastage;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "purchase_item_id")
     private PurchaseItem purchaseItem;
 

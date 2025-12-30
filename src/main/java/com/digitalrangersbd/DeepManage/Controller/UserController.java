@@ -1,5 +1,6 @@
 package com.digitalrangersbd.DeepManage.Controller;
 
+import com.digitalrangersbd.DeepManage.Dto.UserDataResponseDto;
 import com.digitalrangersbd.DeepManage.Dto.UserDto;
 import com.digitalrangersbd.DeepManage.Dto.UserUpdateDto;
 import com.digitalrangersbd.DeepManage.Entity.Role;
@@ -43,20 +44,20 @@ public class UserController {
 
     //Get all users
     @GetMapping("/view")
-    public ResponseEntity<List<User>> getAllUser(){
+    public ResponseEntity<List<UserDataResponseDto>> getAllUser() {
         try {
             return ResponseEntity.ok(userService.getAllUser());
-        }catch (SecurityException e){
+        } catch (SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
-        catch (Exception e){
-            return ResponseEntity.ok(Collections.emptyList());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
+
     //Get users by id
     @GetMapping("/view/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable String id){
+    public ResponseEntity<UserDataResponseDto> getUserById(@PathVariable String id){
         try {
             return ResponseEntity.of(userService.getUserById(id));
         }catch (SecurityException e){
@@ -88,15 +89,17 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable String id){
 
         try{
-            boolean deletedUser = userService.deleteUser(id);
-            if(deletedUser){
+            User deletedUser = userService.deleteUser(id);
+
+            if (deletedUser != null) {
                 return ResponseEntity.noContent().build();
-            }
-            else {
+            } else {
                 return ResponseEntity.notFound().build();
             }
-        }catch (SecurityException e){
+        } catch (SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
         }
     }
 }

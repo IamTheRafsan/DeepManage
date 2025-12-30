@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/weight_wastage")
+@RequestMapping("/weight-wastage")
 public class WeightWastageController {
 
     private final WeightWastageService weightWastageService;

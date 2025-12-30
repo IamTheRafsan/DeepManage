@@ -4,20 +4,17 @@ package com.digitalrangersbd.DeepManage.Service;
 import com.digitalrangersbd.DeepManage.Authorization.RoleAuthorization;
 import com.digitalrangersbd.DeepManage.Dto.StockAdjustmentDto;
 import com.digitalrangersbd.DeepManage.Dto.StockAdjustmentUpdateDto;
-import com.digitalrangersbd.DeepManage.Entity.Product;
-import com.digitalrangersbd.DeepManage.Entity.Purchase;
-import com.digitalrangersbd.DeepManage.Entity.StockAdjustItem;
-import com.digitalrangersbd.DeepManage.Entity.StockAdjustment;
+import com.digitalrangersbd.DeepManage.Entity.*;
 import com.digitalrangersbd.DeepManage.JWT.UserContext;
-import com.digitalrangersbd.DeepManage.Repository.ProductRepository;
-import com.digitalrangersbd.DeepManage.Repository.StockAdjustItemRepository;
-import com.digitalrangersbd.DeepManage.Repository.StockAdjustmentRepository;
+import com.digitalrangersbd.DeepManage.Repository.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class StockAdjustmentService {
@@ -25,11 +22,18 @@ public class StockAdjustmentService {
     private final StockAdjustmentRepository stockAdjustmentRepository;
     private final RoleAuthorization roleAuthorization;
     private final ProductRepository productRepository;
+    private final WarehouseRepository warehouseRepository;
+    private final OutletRepository outletRepository;
+    private final UserRepository userRepository;
 
-    public StockAdjustmentService(StockAdjustmentRepository stockAdjustmentRepository, RoleAuthorization roleAuthorization, ProductRepository productRepository) {
+
+    public StockAdjustmentService(StockAdjustmentRepository stockAdjustmentRepository, RoleAuthorization roleAuthorization, ProductRepository productRepository, WarehouseRepository warehouseRepository, OutletRepository outletRepository, UserRepository userRepository) {
         this.stockAdjustmentRepository = stockAdjustmentRepository;
         this.roleAuthorization = roleAuthorization;
         this.productRepository = productRepository;
+        this.warehouseRepository = warehouseRepository;
+        this.outletRepository = outletRepository;
+        this.userRepository = userRepository;
     }
 
     //Create new stock adjustment
@@ -42,11 +46,30 @@ public class StockAdjustmentService {
         else{
             StockAdjustment stockAdjustment = new StockAdjustment();
             stockAdjustment.setReference(dto.getReference());
-            stockAdjustment.setWarehouse(dto.getWarehouse());
-            stockAdjustment.setOutlet(dto.getOutlet());
-            stockAdjustment.setAdjustedBy(dto.getAdjustedBy());
             stockAdjustment.setAdjustmentType(dto.getAdjustmentType());
             stockAdjustment.setReason(dto.getReason());
+
+            //Getting the warehouse
+            if(dto.getWarehouse() != null){
+                Warehouse warehouse = warehouseRepository.findById(dto.getWarehouse())
+                        .orElseThrow(() -> new RuntimeException("Warehouse not found"));
+                stockAdjustment.setWarehouse(warehouse);
+            }
+
+            //Getting the outlet
+            if(dto.getOutlet() != null){
+                Outlet outlet = outletRepository.findById(dto.getOutlet())
+                        .orElseThrow(() -> new RuntimeException("Outlet not found"));
+                stockAdjustment.setOutlet(outlet);
+            }
+
+            //Getting the user
+            if(dto.getAdjustedBy() != null){
+                User user = userRepository.findById(dto.getAdjustedBy())
+                        .orElseThrow(() -> new RuntimeException("User not found"));
+                stockAdjustment.setAdjustedBy(user);
+            }
+
 
             stockAdjustment.setCreatedDate(LocalDate.now());
             stockAdjustment.setCreatedTime(LocalTime.now());
@@ -101,11 +124,29 @@ public class StockAdjustmentService {
         else {
             return stockAdjustmentRepository.findById(id)
                     .map(stockAdjustment -> {
-                        if(dto.getWarehouse()!= null) stockAdjustment.setWarehouse(dto.getWarehouse());
-                        if(dto.getOutlet() != null) stockAdjustment.setOutlet(dto.getOutlet());
-                        if(dto.getAdjustedBy() != null) stockAdjustment.setAdjustedBy(dto.getAdjustedBy());
                         if(dto.getAdjustmentType() != null) stockAdjustment.setAdjustmentType(dto.getAdjustmentType());
                         if(dto.getReason() != null) stockAdjustment.setReason(dto.getReason());
+
+                        //Getting the warehouse
+                        if(dto.getWarehouse() != null){
+                            Warehouse warehouse = warehouseRepository.findById(dto.getWarehouse())
+                                    .orElseThrow(() -> new RuntimeException("Warehouse not found"));
+                            stockAdjustment.setWarehouse(warehouse);
+                        }
+
+                        //Getting the outlet
+                        if(dto.getOutlet() != null){
+                            Outlet outlet = outletRepository.findById(dto.getOutlet())
+                                    .orElseThrow(() -> new RuntimeException("Outlet not found"));
+                            stockAdjustment.setOutlet(outlet);
+                        }
+
+                        //Getting the user
+                        if(dto.getAdjustedBy() != null){
+                            User user = userRepository.findById(dto.getAdjustedBy())
+                                    .orElseThrow(() -> new RuntimeException("User not found"));
+                            stockAdjustment.setAdjustedBy(user);
+                        }
 
                         stockAdjustment.setUpdatedDate(LocalDate.now());
                         stockAdjustment.setUpdatedTime(LocalTime.now());

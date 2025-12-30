@@ -68,6 +68,10 @@ public class Outlet {
     @OneToMany(mappedBy = "outlet", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Sale> sale = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "outlet", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<StockAdjustment> stockAdjustment = new ArrayList<>();
+
     @Column(nullable = false, updatable = false)
     private LocalDate created_date;
 
