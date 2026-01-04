@@ -101,9 +101,9 @@ public class OutletController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteOutlet(@PathVariable Long id){
         try{
-            boolean deletedOutlet = outletService.deleteOutlet(id);
+            Outlet deletedOutlet = outletService.deleteOutlet(id);
 
-            if(deletedOutlet){
+            if(deletedOutlet != null ){
                 return ResponseEntity.noContent().build();
             }else{
                 return ResponseEntity.notFound().build();

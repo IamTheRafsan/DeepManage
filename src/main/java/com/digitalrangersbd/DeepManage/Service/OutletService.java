@@ -57,6 +57,7 @@ public class OutletService {
             outlet.setCreated_time(LocalTime.now());
             outlet.setUpdated_date(LocalDate.now());
             outlet.setUpdated_time(LocalTime.now());
+            outlet.setCreated_by_id(userId);
 
             return outletRepository.save(outlet);
 
@@ -71,7 +72,11 @@ public class OutletService {
             throw new SecurityException("User does not have permission to view outlet");
         }
         else{
-            return outletRepository.findAll();
+            return outletRepository.findAll()
+                    .stream()
+                    .filter(outlet -> !outlet.isDeleted())
+                    .toList();
+
         }
     }
 
@@ -113,6 +118,7 @@ public class OutletService {
 
                         outlet.setUpdated_date(LocalDate.now());
                         outlet.setUpdated_time(LocalTime.now());
+                        outlet.setUpdated_by_id(userId);
 
                         return outletRepository.save(outlet);
                     })
@@ -122,20 +128,21 @@ public class OutletService {
     }
 
     //Delete Outlet
-    public Boolean deleteOutlet(Long id){
+    public Outlet deleteOutlet(Long id){
 
         String userId = UserContext.getUserId();
         if (!roleAuthorization.hasDeleteOutletPermission(userId)){
             throw new RuntimeException("User does not have the permission to delete outlet");
         }
-        else{
-            if (outletRepository.existsById(id)){
-                outletRepository.deleteById(id);
-                return true;
-            }
-            else{
-                return false;
-            }
-        }
+        return outletRepository.findById(id)
+                .map(outlet -> {
+                    outlet.setDeleted(true);
+                    outlet.setDeletedById(userId);
+                    outlet.setDeletedDate(LocalDate.now());
+                    outlet.setDeletedTime(LocalTime.now());
+
+                    return outletRepository.save(outlet);
+                })
+                .orElseThrow(() -> new RuntimeException("User not found with id " + id));
     }
 }

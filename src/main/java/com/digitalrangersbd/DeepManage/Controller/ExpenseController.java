@@ -84,9 +84,9 @@ public class ExpenseController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteExpense(@PathVariable Long id){
         try{
-            boolean deletedExpense = expenseService.deleteExpense(id);
+            Expense deletedExpense = expenseService.deleteExpense(id);
 
-            if(deletedExpense){
+            if(deletedExpense != null){
                 return ResponseEntity.noContent().build();
             }
             else {

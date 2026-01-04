@@ -87,9 +87,9 @@ public class ExpenseCategoryController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteExpenseCategory(@PathVariable Long id){
         try{
-            boolean deletedExpenseCategory = expenseCategoryService.deleteExpenseCategory(id);
+            ExpenseCategory deletedExpenseCategory = expenseCategoryService.deleteExpenseCategory(id);
 
-            if(deletedExpenseCategory){
+            if(deletedExpenseCategory != null){
                 return ResponseEntity.noContent().build();
             }
             else {

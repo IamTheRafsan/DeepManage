@@ -78,10 +78,24 @@ public class Outlet {
     @Column(nullable = false, updatable = false)
     private LocalTime created_time;
 
+    private String created_by_id;
+
     @Column
     private LocalDate updated_date;
 
     @Column
     private LocalTime updated_time;
+
+    private String updated_by_id;
+
+    private boolean deleted = false;
+
+    private String deletedById;
+
+    private String deletedByName;
+
+    private LocalDate deletedDate;
+
+    private LocalTime deletedTime;
 
 }

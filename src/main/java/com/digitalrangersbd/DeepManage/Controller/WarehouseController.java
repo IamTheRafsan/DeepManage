@@ -100,9 +100,9 @@ public class WarehouseController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteWarehouse(@PathVariable Long id){
         try{
-            boolean deletedWarehouse = warehouseService.deleteWarehouse(id);
+            Warehouse deletedWarehouse = warehouseService.deleteWarehouse(id);
 
-            if(deletedWarehouse){
+            if(deletedWarehouse != null){
                 return ResponseEntity.noContent().build();
             }else{
                 return ResponseEntity.notFound().build();

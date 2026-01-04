@@ -53,6 +53,7 @@ public class ExpenseService {
             expense.setCreated_time(LocalTime.now());
             expense.setUpdated_date(LocalDate.now());
             expense.setUpdated_time(LocalTime.now());
+            expense.setCreated_by_id(userId);
 
             if(dto.getCategory() != null){
                 ExpenseCategory expenseCategory = expenseCategoryRepository.findById(dto.getCategory())
@@ -131,6 +132,7 @@ public class ExpenseService {
 
                         expense.setUpdated_date(LocalDate.now());
                         expense.setUpdated_time(LocalTime.now());
+                        expense.setUpdated_by_id(userId);
 
                         if(dto.getCategory() != null){
                             ExpenseCategory expenseCategory = expenseCategoryRepository.findById(dto.getCategory().getId())
@@ -170,21 +172,23 @@ public class ExpenseService {
     }
 
     //Delete expense
-    public Boolean deleteExpense(Long id){
+    public Expense deleteExpense(Long id){
 
         String userId = UserContext.getUserId();
         if(!roleAuthorization.hasDeleteExpensePermission(userId)){
             throw new SecurityException("User does not have the persmission to delete expense.");
         }
-        else{
-            if(expenseRepository.existsById(id)){
-                expenseRepository.deleteById(id);
-                return true;
-            }
-            else{
-                return false;
-            }
-        }
+        return expenseRepository.findById(id)
+                .map(expense -> {
+                    expense.setDeleted(true);
+                    expense.setDeletedById(userId);
+                    expense.setDeletedDate(LocalDate.now());
+                    expense.setDeletedTime(LocalTime.now());
+
+                    return expenseRepository.save(expense);
+                })
+                .orElseThrow(() -> new RuntimeException("User not found with id " + id));
+
     }
 }
 
