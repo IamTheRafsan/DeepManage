@@ -48,17 +48,29 @@ public class Product {
     @Column()
     private Float stock;
 
-    @Column(nullable = false, updatable = false)
+    //@Column(nullable` = false, updatable = false)
     private LocalDate created_date;
 
-    @Column(nullable = false, updatable = false)
+    //@Column(nullable = false, updatable = false)
     private LocalTime created_time;
 
-    @Column(nullable = false)
+    private String created_by_id;
+
     private LocalDate updated_date;
 
-    @Column(nullable = false)
     private LocalTime updated_time;
+
+    private String updated_by_id;
+
+    private boolean deleted = false;
+
+    private String deletedById;
+
+    private String deletedByName;
+
+    private LocalDate deletedDate;
+
+    private LocalTime deletedTime;
 
 
 }

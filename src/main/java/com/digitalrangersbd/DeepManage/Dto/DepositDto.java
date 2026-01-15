@@ -1,5 +1,6 @@
 package com.digitalrangersbd.DeepManage.Dto;
 
+import com.digitalrangersbd.DeepManage.Entity.DepositCategory;
 import com.digitalrangersbd.DeepManage.Enum.PaymentStatus;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -21,7 +22,7 @@ public class DepositDto {
     @NotNull
     private String name;
 
-    private Long category;
+    private DepositCategory category;
 
     @NotNull
     private PaymentStatus status;

@@ -49,6 +49,7 @@ public class SaleService {
             sale.setCreated_time(LocalTime.now());
             sale.setUpdated_date(LocalDate.now());
             sale.setUpdated_time(LocalTime.now());
+            sale.setCreated_by_id(userId);
 
             if(dto.getCustomer() != null){
                 User customer = userRepository.findById(dto.getCustomer())
@@ -98,7 +99,7 @@ public class SaleService {
             throw new SecurityException("User does not have the permission to view sale");
         }
         else{
-            return saleRepository.findAll();
+            return saleRepository.findByDeletedFalse();
         }
     }
 
@@ -129,6 +130,7 @@ public class SaleService {
                         if(dto.getSaleDate() != null) sale.setSaleDate(dto.getSaleDate());
                         sale.setUpdated_date(LocalDate.now());
                         sale.setUpdated_time(LocalTime.now());
+                        sale.setUpdated_by_id(userId);
 
                         if(dto.getCustomer() != null){
                             User customer = userRepository.findById(dto.getCustomer())
@@ -175,21 +177,23 @@ public class SaleService {
     }
 
     //Delete Sale
-    public Boolean deleteSale(Long id){
+    public Sale deleteSale(Long id){
 
         String userId = UserContext.getUserId();
         if(!roleAuthorization.hasDeleteSalePermission(userId)){
             throw new SecurityException("User do not have the permission to delete Sale");
         }
-        else{
-            if(saleRepository.existsById(id)){
-                saleRepository.deleteById(id);
-                return true;
-            }
-            else{
-                return false;
-            }
-        }
+        return saleRepository.findById(id)
+                .map(sale -> {
+                    sale.setDeleted(true);
+                    sale.setDeletedById(userId);
+                    sale.setDeletedDate(LocalDate.now());
+                    sale.setDeletedTime(LocalTime.now());
+
+                    return saleRepository.save(sale);
+                })
+                .orElseThrow(() -> new RuntimeException("User not found with id " + id));
+
 
     }
 

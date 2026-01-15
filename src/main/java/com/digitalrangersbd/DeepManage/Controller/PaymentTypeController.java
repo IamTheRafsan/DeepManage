@@ -100,8 +100,8 @@ public class  PaymentTypeController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Boolean> deletePaymentType(@PathVariable Long id){
         try{
-            Boolean deletedPaymentType = paymentTypeService.deletePayment(id);
-            if(deletedPaymentType){
+            PaymentType deletedPaymentType = paymentTypeService.deletePayment(id);
+            if(deletedPaymentType != null){
                 return ResponseEntity.noContent().build();
             }
             else{

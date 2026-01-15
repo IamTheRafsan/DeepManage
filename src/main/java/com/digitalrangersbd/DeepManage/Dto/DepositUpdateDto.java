@@ -1,5 +1,6 @@
 package com.digitalrangersbd.DeepManage.Dto;
 
+import com.digitalrangersbd.DeepManage.Entity.DepositCategory;
 import com.digitalrangersbd.DeepManage.Entity.ExpenseCategory;
 import com.digitalrangersbd.DeepManage.Entity.PaymentType;
 import com.digitalrangersbd.DeepManage.Enum.PaymentStatus;
@@ -23,7 +24,7 @@ public class DepositUpdateDto {
     @NotNull
     private String name;
 
-    private ExpenseCategory category;
+    private DepositCategory category;
 
     @NotNull
     private PaymentStatus status;

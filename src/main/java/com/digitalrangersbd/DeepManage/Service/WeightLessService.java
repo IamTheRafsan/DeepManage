@@ -44,9 +44,9 @@ public class WeightLessService {
         if (!roleAuthorization.hasCreateWeightLessPermission(userId)) {
             throw new SecurityException("User does not have the permission to create weightless record");
         }
-        if(purchaseRepository.existsById(dto.getPurchaseId())){
-            throw new RuntimeException("Weightless entry already exists");
-        }
+//        if(purchaseRepository.existsById(dto.getPurchaseId())){
+//            throw new RuntimeException("Weightless entry already exists");
+//        }
         else {
             WeightLess weightLess = new WeightLess();
 
@@ -105,7 +105,7 @@ public class WeightLessService {
             throw new SecurityException("User does not have the permission to view weightless.");
         }
         else{
-            return weightLessRepository.findAll();
+            return weightLessRepository.findByDeletedFalse();
         }
     }
 
@@ -179,20 +179,22 @@ public class WeightLessService {
     }
 
     //Delete Weight less
-    public Boolean deleteWeightLess(Long id){
+    public WeightLess deleteWeightLess(Long id){
 
         String userId = UserContext.getUserId();
         if(!roleAuthorization.hasDeleteWeightLessPermission(userId)){
             throw new SecurityException("User does not have the permission to delete weight less entry.");
         }
-        else{
-            if(weightLessRepository.existsById(id)){
-                weightLessRepository.deleteById(id);
-                return true;
-            }
-            else{
-                return false;
-            }
-        }
+        return weightLessRepository.findById(id)
+                .map(weightLess -> {
+                    weightLess.setDeleted(true);
+                    weightLess.setDeletedById(userId);
+                    weightLess.setDeletedDate(LocalDate.now());
+                    weightLess.setDeletedTime(LocalTime.now());
+
+                    return weightLessRepository.save(weightLess);
+                })
+                .orElseThrow(() -> new RuntimeException("User not found with id " + id));
+
     }
 }

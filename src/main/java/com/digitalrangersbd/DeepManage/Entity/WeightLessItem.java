@@ -1,17 +1,11 @@
 package com.digitalrangersbd.DeepManage.Entity;
 
-import com.mysql.cj.x.protobuf.MysqlxCursor;
-import com.mysql.cj.xdevapi.WarningImpl;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jdk.jfr.Enabled;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "weight_less_item")
@@ -27,6 +21,7 @@ public class WeightLessItem {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "weight_less_id")
+    @JsonBackReference
     private WeightLess weightLess;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -34,6 +29,4 @@ public class WeightLessItem {
     private PurchaseItem purchaseItem;
 
     private Float quantity;
-
-
 }

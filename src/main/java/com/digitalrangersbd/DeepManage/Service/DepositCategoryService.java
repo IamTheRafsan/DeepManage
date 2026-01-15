@@ -42,6 +42,7 @@ public class DepositCategoryService {
             depositCategory.setCreated_time(LocalTime.now());
             depositCategory.setUpdated_date(LocalDate.now());
             depositCategory.setUpdated_time(LocalTime.now());
+            depositCategory.setCreated_by_id(userId);
 
             return depositCategoryRepository.save(depositCategory);
         }
@@ -55,7 +56,10 @@ public class DepositCategoryService {
             throw new SecurityException("User does not have the permission to view deposit category");
         }
         else{
-            return depositCategoryRepository.findAll();
+            return depositCategoryRepository.findAll()
+                    .stream()
+                    .filter(outlet -> !outlet.isDeleted())
+                    .toList();
         }
     }
 
@@ -89,6 +93,7 @@ public class DepositCategoryService {
                         if(dto.getName() != null) depositCategory.setName(dto.getName());
                         depositCategory.setUpdated_date(LocalDate.now());
                         depositCategory.setUpdated_time(LocalTime.now());
+                        depositCategory.setUpdated_by_id(userId);
 
                         return depositCategoryRepository.save(depositCategory);
                     })
@@ -97,20 +102,22 @@ public class DepositCategoryService {
     }
 
     //Delete Deposit Category
-    public Boolean deleteDepositCategory(Long id){
+    public DepositCategory deleteDepositCategory(Long id){
 
         String userId = UserContext.getUserId();
         if(!roleAuthorization.hasDeleteDepositCategoryPermission(userId)){
             throw new SecurityException("User does not have the permission to delete deposit category");
         }
-        else {
-            if(!depositCategoryRepository.existsById(id)){
-                throw new RuntimeException("Deposit category does not exist");
-            }
-            else{
-                depositCategoryRepository.deleteById(id);
-                return true;
-            }
-        }
+        return depositCategoryRepository.findById(id)
+                .map(depositCategory -> {
+                    depositCategory.setDeleted(true);
+                    depositCategory.setDeletedById(userId);
+                    depositCategory.setDeletedDate(LocalDate.now());
+                    depositCategory.setDeletedTime(LocalTime.now());
+
+                    return depositCategoryRepository.save(depositCategory);
+                })
+                .orElseThrow(() -> new RuntimeException("User not found with id " + id));
+
     }
 }

@@ -97,9 +97,9 @@ public class PurchaseController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Boolean> deletePurchase(@PathVariable Long id){
         try{
-            Boolean deletedPurchase = purchaseService.deletePurchase(id);
+            Purchase deletedPurchase = purchaseService.deletePurchase(id);
 
-            if(deletedPurchase){
+            if(deletedPurchase != null){
                 return ResponseEntity.noContent().build();
             }else{
                 return ResponseEntity.notFound().build();

@@ -26,7 +26,7 @@ public class ExpenseDto {
     @NotNull
     private String name;
 
-    private Long category;
+    private ExpenseCategory category;
 
     @NotNull
     private PaymentStatus status;

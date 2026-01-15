@@ -86,7 +86,7 @@ public class ProductController {
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id){
 
         try{
-            boolean deletedProduct = productService.deleteProduct(id);
+            Product deletedProduct = productService.deleteProduct(id);
             return ResponseEntity.noContent().build();
         } catch (SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

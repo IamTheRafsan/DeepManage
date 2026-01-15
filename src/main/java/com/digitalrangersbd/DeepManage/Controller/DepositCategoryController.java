@@ -84,9 +84,9 @@ public class DepositCategoryController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteDepositCategory(@PathVariable Long id){
         try{
-            boolean deletedDepositCategory = dipositCategoryService.deleteDepositCategory(id);
+            DepositCategory deletedDepositCategory = dipositCategoryService.deleteDepositCategory(id);
 
-            if(deletedDepositCategory){
+            if(deletedDepositCategory != null){
                 return ResponseEntity.noContent().build();
             }
             else {

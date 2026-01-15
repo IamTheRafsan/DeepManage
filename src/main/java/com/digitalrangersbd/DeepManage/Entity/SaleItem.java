@@ -1,5 +1,6 @@
 package com.digitalrangersbd.DeepManage.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,6 +21,7 @@ public class SaleItem {
 
     @ManyToOne
     @JoinColumn(name = "sale_id")
+    @JsonBackReference
     private Sale sale;
 
     @ManyToOne

@@ -42,9 +42,9 @@ public class WeightWastageService {
         if(!roleAuthorization.hasCreateWeightWastagePermission(userId)){
             throw new SecurityException("User does not have the permission to create weight wastage");
         }
-        if(purchaseRepository.existsById(dto.getPurchaseId())){
-            throw new RuntimeException("Weightless entry already exists");
-        }
+//        if(purchaseRepository.existsById(dto.getPurchaseId())){
+//            throw new RuntimeException("Weightless entry already exists");
+//        }
         else{
             WeightWastage weightWastage = new WeightWastage();
             weightWastage.setReason(dto.getReason());
@@ -102,7 +102,7 @@ public class WeightWastageService {
             throw new SecurityException("User does not have the permission to view weight wastage.");
         }
         else{
-            return weightWastageRepository.findAll();
+            return weightWastageRepository.findByDeletedFalse();
         }
     }
 
@@ -177,21 +177,23 @@ public class WeightWastageService {
     }
 
     //Delete Weight wastage
-    public Boolean deleteWeightWastage(Long id){
+    public WeightWastage deleteWeightWastage(Long id){
 
         String userId = UserContext.getUserId();
         if(!roleAuthorization.hasDeleteWeightWastagePermission(userId)){
             throw new SecurityException("User does not have the permission to delete weight wastage entry.");
         }
-        else{
-            if(weightWastageRepository.existsById(id)){
-                weightWastageRepository.deleteById(id);
-                return true;
-            }
-            else{
-                return false;
-            }
-        }
+        return weightWastageRepository.findById(id)
+                .map(weightWastage -> {
+                    weightWastage.setDeleted(true);
+                    weightWastage.setDeletedById(userId);
+                    weightWastage.setDeletedDate(LocalDate.now());
+                    weightWastage.setDeletedTime(LocalTime.now());
+
+                    return weightWastageRepository.save(weightWastage);
+                })
+                .orElseThrow(() -> new RuntimeException("User not found with id " + id));
+
     }
 
 }

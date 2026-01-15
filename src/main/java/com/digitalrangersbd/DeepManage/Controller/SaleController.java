@@ -95,9 +95,9 @@ public class SaleController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Boolean> deleteSale(@PathVariable Long id){
         try{
-            Boolean deletedSale = saleService.deleteSale(id);
+            Sale deletedSale = saleService.deleteSale(id);
 
-            if(deletedSale){
+            if(deletedSale != null){
                 return ResponseEntity.noContent().build();
             }else{
                 return ResponseEntity.notFound().build();

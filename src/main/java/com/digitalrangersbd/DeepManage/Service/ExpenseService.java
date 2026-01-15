@@ -56,7 +56,7 @@ public class ExpenseService {
             expense.setCreated_by_id(userId);
 
             if(dto.getCategory() != null){
-                ExpenseCategory expenseCategory = expenseCategoryRepository.findById(dto.getCategory())
+                ExpenseCategory expenseCategory = expenseCategoryRepository.findById(dto.getCategory().getId())
                         .orElseThrow(() -> new RuntimeException("Expense category does not exists"));
                 expense.setCategory(expenseCategory);
             }
@@ -99,7 +99,10 @@ public class ExpenseService {
             throw new SecurityException("User does not have the persmission to view expense.");
         }
         else{
-            return expenseRepository.findAll();
+            return expenseRepository.findAll()
+                    .stream()
+                    .filter(outlet -> !outlet.isDeleted())
+                    .toList();
         }
     }
 

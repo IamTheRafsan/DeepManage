@@ -41,6 +41,7 @@ public class PaymentTypeService {
             paymentType.setCreated_time(LocalTime.now());
             paymentType.setUpdated_date(LocalDate.now());
             paymentType.setUpdated_time(LocalTime.now());
+            paymentType.setCreated_by_id(userId);
 
             return paymentTypeRepository.save(paymentType);
         }
@@ -54,7 +55,7 @@ public class PaymentTypeService {
             throw new SecurityException("User do not have the permission to view payment");
         }
         else{
-            return paymentTypeRepository.findAll();
+            return paymentTypeRepository.findByDeletedFalse();
         }
     }
 
@@ -82,6 +83,7 @@ public class PaymentTypeService {
 
                         paymentType.setUpdated_date(LocalDate.now());
                         paymentType.setUpdated_time(LocalTime.now());
+                        paymentType.setUpdated_by_id(userId);
 
                         return paymentTypeRepository.save(paymentType);
                     })
@@ -91,21 +93,22 @@ public class PaymentTypeService {
     }
 
     //Delete Payment
-    public Boolean deletePayment(Long id){
+    public PaymentType deletePayment(Long id){
 
         String userId = UserContext.getUserId();
         if(!roleAuthorization.hasDeletePaymentTypePermission(userId)){
             throw new SecurityException("User do not have the permission to delete payment");
         }
-        else{
-            if(paymentTypeRepository.existsById(id)){
-                paymentTypeRepository.deleteById(id);
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
+        return paymentTypeRepository.findById(id)
+                .map(paymentType -> {
+                    paymentType.setDeleted(true);
+                    paymentType.setDeletedById(userId);
+                    paymentType.setDeletedDate(LocalDate.now());
+                    paymentType.setDeletedTime(LocalTime.now());
+
+                    return paymentTypeRepository.save(paymentType);
+                })
+                .orElseThrow(() -> new RuntimeException("User not found with id " + id));
     }
 
 }

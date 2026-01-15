@@ -10,6 +10,7 @@ import com.digitalrangersbd.DeepManage.JWT.UserContext;
 import com.digitalrangersbd.DeepManage.Repository.BrandRepository;
 import com.digitalrangersbd.DeepManage.Repository.CategoryRepository;
 import com.digitalrangersbd.DeepManage.Repository.ProductRepository;
+import org.hibernate.procedure.ProcedureOutputs;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -58,6 +59,7 @@ public class ProductService {
             product.setStatus(dto.getStatus());
             product.setPrice(dto.getPrice());
             product.setStock(dto.getStock());
+            product.setCreated_by_id(userId);
 
             if(dto.getBrandId() != null){
                 Brand brand = brandRepository.findById(dto.getBrandId())
@@ -88,7 +90,7 @@ public class ProductService {
             throw new SecurityException("User does not have permission to view products.");
         }
         else {
-            return productRepository.findAll();
+            return productRepository.findByDeletedFalse();
         }
     }
 
@@ -117,9 +119,15 @@ public class ProductService {
                         if(dto.getName() != null) product.setName(dto.getName());
 
                         //check if product code already exists before updating
-                        if(dto.getCode() != null && productRepository.existsByCode(dto.getCode())) {
-                            throw new RuntimeException("The Product code already exits:" + dto.getCode());
-                        }else{
+                        if (dto.getCode() != null) {
+                            boolean codeExists = productRepository
+                                    .existsByCodeAndIdNot(dto.getCode(), product.getId());
+
+                            if (codeExists) {
+                                throw new RuntimeException(
+                                        "The product code already exists: " + dto.getCode()
+                                );
+                            }
                             product.setCode(dto.getCode());
                         }
 
@@ -142,6 +150,10 @@ public class ProductService {
                         if(dto.getPrice() != null) product.setPrice(dto.getPrice());
                         if(dto.getStock() != null) product.setStock(dto.getStock());
 
+                        product.setUpdated_date(LocalDate.now());
+                        product.setUpdated_time(LocalTime.now());
+                        product.setUpdated_by_id(userId);
+
                         return productRepository.save(product);
 
                     })
@@ -150,20 +162,21 @@ public class ProductService {
     }
 
     //Delete Product
-    public boolean deleteProduct(Long id){
+    public Product deleteProduct(Long id){
 
         String userId = UserContext.getUserId();
         if(!roleAuthorization.hasDeleteProductPermission(userId)){
             throw new SecurityException("User does not have the permission to delete product.");
         }
-        else{
-            if(productRepository.existsById(id)){
-                productRepository.deleteById(id);
-                return true;
-            }
-            else{
-                return false;
-            }
-        }
+        return productRepository.findById(id)
+                .map(product -> {
+                    product.setDeleted(true);
+                    product.setDeletedById(userId);
+                    product.setDeletedDate(LocalDate.now());
+                    product.setDeletedTime(LocalTime.now());
+
+                    return productRepository.save(product);
+                })
+                .orElseThrow(() -> new RuntimeException("User not found with id " + id));
     }
 }

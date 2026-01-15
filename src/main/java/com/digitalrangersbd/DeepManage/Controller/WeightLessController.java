@@ -1,5 +1,4 @@
 package com.digitalrangersbd.DeepManage.Controller;
-
 import com.digitalrangersbd.DeepManage.Dto.WeightLessDto;
 import com.digitalrangersbd.DeepManage.Dto.WeightLessUpdateDto;
 import com.digitalrangersbd.DeepManage.Entity.WeightLess;
@@ -8,7 +7,6 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -99,8 +97,8 @@ public class WeightLessController {
     public ResponseEntity<Void> deleteWeigthLess(@PathVariable Long id){
 
         try{
-            Boolean deletedWeightLes = weightLessService.deleteWeightLess(id);
-            if(deletedWeightLes)
+            WeightLess deletedWeightLes = weightLessService.deleteWeightLess(id);
+            if(deletedWeightLes != null)
             {
                 return ResponseEntity.noContent().build();
             }

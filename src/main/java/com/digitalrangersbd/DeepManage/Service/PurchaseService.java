@@ -3,6 +3,7 @@ package com.digitalrangersbd.DeepManage.Service;
 import com.digitalrangersbd.DeepManage.Authorization.RoleAuthorization;
 import com.digitalrangersbd.DeepManage.Dto.PurchaseDto;
 import com.digitalrangersbd.DeepManage.Dto.PurchaseItemDto;
+import com.digitalrangersbd.DeepManage.Dto.PurchaseResponseDto;
 import com.digitalrangersbd.DeepManage.Dto.PurchaseUpdateDto;
 import com.digitalrangersbd.DeepManage.Entity.*;
 import com.digitalrangersbd.DeepManage.JWT.UserContext;
@@ -76,6 +77,7 @@ public class PurchaseService {
             purchase.setCreated_time(LocalTime.now());
             purchase.setUpdated_date(LocalDate.now());
             purchase.setUpdated_time(LocalTime.now());
+            purchase.setCreated_by_id(userId);
 
             List<PurchaseItem> purchaseItems = dto.getPurchaseItem();
             if(purchaseItems != null && !purchaseItems.isEmpty()){
@@ -98,7 +100,7 @@ public class PurchaseService {
             throw new SecurityException("User does not have the permission to view purchase");
         }
         else{
-            return purchaseRepository.findAll();
+            return purchaseRepository.findByDeletedFalse();
         }
     }
 
@@ -129,6 +131,7 @@ public class PurchaseService {
 
                         purchase.setUpdated_date(LocalDate.now());
                         purchase.setUpdated_time(LocalTime.now());
+                        purchase.setUpdated_by_id(userId);
 
                         if(dto.getSupplier() != null){
                             User supplier = userRepository.findById(dto.getSupplier())
@@ -174,20 +177,21 @@ public class PurchaseService {
     }
 
     //Delete Purchase
-    public Boolean deletePurchase(Long id){
+    public Purchase deletePurchase(Long id){
 
         String userId = UserContext.getUserId();
         if(!roleAuthorization.hasDeletePurchasePermission(userId)){
             throw new SecurityException("User does not have the permission to delete purchase");
         }
-        else {
-            if(purchaseRepository.existsById(id)){
-                purchaseRepository.deleteById(id);
-                return true;
-            }
-            else{
-                return false;
-            }
-        }
+        return purchaseRepository.findById(id)
+                .map(purchase -> {
+                    purchase.setDeleted(true);
+                    purchase.setDeletedById(userId);
+                    purchase.setDeletedDate(LocalDate.now());
+                    purchase.setDeletedTime(LocalTime.now());
+
+                    return purchaseRepository.save(purchase);
+                })
+                .orElseThrow(() -> new RuntimeException("User not found with id " + id));
     }
 }

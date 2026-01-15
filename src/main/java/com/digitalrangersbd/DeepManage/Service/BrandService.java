@@ -47,6 +47,7 @@ public class BrandService {
                 brand.setCreated_time(LocalTime.now());
                 brand.setUpdated_date(LocalDate.now());
                 brand.setUpdated_time(LocalTime.now());
+                brand.setCreated_by_id(userId);
 
                 return brandRepository.save(brand);
             }
@@ -62,7 +63,7 @@ public class BrandService {
             throw new SecurityException("User does not have permission to view brand");
         }
         else {
-            return brandRepository.findAll();
+            return brandRepository.findByDeletedFalse();
         }
     }
 
@@ -104,6 +105,7 @@ public class BrandService {
 
                         brand.setUpdated_time(LocalTime.now());
                         brand.setUpdated_date(LocalDate.now());
+                        brand.setUpdated_by_id(userId);
 
                         return brandRepository.save(brand);
                     })
@@ -112,20 +114,21 @@ public class BrandService {
     }
 
     //Delete Brand
-    public boolean deleteBrand(Long id){
+    public Brand deleteBrand(Long id){
 
         String userId = UserContext.getUserId();
         if(!roleAuthorization.hasDeleteBrandPermission(userId)){
             throw new SecurityException("User does not have permission to delete brand");
         }
-        else {
-            if(brandRepository.existsById(id)){
-                brandRepository.deleteById(id);
-                return true;
-            }
-            else{
-                return false;
-            }
-        }
+        return brandRepository.findById(id)
+                .map(brand -> {
+                    brand.setDeleted(true);
+                    brand.setDeletedById(userId);
+                    brand.setDeletedDate(LocalDate.now());
+                    brand.setDeletedTime(LocalTime.now());
+
+                    return brandRepository.save(brand);
+                })
+                .orElseThrow(() -> new RuntimeException("User not found with id " + id));
     }
 }

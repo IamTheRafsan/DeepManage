@@ -102,8 +102,8 @@ public class WeightWastageController {
     public ResponseEntity<Void> deleteWeigthWastage(@PathVariable Long id){
 
         try{
-            Boolean deletedWeightWastage = weightWastageService.deleteWeightWastage(id);
-            if(deletedWeightWastage)
+            WeightWastage deletedWeightWastage = weightWastageService.deleteWeightWastage(id);
+            if(deletedWeightWastage != null)
             {
                 return ResponseEntity.noContent().build();
             }

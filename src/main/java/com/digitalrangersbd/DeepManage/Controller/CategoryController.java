@@ -87,9 +87,9 @@ public class CategoryController {
 
 
         try{
-            boolean deletedCategory = categoryService.deleteCategory(id);
+            Category deletedCategory = categoryService.deleteCategory(id);
 
-            if(deletedCategory){
+            if(deletedCategory != null){
                 return ResponseEntity.noContent().build();
             }
             else {

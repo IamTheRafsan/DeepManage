@@ -48,6 +48,7 @@ public class CategoryService {
                 category.setCreated_time(LocalTime.now());
                 category.setUpdated_date(LocalDate.now());
                 category.setUpdated_time(LocalTime.now());
+                category.setCreated_by_id(userId);
 
                 return categoryRepository.save(category);
             }
@@ -63,7 +64,7 @@ public class CategoryService {
             throw new SecurityException("User does not have permission to view category");
         }
         else {
-            return categoryRepository.findAll();
+            return categoryRepository.findByDeletedFalse();
         }
     }
 
@@ -105,6 +106,7 @@ public class CategoryService {
 
                         category.setUpdated_time(LocalTime.now());
                         category.setUpdated_date(LocalDate.now());
+                        category.setUpdated_by_id(userId);
 
                         return categoryRepository.save(category);
                     })
@@ -113,20 +115,21 @@ public class CategoryService {
     }
 
     //Delete Category
-    public boolean deleteCategory(Long id){
+    public Category deleteCategory(Long id){
 
         String userId = UserContext.getUserId();
         if(!roleAuthorization.hasDeleteCategoryPermission(userId)){
             throw new SecurityException("User does not have permission to delete category");
         }
-        else {
-            if(categoryRepository.existsById(id)){
-                categoryRepository.deleteById(id);
-                return true;
-            }
-            else{
-                return false;
-            }
-        }
+        return categoryRepository.findById(id)
+                .map(category -> {
+                    category.setDeleted(true);
+                    category.setDeletedById(userId);
+                    category.setDeletedDate(LocalDate.now());
+                    category.setDeletedTime(LocalTime.now());
+
+                    return categoryRepository.save(category);
+                })
+                .orElseThrow(() -> new RuntimeException("User not found with id " + id));
     }
 }

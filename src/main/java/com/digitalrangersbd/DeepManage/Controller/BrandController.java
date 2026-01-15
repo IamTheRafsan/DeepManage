@@ -84,9 +84,9 @@ public class BrandController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteBrand(@PathVariable Long id){
         try{
-            boolean deletedBrand = brandService.deleteBrand(id);
+            Brand deletedBrand = brandService.deleteBrand(id);
 
-            if(deletedBrand){
+            if(deletedBrand != null){
                 return ResponseEntity.noContent().build();
             }
             else {

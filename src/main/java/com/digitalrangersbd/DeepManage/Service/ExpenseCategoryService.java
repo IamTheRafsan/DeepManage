@@ -52,7 +52,10 @@ public class ExpenseCategoryService {
             throw new SecurityException("User does not have the permission to view expense category");
         }
         else{
-            return expenseCategoryRepository.findAll();
+            return expenseCategoryRepository.findAll()
+                    .stream()
+                    .filter(outlet -> !outlet.isDeleted())
+                    .toList();
         }
     }
 

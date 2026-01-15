@@ -49,4 +49,14 @@ public class WeightWastage {
 
     @Column(nullable = false)
     private LocalTime updated_time;
+
+    private boolean deleted = false;
+
+    private String deletedById;
+
+    private String deletedByName;
+
+    private LocalDate deletedDate;
+
+    private LocalTime deletedTime;
 }
