@@ -24,7 +24,7 @@ public class JwtService {
                 .setSubject(username)
                 .claim("userId", userId)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 6)) // 6 hours
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 365 * 50)) // 50 years
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
